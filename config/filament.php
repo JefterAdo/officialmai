@@ -1,6 +1,7 @@
 <?php
 
 use Filament\Panel;
+use App\Filament\Pages\Auth\Login;
 
 return [
 
@@ -102,12 +103,12 @@ return [
 
     'path' => 'admin',
     'domain' => null,
-    'home_url' => '/',
+    'home_url' => '/admin',
     'brand' => env('APP_NAME'),
     'auth' => [
-        'guard' => env('FILAMENT_AUTH_GUARD', 'web'),
+        'guard' => 'web',
         'pages' => [
-            'login' => \Filament\Pages\Auth\Login::class,
+            'login' => Login::class,
         ],
     ],
     'widgets' => [
@@ -116,9 +117,6 @@ return [
         ],
     ],
     'middleware' => [
-        'auth' => [
-            \Filament\Http\Middleware\Authenticate::class,
-        ],
         'base' => [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -127,5 +125,11 @@ return [
             \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+        'auth' => [
+            \Filament\Http\Middleware\Authenticate::class,
+        ],
+    ],
+    'scripts' => [
+        'rateUs' => false,
     ],
 ];

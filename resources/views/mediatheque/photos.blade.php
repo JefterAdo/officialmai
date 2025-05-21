@@ -120,7 +120,7 @@
                     <div class="gallery-card">
                         <div class="gallery-thumbnail">
                             @if($gallery->images->isNotEmpty())
-                                <img src="{{ asset('storage/' . $gallery->images->first()->image_path) }}" 
+                                <img src="/storage/{{ $gallery->images->first()->image_path }}" 
                                      alt="{{ $gallery->title }}">
                             @else
                                 <img src="{{ asset('images/placeholder.jpg') }}" 

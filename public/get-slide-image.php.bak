@@ -1,0 +1,62 @@
+<?php
+// Ce script sert directement les images du slider
+// Usage: get-slide-image.php?id=1
+
+// Connexion à la base de données
+$db = new PDO('mysql:host=127.0.0.1;dbname=userrhdp', 'officiel', 'KSGyqoUnjFGmCPDMP0g7');
+
+// Récupérer l'ID du slide
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+if ($id <= 0) {
+    header('HTTP/1.0 400 Bad Request');
+    exit('ID de slide invalide');
+}
+
+// Récupérer le chemin de l'image
+$stmt = $db->prepare('SELECT image_path FROM slides WHERE id = ?');
+$stmt->execute([$id]);
+$slide = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$slide) {
+    header('HTTP/1.0 404 Not Found');
+    exit('Slide non trouvé');
+}
+
+// Construire le chemin complet du fichier
+$imagePath = '/home/zertos/htdocs/website/storage/app/public/' . trim($slide['image_path']);
+
+// Si le fichier n'existe pas, essayons de trouver un fichier similaire
+if (!file_exists($imagePath)) {
+    $dir = '/home/zertos/htdocs/website/storage/app/public/slides/';
+    $files = scandir($dir);
+    $filename = basename(trim($slide['image_path']));
+    
+    // Recherche approximative
+    foreach ($files as $file) {
+        if ($file != '.' && $file != '..' && stripos($file, str_replace(' ', '', $filename)) !== false) {
+            $imagePath = $dir . $file;
+            break;
+        }
+    }
+}
+
+if (!file_exists($imagePath)) {
+    header('HTTP/1.0 404 Not Found');
+    exit('Image non trouvée: ' . $imagePath);
+}
+
+// Déterminer le type MIME
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mime = finfo_file($finfo, $imagePath);
+finfo_close($finfo);
+
+// Envoyer les en-têtes appropriés
+header('Content-Type: ' . $mime);
+header('Content-Length: ' . filesize($imagePath));
+header('Cache-Control: public, max-age=86400');
+
+// Lire et envoyer le fichier
+readfile($imagePath);
+exit;
+?>

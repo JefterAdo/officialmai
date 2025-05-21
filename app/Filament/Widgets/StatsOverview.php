@@ -2,65 +2,43 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Audio;
-use App\Models\PhotoGallery;
-use App\Models\Speech;
-use App\Models\Video;
+use App\Models\News;
+use App\Models\Event;
+use App\Models\Member;
+use App\Models\Media;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
+    protected static ?string $pollingInterval = '30s';
+
     protected function getStats(): array
     {
-        try {
-            return [
-                Stat::make('Galeries Photos', PhotoGallery::count())
-                    ->description('Total des galeries photos')
-                    ->descriptionIcon('heroicon-m-photo')
-                    ->chart([7, 2, 10, 3, 15, 4, 17])
-                    ->color('success'),
+        return [
+            Stat::make('Actualités', News::count())
+                ->description('Total des actualités publiées')
+                ->descriptionIcon('heroicon-m-newspaper')
+                ->chart([7, 2, 10, 3, 15, 4, 17])
+                ->color('success'),
 
-                Stat::make('Vidéos', Video::count())
-                    ->description('Total des vidéos')
-                    ->descriptionIcon('heroicon-m-video-camera')
-                    ->chart([15, 4, 17, 7, 2, 10, 3])
-                    ->color('warning'),
+            Stat::make('Événements', Event::count())
+                ->description('Total des événements')
+                ->descriptionIcon('heroicon-m-calendar')
+                ->chart([3, 5, 7, 12, 6, 8, 4])
+                ->color('warning'),
 
-                Stat::make('Discours', Speech::count())
-                    ->description('Total des discours')
-                    ->descriptionIcon('heroicon-m-document-text')
-                    ->chart([2, 10, 3, 15, 4, 17, 7])
-                    ->color('danger'),
+            Stat::make('Membres', Member::count())
+                ->description('Total des membres')
+                ->descriptionIcon('heroicon-m-users')
+                ->chart([15, 14, 16, 17, 18, 19, 20])
+                ->color('primary'),
 
-                Stat::make('Fichiers Audio', Audio::count())
-                    ->description('Total des fichiers audio')
-                    ->descriptionIcon('heroicon-m-musical-note')
-                    ->chart([10, 3, 15, 4, 17, 7, 2])
-                    ->color('info'),
-            ];
-        } catch (\Exception $e) {
-            return [
-                Stat::make('Galeries Photos', 0)
-                    ->description('Total des galeries photos')
-                    ->descriptionIcon('heroicon-m-photo')
-                    ->color('success'),
-
-                Stat::make('Vidéos', 0)
-                    ->description('Total des vidéos')
-                    ->descriptionIcon('heroicon-m-video-camera')
-                    ->color('warning'),
-
-                Stat::make('Discours', 0)
-                    ->description('Total des discours')
-                    ->descriptionIcon('heroicon-m-document-text')
-                    ->color('danger'),
-
-                Stat::make('Fichiers Audio', 0)
-                    ->description('Total des fichiers audio')
-                    ->descriptionIcon('heroicon-m-musical-note')
-                    ->color('info'),
-            ];
-        }
+            Stat::make('Médias', Media::count())
+                ->description('Total des médias')
+                ->descriptionIcon('heroicon-m-photo')
+                ->chart([10, 12, 15, 18, 20, 25, 30])
+                ->color('danger'),
+        ];
     }
 } 

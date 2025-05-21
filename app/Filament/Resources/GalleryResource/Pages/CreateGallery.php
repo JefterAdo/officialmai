@@ -22,7 +22,8 @@ class CreateGallery extends CreateRecord
         }
         
         // Ajouter les images dans l'ordre
-        foreach ($images as $index => $image) {
+        $orderIndex = 0; // Utiliser un compteur numérique pour l'ordre
+        foreach ($images as $uuid => $image) {
             // Vérifier si l'image est une chaîne de caractères ou un objet
             $imagePath = is_string($image) ? $image : null;
             
@@ -40,7 +41,7 @@ class CreateGallery extends CreateRecord
                 GalleryImage::create([
                     'gallery_id' => $gallery->id,
                     'image_path' => $imagePath,
-                    'order' => $index,
+                    'order' => $orderIndex++, // Utiliser et incrémenter le compteur numérique
                 ]);
             }
         }

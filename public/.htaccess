@@ -4,6 +4,13 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # Autoriser l'accès direct au répertoire .well-known pour Let's Encrypt
+    RewriteRule ^.well-known/(.*)$ .well-known/$1 [L]
+    
+    # Autoriser l'accès direct au dossier storage
+    RewriteCond %{REQUEST_URI} ^/storage/(.*)$
+    RewriteRule ^storage/(.*)$ storage/$1 [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

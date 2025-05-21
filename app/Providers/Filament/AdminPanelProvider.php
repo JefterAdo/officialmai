@@ -17,6 +17,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Pages\Auth\Login;
+use Filament\Navigation\NavigationGroup;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -26,11 +28,38 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
-            ->registration()
+            ->login(Login::class)
+            ->brandName('Administration RHDP')
             ->colors([
                 'primary' => Color::Amber,
+                'danger' => Color::Rose,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Contenu')
+                    ->icon('heroicon-o-document-text')
+                    ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Médias')
+                    ->icon('heroicon-o-photo')
+                    ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Communication')
+                    ->icon('heroicon-o-megaphone')
+                    ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Structure')
+                    ->icon('heroicon-o-building-office')
+                    ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Configuration')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsed(),
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->maxContentWidth('full')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -55,7 +84,11 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandName('RHDP Admin')
-            ->favicon(asset('images/rhdp_logo.png'));
+            ->databaseNotifications()
+            ->globalSearch()
+            ->renderHook(
+                'panels::body.end',
+                fn () => view('filament.custom.body-end'),
+            );
     }
 }

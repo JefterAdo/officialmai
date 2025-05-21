@@ -40,11 +40,20 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => public_path('storage'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
+        ],
+
+        'cloudinary' => [
+            'driver' => 'cloudinary',
+            'cloud_name' => env('CLOUDINARY_CLOUD_NAME', 'dsc3ru80e'),
+            'api_key' => env('CLOUDINARY_KEY', '444678797461641'),
+            'api_secret' => env('CLOUDINARY_SECRET', 'Fz9wlSyx36vdDi_41H2QaJ6Zwzw'),
+            'notification_url' => env('CLOUDINARY_NOTIFICATION_URL'),
+            'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
         ],
 
         's3' => [

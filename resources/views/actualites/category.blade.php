@@ -141,7 +141,7 @@
         <article class="news-preview-item">
             <div class="news-image-placeholder">
                 @if($article->featured_image)
-                    <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}">
+                    <img src="/storage/{{ $article->featured_image }}" alt="{{ $article->title }}">
                 @else
                     <i class="fas fa-image fa-3x"></i>
                 @endif

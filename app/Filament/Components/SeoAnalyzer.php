@@ -81,3 +81,4 @@ class SeoAnalyzer extends Component
     {
         return new static();
     }
+}

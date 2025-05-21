@@ -90,7 +90,7 @@
         </header>
 
         @if($news->featured_image)
-        <img src="{{ asset('storage/' . $news->featured_image) }}" 
+        <img src="/storage/{{ $news->featured_image }}" 
              alt="{{ $news->title }}" 
              class="article-featured-image">
         @endif
@@ -109,7 +109,7 @@
                 <div class="card related-article-card">
                     <div class="card-img-top-wrapper" style="height: 200px; overflow: hidden;">
                         @if($article->featured_image)
-                            <img src="{{ asset('storage/' . $article->featured_image) }}" 
+                            <img src="/storage/{{ $article->featured_image }}" 
                                  alt="{{ $article->title }}"
                                  class="w-100 h-100"
                                  style="object-fit: cover;">

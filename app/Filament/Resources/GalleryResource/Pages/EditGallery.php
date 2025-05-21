@@ -35,6 +35,7 @@ class EditGallery extends EditRecord
         GalleryImage::where('gallery_id', $gallery->id)->delete();
         
         // Ajouter les images dans l'ordre
+        $orderIndex = 0; // Initialisation d'un index numérique
         foreach ($images as $index => $image) {
             // Vérifier si l'image est une chaîne de caractères ou un objet
             $imagePath = is_string($image) ? $image : null;
@@ -53,7 +54,7 @@ class EditGallery extends EditRecord
                 GalleryImage::create([
                     'gallery_id' => $gallery->id,
                     'image_path' => $imagePath,
-                    'order' => $index,
+                    'order' => $orderIndex++, // Utilisation d'un index numérique
                 ]);
             }
         }

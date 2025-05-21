@@ -13,37 +13,25 @@
 
         <div class="row g-4">
             @forelse ($videos as $video)
-                <div class="col-lg-4 col-md-6">
-                    <div class="video-card h-100 shadow-sm rounded overflow-hidden border-0 transition-all">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="video-thumbnail-card h-100 shadow-sm rounded overflow-hidden border-0 transition-all">
                         <div class="video-thumbnail position-relative">
-                            <img src="{{ $video->thumbnail }}" 
+                            <img src="{{ $video['snippet']['thumbnails']['high']['url'] }}" 
                                  class="w-100 img-fluid" 
-                                 alt="Vignette: {{ $video->title }}">
-                            <a href="{{ route('mediatheque.videos.show', $video) }}" 
+                                 alt="Vignette: {{ $video['snippet']['title'] }}">
+                            <a href="{{ route('mediatheque.videos.show', $video['id']['videoId']) }}" 
                                class="play-btn-wrapper" 
-                               aria-label="Lancer la vidéo {{ $video->title }}">
+                               aria-label="Lancer la vidéo {{ $video['snippet']['title'] }}">
                                 <div class="play-btn-circle">
                                     <i class="fas fa-play"></i>
                                 </div>
                             </a>
-                            @if($video->duration)
-                                <span class="video-duration">{{ $video->duration }}</span>
-                            @endif
                         </div>
-                        <div class="video-content p-3">
-                            <h5 class="video-title mb-2">{{ Str::limit($video->title, 60) }}</h5>
-                            @if($video->published_at)
-                                <div class="video-meta d-flex align-items-center mb-2">
-                                    <i class="far fa-calendar-alt text-primary me-2"></i>
-                                    <span class="text-muted small">{{ $video->published_at->format('d F Y') }}</span>
-                                </div>
-                            @endif
-                            @if($video->description)
-                                <p class="video-description small text-muted mb-3">{{ Str::limit($video->description, 100) }}</p>
-                            @endif
-                            <a href="{{ route('mediatheque.videos.show', $video) }}" class="btn btn-outline-primary btn-sm">
-                                Regarder <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
+                        <div class="video-content p-2">
+                            <h6 class="video-title mb-1 small fw-bold">{{ Str::limit($video['snippet']['title'], 40) }}</h6>
+                            <div class="video-meta d-flex align-items-center">
+                                <span class="text-muted small">{{ \Carbon\Carbon::parse($video['snippet']['publishedAt'])->format('d/m/Y') }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,11 +48,11 @@
             @endforelse
         </div>
 
-        @if($videos->hasPages())
-            <div class="pagination-wrapper mt-5">
-                {{ $videos->links() }}
-            </div>
-        @endif
+        <div class="text-center mt-5">
+            <a href="https://www.youtube.com/@rassemblementwebtv5828" target="_blank" class="btn btn-primary">
+                Voir toutes les vidéos sur YouTube <i class="fas fa-external-link-alt ms-1"></i>
+            </a>
+        </div>
     </div>
 </section>
 
@@ -144,11 +132,14 @@
         margin-right: auto;
     }
 
-    .video-card {
+    /* Styles pour les miniatures */
+    .video-thumbnail-card {
         background-color: #fff;
         transition: all 0.3s ease;
+        border-radius: 8px;
+        overflow: hidden;
     }
-    .video-card:hover {
+    .video-thumbnail-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
     }
@@ -162,8 +153,9 @@
         transition: transform 0.5s ease;
         object-fit: cover;
         height: 100%;
+        width: 100%;
     }
-    .video-card:hover .video-thumbnail img {
+    .video-thumbnail-card:hover .video-thumbnail img {
         transform: scale(1.05);
     }
     
@@ -180,25 +172,48 @@
         opacity: 0;
         transition: opacity 0.3s ease;
     }
-    .video-card:hover .play-btn-wrapper {
+    .video-thumbnail-card:hover .play-btn-wrapper {
         opacity: 1;
     }
     
     .play-btn-circle {
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         background-color: var(--bs-primary, #fd7e14);
         display: flex;
         justify-content: center;
         align-items: center;
         color: white;
-        font-size: 1.5rem;
+        font-size: 1rem;
         transition: transform 0.2s ease, background-color 0.2s ease;
     }
     .play-btn-circle:hover {
         transform: scale(1.1);
         background-color: #e67512;
+    }
+    
+    .video-content {
+        padding: 10px;
+        background-color: #fff;
+    }
+    
+    .video-title {
+        font-size: 0.9rem;
+        line-height: 1.3;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+        height: 2.6rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    
+    .video-meta {
+        font-size: 0.8rem;
+        color: #6c757d;
     }
     
     .video-duration {

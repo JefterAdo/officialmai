@@ -72,7 +72,7 @@
         <div class="gallery-grid">
             @foreach($gallery->images as $image)
                 <div class="gallery-item">
-                    <img src="{{ asset('storage/' . $image->image_path) }}" 
+                    <img src="/storage/{{ $image->image_path }}" 
                          alt="{{ $image->caption ?? $gallery->title }}"
                          class="gallery-image"
                          data-lightbox="gallery"

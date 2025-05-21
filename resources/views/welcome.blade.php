@@ -2,60 +2,15 @@
 
 @section('title', 'Accueil - RHDP')
 
+@php
+    use Illuminate\Support\Facades\Storage;
+    $slides = App\Models\Slide::where('is_active', true)->orderBy('order')->get();
+@endphp
+
 @section('content')
     <!-- Modern Hero Slider Section -->
-    <section id="modernHeroSlider" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000" style="margin-bottom: -5px;">
-        @php
-            $slides = App\Models\Slide::where('is_active', true)->orderBy('order')->get();
-        @endphp
-        
-        <div class="carousel-indicators">
-            @foreach($slides as $index => $slide)
-                <button type="button" data-bs-target="#modernHeroSlider" data-bs-slide-to="{{ $index }}" 
-                    class="{{ $index === 0 ? 'active' : '' }}" 
-                    aria-current="{{ $index === 0 ? 'true' : 'false' }}" 
-                    aria-label="Slide {{ $index + 1 }}">
-                </button>
-            @endforeach
-        </div>
-
-        <div class="carousel-inner">
-            @foreach($slides as $index => $slide)
-                <div class="carousel-item {{ $index === 0 ? 'active' : '' }} slider-item" 
-                    style="background-image: url('{{ asset($slide->image_path) }}');">
-                    <div class="slider-overlay"></div>
-                    <div class="container slider-content-container">
-                        <div class="row justify-content-center text-center">
-                            <div class="col-lg-9 slider-content" data-aos="fade-up">
-                                <h2 class="slider-title">{{ $slide->title }}</h2>
-                                <p class="slider-description">{{ $slide->description }}</p>
-                                @if($slide->button_text)
-                                    <div class="slider-cta-container mt-4">
-                                        <a href="{{ $slide->button_link }}" class="btn btn-primary btn-lg slider-cta">
-                                            {{ $slide->button_text }}
-                                            @if(str_contains($slide->button_text, "J'adhère"))
-                                                <i class="fas fa-user-plus ms-2"></i>
-                                            @else
-                                                <i class="fas fa-info-circle ms-2"></i>
-                                            @endif
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#modernHeroSlider" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#modernHeroSlider" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+    <section style="margin-bottom: -5px;">
+        @include('components.home.slider-alt')
     </section>
 
     <!-- Flash Info Section -->
@@ -104,6 +59,52 @@
             @endpush
         @endif
     @endif
+
+    <!-- Actualités Section -->
+    <section class="content-inner-1 py-5" data-aos="fade-up">
+        <div class="container">
+            <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
+                <h5 class="sub-title text-primary">ACTUALITÉS</h5>
+                <h2>Dernières Nouvelles du Parti</h2>
+            </div>
+            <div class="row">
+                @php
+                    $latestNews = App\Models\News::with('category')
+                        ->where('is_published', true)
+                        ->orderBy('published_at', 'desc')
+                        ->take(3)
+                        ->get();
+                @endphp
+
+                @forelse($latestNews as $article)
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 news-card">
+                        <div class="card-img-top-wrapper">
+                            @if($article->featured_image)
+                                <img src="/storage/{{ $article->featured_image }}" class="card-img-top" alt="{{ $article->title }}">
+                            @else
+                                <img src="{{ asset('images/le_RHDP_Côte_d_Ivoire.png') }}" class="card-img-top" alt="Image par défaut">
+                            @endif
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ $article->title }}</h5>
+                            <p class="card-text text-muted small">{{ $article->published_at->locale('fr')->isoFormat('LL') }}</p>
+                            <p class="card-text flex-grow-1">{{ $article->excerpt ?: Str::limit(strip_tags($article->content), 150) }}</p>
+                            <a href="{{ route('actualites.show', $article->slug) }}" class="btn btn-outline-primary mt-auto align-self-start">Lire la suite</a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12 text-center">
+                    <p>Aucune actualité n'est disponible pour le moment.</p>
+                </div>
+                @endforelse
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('actualites.index') }}" class="btn btn-primary">Voir toutes les actualités</a>
+            </div>
+        </div>
+    </section>
 
     <!-- Nos Valeurs Section -->
     <section class="bg-secondary py-5" data-aos="fade-up">
@@ -173,52 +174,6 @@
                         <p class="value-description">Protéger et promouvoir les droits de chaque citoyen.</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Actualités Section -->
-    <section class="content-inner-1 py-5" data-aos="fade-up">
-        <div class="container">
-            <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-                <h5 class="sub-title text-primary">ACTUALITÉS</h5>
-                <h2>Dernières Nouvelles du Parti</h2>
-            </div>
-            <div class="row">
-                @php
-                    $latestNews = App\Models\News::with('category')
-                        ->where('is_published', true)
-                        ->orderBy('published_at', 'desc')
-                        ->take(3)
-                        ->get();
-                @endphp
-
-                @forelse($latestNews as $article)
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100 news-card">
-                        <div class="card-img-top-wrapper">
-                            @if($article->featured_image)
-                                <img src="{{ asset('storage/' . $article->featured_image) }}" class="card-img-top" alt="{{ $article->title }}">
-                            @else
-                                <img src="{{ asset('images/le_RHDP_Côte_d_Ivoire.png') }}" class="card-img-top" alt="Image par défaut">
-                            @endif
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $article->title }}</h5>
-                            <p class="card-text text-muted small">{{ $article->published_at->locale('fr')->isoFormat('LL') }}</p>
-                            <p class="card-text flex-grow-1">{{ $article->excerpt ?: Str::limit(strip_tags($article->content), 150) }}</p>
-                            <a href="{{ route('actualites.show', $article->slug) }}" class="btn btn-outline-primary mt-auto align-self-start">Lire la suite</a>
-                        </div>
-                    </div>
-                </div>
-                @empty
-                <div class="col-12 text-center">
-                    <p>Aucune actualité n'est disponible pour le moment.</p>
-                </div>
-                @endforelse
-            </div>
-            <div class="text-center mt-4">
-                <a href="{{ route('actualites.index') }}" class="btn btn-primary">Voir toutes les actualités</a>
             </div>
         </div>
     </section>
@@ -335,90 +290,93 @@
         </div>
     </section>
 
-    <!-- RHDP en Action Section -->
-    <section class="content-inner bg-light py-5" data-aos="fade-up">
+    <!-- Nos Réalisations Section -->
+    <section class="achievements-section py-5" data-aos="fade-up">
         <div class="container">
-            <div class="row align-items-center" data-aos="fade-up" data-aos-delay="100">
-                <!-- Left Column: Text and Achievement Cards -->
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="section-head mb-4">
-                        <h5 class="sub-title text-primary">LE RHDP EN ACTION</h5>
-                        <h2>Nos Réalisations</h2>
-                    </div>
-                    <p class="mb-4">Découvrez les actions concrètes menées par le RHDP pour le développement de la Côte d'Ivoire et le bien-être de ses citoyens.</p>
-                    <a href="#" class="btn btn-primary mb-5">Voir le Bilan Détaillé</a>
+            <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
+                <h5 class="sub-title text-primary">LE RHDP EN ACTION</h5>
+                <h2>Nos Réalisations</h2>
+                <p class="mt-3">Découvrez les actions concrètes menées par le RHDP pour le développement de la Côte d'Ivoire et le bien-être de ses citoyens.</p>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                @php
+                    $achievements = App\Models\Achievement::where('is_active', true)
+                        ->orderBy('order')
+                        ->get();
+                @endphp
 
-                    <!-- Achievement Cards Grid -->
-                    <div class="row g-3">
-                        @php
-                            $achievements = App\Models\Achievement::where('is_active', true)
-                                ->orderBy('order')
-                                ->get();
-                        @endphp
-
-                        @foreach($achievements as $achievement)
-                            <div class="col-sm-6">
-                                <div class="achievement-card">
-                                    <div class="achievement-icon"><i class="{{ $achievement->icon }}"></i></div>
-                                    <h5 class="achievement-title">{{ $achievement->title }}</h5>
-                                    <p class="achievement-description">{{ $achievement->description }}</p>
-                                </div>
+                @forelse($achievements as $achievement)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="achievement-card h-100 text-center p-4 bg-white shadow-sm rounded">
+                            <div class="achievement-icon mb-3">
+                                <i class="{{ $achievement->icon }}"></i>
                             </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Right Column: Illustration Image -->
-                <div class="col-lg-6 d-none d-lg-flex align-items-stretch">
-                    <div class="achievement-card achievement-image-container p-0">
-                        @if($achievements->first() && $achievements->first()->image)
-                            <img src="{{ asset('storage/' . $achievements->first()->image) }}" alt="Réalisation RHDP" class="achievement-image">
-                        @else
-                            <img src="{{ asset('images/Réalisations/484934009_1195425848609790_7082283896171234641_n.jpg') }}" alt="Réalisation RHDP" class="achievement-image">
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Rassemblement TV Section -->
-    <section class="content-inner py-5" data-aos="fade-up">
-        <div class="container">
-             <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-                <h5 class="sub-title text-primary">RASSEMBLEMENT TV</h5>
-                <h2>Vidéos Récentes</h2>
-            </div>
-            <!-- Video Carousel -->
-            <div class="owl-carousel owl-theme video-carousel">
-                @forelse($latestVideos as $video)
-                 <div class="item video-carousel-item">
-                    <div class="card">
-                            <a href="{{ route('mediatheque.videos.show', $video) }}" class="card-img-top-wrapper">
-                                <img src="{{ $video->thumbnail }}" class="img-fluid" alt="{{ $video->title }}">
-                             <span class="video-play-button"><i class="fas fa-play-circle"></i></span>
-                                @if($video->duration)
-                                    <span class="video-duration">{{ $video->duration }}</span>
-                                @endif
-                        </a>
-                        <div class="card-body">
-                                <h6 class="card-title">{{ Str::limit($video->title, 80) }}</h6>
-                                <small class="text-muted">{{ $video->published_at->format('d/m/Y') }}</small>
+                            <h4 class="achievement-title mb-3">{{ $achievement->title }}</h4>
+                            <p class="achievement-description text-muted">{{ $achievement->description }}</p>
                         </div>
                     </div>
-                </div>
                 @empty
-                 <div class="item video-carousel-item">
-                     <div class="card">
-                            <div class="card-body text-center">
-                                <p>Aucune vidéo disponible pour le moment.</p>
+                    <!-- Réalisations par défaut si aucune n'est définie dans l'admin -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="achievement-card h-100 text-center p-4 bg-white shadow-sm rounded">
+                            <div class="achievement-icon mb-3">
+                                <i class="fas fa-road-bridge"></i>
+                            </div>
+                            <h4 class="achievement-title mb-3">Infrastructures</h4>
+                            <p class="achievement-description text-muted">Routes, ponts, et projets structurants.</p>
                         </div>
                     </div>
-                </div>
-                @endforelse
+                    <div class="col-lg-4 col-md-6">
+                        <div class="achievement-card h-100 text-center p-4 bg-white shadow-sm rounded">
+                            <div class="achievement-icon mb-3">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <h4 class="achievement-title mb-3">Éducation</h4>
+                            <p class="achievement-description text-muted">Construction et réhabilitation d'écoles.</p>
                         </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="achievement-card h-100 text-center p-4 bg-white shadow-sm rounded">
+                            <div class="achievement-icon mb-3">
+                                <i class="fas fa-hospital"></i>
+                            </div>
+                            <h4 class="achievement-title mb-3">Santé</h4>
+                            <p class="achievement-description text-muted">Accès aux soins et couverture maladie.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="achievement-card h-100 text-center p-4 bg-white shadow-sm rounded">
+                            <div class="achievement-icon mb-3">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h4 class="achievement-title mb-3">Économie</h4>
+                            <p class="achievement-description text-muted">Croissance soutenue et investissements.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="achievement-card h-100 text-center p-4 bg-white shadow-sm rounded">
+                            <div class="achievement-icon mb-3">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4 class="achievement-title mb-3">Sécurité</h4>
+                            <p class="achievement-description text-muted">Paix retrouvée et sécurité renforcée.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="achievement-card h-100 text-center p-4 bg-white shadow-sm rounded">
+                            <div class="achievement-icon mb-3">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <h4 class="achievement-title mb-3">Emploi</h4>
+                            <p class="achievement-description text-muted">Programmes pour l'emploi des jeunes.</p>
+                        </div>
+                    </div>
+                @endforelse
+            </div>
+            
             <div class="text-center mt-5">
-                <a href="{{ route('mediatheque.videos') }}" class="btn btn-primary">Voir la médiathèque</a>
+                <a href="#" class="btn btn-primary">Voir le Bilan Détaillé</a>
             </div>
         </div>
     </section>
@@ -435,15 +393,26 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <form class="dzForm">
+                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="dzForm">
+                        @csrf
                         <div class="row g-3 align-items-center">
                             <div class="col-md-8">
-                                <input name="dzEmail" required="required" type="email" class="form-control form-control-lg" placeholder="Entrez votre adresse mail">
+                                <input name="email" required="required" type="email" class="form-control form-control-lg" placeholder="Entrez votre adresse mail">
                             </div>
                             <div class="col-md-4">
                                 <button name="submit" value="Submit" type="submit" class="btn btn-dark btn-lg w-100">S'inscrire</button>
                             </div>
                         </div>
+                        @if(session('success'))
+                            <div class="alert alert-success mt-3">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if($errors->has('email'))
+                            <div class="alert alert-danger mt-3">
+                                {{ $errors->first('email') }}
+                            </div>
+                        @endif
                     </form>
                 </div>
             </div>
@@ -456,6 +425,14 @@
     /* Prevent white flash during loading */
     body {
         background-color: #fd7e14;
+    }
+    
+    /* Style pour les images du slider */
+    .slider-bg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
     }
 
     /* Modern Hero Slider Styles */
@@ -900,10 +877,63 @@
     .value-item:hover .value-icon {
         transform: scale(1.1);
     }
+    
+    /* Styles pour la section Nos Réalisations */
+    .achievements-section {
+        background-color: #f8f9fa;
+        padding: 80px 0;
+    }
+    
+    .achievement-card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 30px 20px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+    
+    .achievement-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .achievement-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #FF8C00;
+        transition: all 0.3s ease;
+        height: 80px;
+        width: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        background-color: rgba(255, 140, 0, 0.1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .achievement-card:hover .achievement-icon {
+        transform: scale(1.1);
+        background-color: rgba(255, 140, 0, 0.2);
+    }
+    
+    .achievement-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .achievement-description {
+        color: #6c757d;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
 </style>
 @endpush
 
 @push('scripts')
-    <!-- Add custom scripts here if needed -->
+    <!-- Script de correction pour le carousel -->
+    <script src="{{ asset('js/carousel-fix.js') }}"></script>
 @endpush
-

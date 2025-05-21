@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-12">
                     @if($page->featured_image)
-                        <img src="{{ asset('storage/' . $page->featured_image) }}" 
+                        <img src="/storage/{{ $page->featured_image }}" 
                              alt="{{ $page->title }}" 
                              class="img-fluid mb-4">
                     @endif
