@@ -13,68 +13,8 @@ use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-// Routes d'authentification
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Route spécifique pour le formulaire de connexion admin
-Route::post('admin/login', function(Illuminate\Http\Request $request) {
-    $data = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|string',
-        'remember' => 'nullable|boolean',
-    ]);
-    
-    if (! auth()->attempt([
-        'email' => $data['email'], 
-        'password' => $data['password']
-    ], $data['remember'] ?? false)) {
-        throw ValidationException::withMessages([
-            'email' => __('auth.failed'),
-        ]);
-    }
-    
-    session()->regenerate();
-    
-    return redirect()->intended('/admin');
-})->middleware(['web']);
-
-// Routes explicites pour Filament - Définition directe de la route de login
-Route::get('admin/auth/login', function() {
-    // Redirection directe vers la page de connexion admin
-    // Au lieu de rediriger vers une autre route, on va afficher directement un formulaire de connexion
-    return view('filament.pages.auth.login-redirect');
-})->name('filament.admin.auth.login');
-
-// Modification de la route admin/login pour éviter les redirections en boucle
-Route::get('admin/login', function() {
-    // Si l'utilisateur est déjà connecté, on le redirige vers le dashboard admin
-    if (auth()->check()) {
-        return redirect('/admin');
-    }
-    
-    // Sinon, on affiche directement la page de login
-    return view('filament.pages.auth.login-redirect');
-})->name('admin.login');
-
-// Route de test pour diagnostiquer les problèmes d'authentification Filament
-Route::get('/test-filament-auth', function() {
-    return [
-        'auth_user' => auth()->user(),
-        'auth_check' => auth()->check(),
-        'registered_routes' => collect(Route::getRoutes())->map(function($route) {
-            return [
-                'uri' => $route->uri(),
-                'name' => $route->getName(),
-                'methods' => $route->methods(),
-            ];
-        })->filter(function($route) {
-            return str_contains($route['name'] ?? '', 'filament') || 
-                   str_contains($route['uri'], 'admin') ||
-                   str_contains($route['uri'], 'login');
-        })->values(),
-    ];
-});
+// Les routes d'authentification pour le panel admin sont maintenant gérées par Filament
+// via App\Filament\Pages\Auth\Login.php et la configuration dans AdminPanelProvider.
 
 // Application des middlewares globaux
 Route::middleware(['web'])->group(function () {
