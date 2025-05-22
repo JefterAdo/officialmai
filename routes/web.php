@@ -10,6 +10,7 @@ use App\Http\Controllers\SpeechController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Mediatheque\PhotoController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DocumentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -76,6 +77,7 @@ Route::middleware(['web'])->group(function () {
         Route::get('/audio', function () {
             return view('mediatheque.audio');
         })->name('audio');
+        Route::get('/textes', [\App\Http\Controllers\Mediatheque\OfficialTextsController::class, 'index'])->name('textes');
     });
 
     // Routes pour la newsletter
@@ -95,6 +97,12 @@ Route::middleware(['web'])->group(function () {
     Route::get('/politique-de-confidentialite', function () {
         return view('pages.privacy');
     })->name('privacy');
+
+    // Routes pour les documents
+    Route::prefix('documents')->name('documents.')->group(function () {
+        Route::get('{slug}/download', [DocumentController::class, 'download'])->name('download');
+        Route::get('{slug}/view', [DocumentController::class, 'view'])->name('view');
+    });
 
     // Routes pour les pages (à placer en dernier car elles sont génériques)
     Route::get('/', [PageController::class, 'home'])->name('home');

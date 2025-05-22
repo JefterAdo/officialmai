@@ -331,5 +331,7 @@
     </div>
 
     @include('parti._organisation_stats')
+
+
 </main>
 @endsection

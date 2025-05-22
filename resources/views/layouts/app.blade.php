@@ -223,6 +223,7 @@
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.videos') }}">Vidéos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.discours') }}">Discours</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.audio') }}">Audio</a></li>
+                                <li><a class="dropdown-item" href="{{ route('mediatheque.textes') }}">Textes Officiels</a></li>
                             </ul>
                         </li>
                         {{-- Moved button to the end using ms-auto on the li --}}

@@ -48,28 +48,3 @@
         </div>
     </div>
 </section>
-
-<!-- Textes de Référence -->
-<section class="org-section mt-5">
-    <h2 class="text-2xl font-semibold text-primary mb-4 text-center">Textes de Référence</h2>
-    <div class="text-list max-w-3xl mx-auto">
-        <div class="text-list-item">
-            <div>
-                <div class="doc-title">Statuts du RHDP</div>
-                <div class="doc-description">Document définissant la structure, les objectifs et les règles fondamentales du parti.</div>
-            </div>
-            <a href="#" class="btn btn-outline-primary download-link" target="_blank" rel="noopener noreferrer">
-                <i class="fas fa-file-pdf"></i>Télécharger
-            </a>
-        </div>
-        <div class="text-list-item">
-            <div>
-                <div class="doc-title">Règlement Intérieur</div>
-                <div class="doc-description">Détaille les modalités de fonctionnement interne des différentes instances.</div>
-            </div>
-            <a href="#" class="btn btn-outline-primary download-link" target="_blank" rel="noopener noreferrer">
-                <i class="fas fa-file-pdf"></i>Télécharger
-            </a>
-        </div>
-    </div>
-</section> 

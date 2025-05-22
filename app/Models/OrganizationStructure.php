@@ -33,27 +33,42 @@ class OrganizationStructure extends Model
             return asset('images/default-member.jpg');
         }
 
-        // Si l'image commence par 'images/', c'est une ancienne image
-        if (str_starts_with($this->image, 'images/')) {
-            return asset($this->image);
-        }
-
         // Si l'image est une URL complète
         if (filter_var($this->image, FILTER_VALIDATE_URL)) {
             return $this->image;
         }
 
-        // Pour les images dans le stockage public
-        if (Storage::disk('public')->exists($this->image)) {
-            return Storage::disk('public')->url($this->image);
+        // Nettoyer le chemin
+        $path = ltrim($this->image, '/');
+        
+        // Vérifier si le fichier existe directement dans le dossier public
+        if (file_exists(public_path($path))) {
+            return asset($path);
+        }
+        
+        // Vérifier si le fichier existe dans le stockage public
+        if (Storage::disk('public')->exists($path)) {
+            return asset('storage/' . $path);
+        }
+        
+        // Essayer avec le nom du groupe
+        $groupPath = 'membres/' . $this->group . '/' . basename($path);
+        if (Storage::disk('public')->exists($groupPath)) {
+            return asset('storage/' . $groupPath);
+        }
+        
+        // Essayer avec le nom en majuscules
+        $uppercasePath = 'membres/' . $this->group . '/' . strtoupper(basename($path));
+        if (Storage::disk('public')->exists($uppercasePath)) {
+            return asset('storage/' . $uppercasePath);
         }
 
-        // Pour les images dans le dossier membres
-        if (Storage::disk('public')->exists('membres/' . $this->image)) {
-            return Storage::disk('public')->url('membres/' . $this->image);
+        // Pour la rétrocompatibilité avec l'ancienne structure
+        if (str_starts_with($this->image, 'images/')) {
+            return asset($this->image);
         }
 
-        // Si l'image n'est pas trouvée, retourner l'image par défaut
+        // Si toujours pas trouvé, retourner l'image par défaut
         return asset('images/default-member.jpg');
     }
 

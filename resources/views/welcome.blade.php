@@ -15,50 +15,78 @@
 
     <!-- Flash Info Section -->
     @php
-        $activeFlashInfos = App\Models\FlashInfo::where('is_active', true)->orderBy('display_order')->get();
+        $activeFlashInfos = App\Models\FlashInfo::where('is_active', true)->orderBy('created_at', 'desc')->get();
         $displayMode = $activeFlashInfos->first()?->display_mode ?? 'static';
     @endphp
     
-    @if($activeFlashInfos->isNotEmpty())
-        <section class="bg-orange" style="margin-top: -5px;">
-            <div class="container">
-                <div class="flash-info-slider flash-info-{{ $displayMode }}">
-                    <div class="flash-messages">
+@if($activeFlashInfos->isNotEmpty())
+    <section class="bg-orange" style="margin-top: -5px;">
+        <div class="container">
+            <div class="flash-info-slider flash-info-{{ $displayMode }}">
+                @if($displayMode === 'fade')
+                    <div class="flash-messages-fade-container"> {{-- Container for fade messages --}}
                         @foreach($activeFlashInfos as $index => $flashInfo)
-                            <div class="flash-message-item @if($displayMode === 'fade' && $index === 0) active @endif">
-                                <div class="d-flex align-items-center justify-content-start">
+                            <div class="flash-message-item @if($index === 0) active @endif"> {{-- Class for individual fade messages --}}
+                                <div class="d-flex align-items-center justify-content-start"> {{-- For alignment --}}
                                     <span class="flash-info-label me-4 text-white">
                                         <i class="fas fa-bullhorn"></i>
                                         <strong>Flash Info</strong>
                                     </span>
-                                    <span class="flash-info-text text-white">{{ $flashInfo->message }}</span>
+                                    <span class="flash-info-content-fade text-white">{{ $flashInfo->message }}</span> {{-- Content for fade --}}
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                </div>
+                @else {{-- Handles 'marquee' or any other non-fade mode --}}
+                    <div class="flash-info-marquee-wrapper d-flex align-items-center"> {{-- Flex container for label + text area --}}
+                        <span class="flash-info-label flex-shrink-0 me-2 text-white"> {{-- Label, doesn't shrink --}}
+                            <i class="fas fa-bullhorn"></i>
+                            <strong>Flash Info</strong>
+                        </span>
+                        <div class="flash-info-text"> {{-- Static wrapper for animated text, has overflow:hidden from CSS --}}
+                            <span class="flash-info-text-inner-animated"> {{-- Actual animated text from CSS --}}
+                                @foreach($activeFlashInfos as $index => $flashInfo)
+                                    {{ $flashInfo->message }}@if(!$loop->last)&nbsp;|&nbsp;@endif
+                                @endforeach
+                            </span>
+                        </div>
+                    </div>
+                @endif
             </div>
-        </section>
+        </div>
+    </section>
 
-        @if($displayMode === 'fade')
-            @push('scripts')
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const messages = document.querySelectorAll('.flash-message-item');
-                    let currentIndex = 0;
+    {{-- This script block is specifically for the 'fade' displayMode --}}
+    @if($displayMode === 'fade')
+        @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Ensure we only operate if fade elements exist
+                const messages = document.querySelectorAll('.flash-info-slider .flash-message-item');
+                if (messages.length === 0) return; // Exit if no messages to fade
 
-                    function showNextMessage() {
-                        messages.forEach(msg => msg.classList.remove('active'));
-                        messages[currentIndex].classList.add('active');
-                        currentIndex = (currentIndex + 1) % messages.length;
-                    }
+                let currentIndex = 0;
+                // Ensure the first message is active if not already
+                if (messages.length > 0 && !messages[currentIndex].classList.contains('active')) {
+                    messages[currentIndex].classList.add('active');
+                }
 
-                    setInterval(showNextMessage, 5000);
-                });
-            </script>
-            @endpush
-        @endif
+                function showNextMessage() {
+                    if (messages.length < 2) return; // No need to cycle if less than 2 messages
+                    messages[currentIndex].classList.remove('active');
+                    currentIndex = (currentIndex + 1) % messages.length;
+                    messages[currentIndex].classList.add('active');
+                }
+
+                // Only set interval if there's more than one message to cycle through
+                if (messages.length > 1) {
+                   setInterval(showNextMessage, 5000); // Default 5s, can be adjusted
+                }
+            });
+        </script>
+        @endpush
     @endif
+@endif
 
     <!-- Actualités Section -->
     <section class="content-inner-1 py-5" data-aos="fade-up">
@@ -697,6 +725,7 @@
         align-items: center;
         flex-wrap: nowrap; /* Prevent wrapping for now */
         white-space: nowrap; /* Prevent wrapping for now */
+        overflow: hidden; /* Assure que le texte qui sort est caché */
     }
     .flash-info-label {
         font-weight: 600; /* Bolder label */
@@ -709,21 +738,35 @@
         margin-right: 0.5rem; /* Space after icon */
         color: #FFEB3B; /* Example: Yellow icon color */
     }
+    /* Styles pour le conteneur wrapper */
     .flash-info-text {
-        font-weight: 500;
-        margin-left: 1rem; /* Space between label and text */
-        /* Add animation here for marquee if needed */
-        /* animation: marquee 20s linear infinite; */
+        font-weight: 500; /* La graisse de la police peut rester sur le wrapper */
+        margin-left: 1rem; /* Espace après le label "FLASH INFO" */
+        display: inline-block; /* Se comporte comme un bloc mais s'insère dans le flux inline */
+        overflow: hidden; /* TRÈS IMPORTANT: ceci va clipper l'enfant animé */
+        vertical-align: middle; /* Pour un meilleur alignement vertical avec le label */
+        position: relative; /* Bon pour contenir des enfants transformés/animés */
+        /* flex-grow: 1; /* Optionnel: si vous voulez qu'il prenne toute la place restante */
+        /* min-width: 0; /* Optionnel: avec flex-grow pour gérer le débordement */
     }
 
-    /* Optional Marquee Animation */
-    /* @keyframes marquee {
-        0%   { transform: translateX(100%); }
-        100% { transform: translateX(-100%); }
-    } */
+    /* Styles pour le texte animé réel à l'intérieur du wrapper */
+    .flash-info-text-inner-animated {
+        display: inline-block; /* Nécessaire pour que la transformation fonctionne et que la largeur s'adapte au contenu */
+        white-space: nowrap; /* Garde tous les messages sur une seule ligne */
+        animation: marquee 35s linear infinite; /* L'animation de défilement */
+    }
+
+    /* Marquee Animation */
+    @keyframes marquee {
+        0%   { transform: translateX(0); }   /* Commence visible, juste après le label */
+        100% { transform: translateX(-100%); } /* Se déplace de sa propre largeur vers la gauche */
+    }
     /* Ensure container allows overflow for marquee */
-    /* .flash-info-bar .container { overflow: hidden; } */
-    /* .flash-info-text { display: inline-block; padding-left: 100%; } */
+    .flash-info-bar .container { 
+        /* overflow: hidden; /* Optionnel: si vous voulez clipper strictement au conteneur */ 
+    }
+    /* .flash-info-text { display: inline-block; padding-left: 100%; } */ /* Déjà intégré ci-dessus */
 
 
     /* Other existing styles */
