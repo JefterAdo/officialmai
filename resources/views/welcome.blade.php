@@ -798,7 +798,7 @@
     }
     .video-btn:hover {
         background: rgba(0,0,0,0.8);
-        color: #0d6efd; /* Bootstrap primary */
+        color: #FF8C00; /* Changed from Bootstrap primary to orange */
     }
     .card-img-top img {
         aspect-ratio: 16 / 9;

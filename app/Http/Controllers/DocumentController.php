@@ -21,10 +21,24 @@ class DocumentController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        $filePath = storage_path('app/public/' . $document->getRawOriginal('file_path'));
+        $originalPath = $document->getRawOriginal('file_path');
+        
+        // Si le chemin est déjà une URL, rediriger vers cette URL
+        if (filter_var($originalPath, FILTER_VALIDATE_URL)) {
+            return redirect($originalPath);
+        }
+        
+        // Sinon, traiter comme un chemin de fichier local
+        $filePath = storage_path('app/public/' . $originalPath);
         
         if (!file_exists($filePath)) {
-            abort(404, 'Le fichier demandé est introuvable.');
+            // Essayer de construire le chemin à partir du nom du fichier
+            $fileName = basename($originalPath);
+            $filePath = storage_path('app/public/documents/' . $fileName);
+            
+            if (!file_exists($filePath)) {
+                abort(404, 'Le fichier demandé est introuvable.');
+            }
         }
 
         $fileName = Str::slug($document->title) . '.' . pathinfo($filePath, PATHINFO_EXTENSION);
@@ -44,10 +58,24 @@ class DocumentController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
             
-        $filePath = storage_path('app/public/' . $document->getRawOriginal('file_path'));
+        $originalPath = $document->getRawOriginal('file_path');
+        
+        // Si le chemin est déjà une URL, rediriger vers cette URL
+        if (filter_var($originalPath, FILTER_VALIDATE_URL)) {
+            return redirect($originalPath);
+        }
+        
+        // Sinon, traiter comme un chemin de fichier local
+        $filePath = storage_path('app/public/' . $originalPath);
         
         if (!file_exists($filePath)) {
-            abort(404, 'Le fichier demandé est introuvable.');
+            // Essayer de construire le chemin à partir du nom du fichier
+            $fileName = basename($originalPath);
+            $filePath = storage_path('app/public/documents/' . $fileName);
+            
+            if (!file_exists($filePath)) {
+                abort(404, 'Le fichier demandé est introuvable.');
+            }
         }
 
         return response()->file($filePath, [
