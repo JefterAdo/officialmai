@@ -22,6 +22,9 @@ Route::middleware(['web'])->group(function () {
     // Routes pour les communiqués (à placer avant les routes génériques)
     Route::get('/actualites/communiques', [CommuniqueController::class, 'index'])->name('actualites.communiques');
     Route::get('/actualites/communiques/{slug}', [CommuniqueController::class, 'show'])->name('actualites.communiques.show');
+    Route::delete('/communiques/{communique}/attachments/{attachment}', [CommuniqueController::class, 'deleteAttachment'])
+        ->name('communiques.attachments.destroy')
+        ->middleware(['auth']);
 
     // Routes pour les actualités
     Route::get('/actualites', [NewsController::class, 'index'])->name('actualites.index');
@@ -68,6 +71,8 @@ Route::middleware(['web'])->group(function () {
 
     // Routes pour la Médiathèque
     Route::prefix('mediatheque')->name('mediatheque.')->group(function () {
+        Route::get('/communiques', [CommuniqueController::class, 'index'])->name('communiques');
+        Route::get('/communiques/{slug}', [CommuniqueController::class, 'show'])->name('communiques.show');
         Route::get('/videos', [VideoController::class, 'index'])->name('videos');
         Route::get('/videos/{video}', [VideoController::class, 'show'])->name('videos.show');
         Route::get('/photos', [PhotoController::class, 'index'])->name('photos');

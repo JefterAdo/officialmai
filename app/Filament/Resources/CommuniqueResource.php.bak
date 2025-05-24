@@ -4,15 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CommuniqueResource\Pages;
 use App\Models\Communique;
-use App\Models\CommuniqueAttachment;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\TemporaryUploadedFile;
+use Livewire\TemporaryUploadedFile;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -78,60 +77,21 @@ class CommuniqueResource extends Resource
                             ->extraAttributes(['style' => 'min-height: 24rem;'])
                             ->label('Contenu détaillé'),
 
-                        // Section pour afficher les pièces jointes existantes
-                        Forms\Components\Section::make('Pièces jointes existantes')
-                            ->schema([
-                                Forms\Components\Repeater::make('existing_attachments')
-                                    ->label('')
-                                    ->schema(function ($record) {
-                                        $attachments = [];
-                                        
-                                        // Vérifier si l'enregistrement existe avant d'accéder à ses pièces jointes
-                                        if ($record && $record->exists) {
-                                            $attachments = $record->attachments->map(function ($attachment) {
-                                                return [
-                                                    'id' => $attachment->id,
-                                                    'name' => $attachment->original_name,
-                                                    'size' => $attachment->human_readable_size,
-                                                    'url' => $attachment->full_url,
-                                                ];
-                                            })->toArray();
-                                        }
-                                        
-                                        return [
-                                            Forms\Components\View::make('filament.forms.components.attachments-list')
-                                                ->viewData(['attachments' => $attachments])
-                                        ];
-                                    })
-                                    ->itemLabel(fn (array $state): ?string => $state['name'] ?? null)
-                                    ->hidden(fn ($record) => $record === null || $record->attachments->isEmpty())
-                                    ->deletable(false)
-                                    ->addable(false)
-                                    ->collapsible()
-                                    ->columns(1),
-                            ])
-                            ->hiddenOn('create'),
-                            
-                        // Section pour ajouter de nouvelles pièces jointes
-                        Forms\Components\Fieldset::make('Ajouter des fichiers')
+                        Forms\Components\(new Forms\Components\Fieldset('Fichiers du communiqué'))
                             ->schema([
                                 Forms\Components\FileUpload::make('attachments')
                                     ->label('')
                                     ->multiple()
                                     ->maxFiles(4)
                                     ->directory('communiques/documents')
-                                    // Utiliser une validation personnalisée pour accepter les PDF et images
                                     ->acceptedFileTypes([
                                         'application/pdf',
                                         'image/jpeg',
                                         'image/png',
                                         'image/gif',
-                                        'image/webp',
-                                        'image/svg+xml',
                                         'application/msword',
                                         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                                     ])
-                                    // Ne pas appeler image() car cela écraserait les types acceptés
                                     ->downloadable()
                                     ->openable()
                                     ->maxSize(10240) // 10MB par fichier
@@ -139,42 +99,13 @@ class CommuniqueResource extends Resource
                                     ->reorderable()
                                     ->appendFiles()
                                     ->preserveFilenames()
-                                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
-                                        // Vérifier le type MIME du fichier
-                                        $mimeType = $file->getMimeType();
-                                        $originalName = $file->getClientOriginalName();
+                                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, $get, $set) {
+                                        $path = $file->store('communiques/documents', 'public');
                                         
-                                        // Journaliser les informations sur le fichier
-                                        \Log::info('Tentative de téléchargement de fichier', [
-                                            'nom' => $originalName,
-                                            'type' => $mimeType,
-                                            'taille' => $file->getSize(),
-                                        ]);
+                                        // La pièce jointe sera sauvegardée après la création du communiqué
+                                        // via la méthode afterCreate du CreateCommunique
                                         
-                                        try {
-                                            // Télécharger le fichier
-                                            $path = $file->store('communiques/documents', 'public');
-                                            
-                                            // Vérifier si le fichier a été correctement enregistré
-                                            if (!Storage::disk('public')->exists($path)) {
-                                                throw new \Exception("Le fichier n'a pas pu être enregistré sur le disque");
-                                            }
-                                            
-                                            \Log::info('Fichier téléchargé avec succès', [
-                                                'chemin' => $path,
-                                                'taille' => Storage::disk('public')->size($path),
-                                            ]);
-                                            
-                                            return $originalName;
-                                        } catch (\Exception $e) {
-                                            \Log::error('Erreur lors du téléchargement du fichier', [
-                                                'erreur' => $e->getMessage(),
-                                                'fichier' => $originalName,
-                                                'trace' => $e->getTraceAsString(),
-                                            ]);
-                                            
-                                            throw $e;
-                                        }
+                                        return $file->getClientOriginalName();
                                     })
                             ])
                             ->columns(1),

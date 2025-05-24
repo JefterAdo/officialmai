@@ -219,6 +219,7 @@
                                 Médiathèque
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="mediaDropdown">
+                                <li><a class="dropdown-item" href="{{ route('mediatheque.communiques') }}">Communiqués</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.textes') }}">Textes Officiels</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.photos') }}">Photos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.videos') }}">Vidéos</a></li>

@@ -47,6 +47,7 @@ return [
         App\Providers\UrlGenerationServiceProvider::class,
         App\Providers\LivewireServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
+        App\Providers\TestingServiceProvider::class,
         // Intervention\Image\ImageServiceProvider::class,
         CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
     ],

@@ -29,5 +29,13 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="APP_CONFIG_CACHE" value="bootstrap/cache/config-testing.php"/>
+        <env name="APP_SERVICES_CACHE" value="bootstrap/cache/services-testing.php"/>
+        <env name="APP_PACKAGES_CACHE" value="bootstrap/cache/packages-testing.php"/>
+        <env name="APP_ROUTES_CACHE" value="bootstrap/cache/routes-testing.php"/>
+        <env name="VIEW_COMPILED_PATH" value="bootstrap/cache/views"/>
+        <env name="APP_DEBUG" value="true"/>
+        <env name="VIEW_CACHE_ENABLED" value="false"/>
+        <server name="APP_SERVICE_PROVIDER" value="Tests\\Unit\\Providers\\TestServiceProvider"/>
     </php>
 </phpunit>
