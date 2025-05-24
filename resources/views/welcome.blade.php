@@ -472,7 +472,7 @@
 <style>
     /* Prevent white flash during loading */
     body {
-        background-color: #fd7e14;
+        background-color: #f28c03;
     }
     
     /* Style pour les images du slider */
@@ -617,7 +617,7 @@
     }
 
     .hero-subtitle {
-        color: #FF8C00 !important; /* Orange color, !important to override potential conflicts */
+        color: #f28c03; /* Orange color, !important to override potential conflicts */
         font-size: 1.1em;
         font-weight: 600;
         text-transform: uppercase;
@@ -662,14 +662,14 @@
     }
 
     .hero-btn-primary {
-        background-color: #FF8C00; /* Orange */
+        background-color: #f28c03; /* Orange RHDP */
         color: #FFFFFF;
         border: none;
     }
 
     .hero-btn-primary:hover,
     .hero-btn-primary:focus {
-        background-color: #d97d02; /* Darker orange */
+        background-color: #e67e00; /* Darker orange RHDP */
         color: #FFFFFF;
         transform: scale(1.03);
         filter: brightness(110%);
@@ -818,7 +818,7 @@
     }
     .video-btn:hover {
         background: rgba(0,0,0,0.8);
-        color: #FF8C00; /* Changed from Bootstrap primary to orange */
+        color: #f28c03; /* Orange RHDP */
     }
     .card-img-top img {
         aspect-ratio: 16 / 9;
@@ -842,13 +842,13 @@
         padding: 2rem;
         border-radius: 15px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border: 2px solid #FF8C00;
+        border: 2px solid #f28c03;
     }
     .president-image-wrapper {
         width: 200px;
         height: 200px;
         margin: 0 auto;
-        border: 3px solid #FF8C00;
+        border: 3px solid #f28c03;
         border-radius: 50%;
         overflow: hidden;
         padding: 5px;
@@ -861,7 +861,7 @@
     .president-name {
         font-size: 2rem;
         font-weight: 700;
-        color: #FF8C00;
+        color: #f28c03;
         margin-bottom: 0.5rem;
     }
     .president-title {
@@ -882,7 +882,7 @@
         width: 150px;
         height: 150px;
         margin: 0 auto;
-        border: 2px solid #FF8C00;
+        border: 2px solid #f28c03;
         border-radius: 50%;
         overflow: hidden;
         padding: 3px;
@@ -904,7 +904,7 @@
 
     /* Styles pour la section Nos Valeurs */
     .values-section {
-        background-color: #FF8C00 !important;
+        background-color: #f28c03 !important;
         padding: 80px 0;
     }
 
