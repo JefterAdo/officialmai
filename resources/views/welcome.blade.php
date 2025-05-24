@@ -12,18 +12,39 @@
     @include('components.home.slider-alt')
 
     <!-- Section Flash Info modernisée -->
-    <section class="flash-info-bar position-relative" style="background: #f28c03; border-radius: 1rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin: 2rem 0; overflow:hidden;">
-        <div class="container py-2 d-flex align-items-center justify-content-center position-relative" style="min-height:48px;">
-            <span class="flash-info-label d-inline-flex align-items-center px-3 py-1 me-3 position-absolute start-0 top-50 translate-middle-y flash-info-mask" style="background:#f28c03; color:#fff; font-weight:700; border-radius:2rem; font-size:1.1rem; letter-spacing:0.05em; z-index:2; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-                <i class="fas fa-bullhorn me-2" style="font-size:1.3em; color:#fff200;"></i> Flash Info
-            </span>
-            <div class="w-100" style="overflow:hidden;">
-                <span class="flash-info-text-inner-animated d-inline-block" style="padding-left:120px; will-change: transform; white-space:nowrap;">
-                    Flash info 1 <span class="mx-3" style="font-weight:bold;">—</span> Flash info 2 <span class="mx-3" style="font-weight:bold;">—</span> Flash info 3
+    @if(isset($flashInfos) && $flashInfos->isNotEmpty())
+        <section class="flash-info-bar position-relative" style="background: #f28c03; border-radius: 1rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin: 2rem 0; overflow:hidden;">
+            <div class="container py-2 d-flex align-items-center justify-content-center position-relative" style="min-height:48px;">
+                <span class="flash-info-label d-inline-flex align-items-center px-3 py-1 me-3 position-absolute start-0 top-50 translate-middle-y flash-info-mask" style="background:#f28c03; color:#fff; font-weight:700; border-radius:2rem; font-size:1.1rem; letter-spacing:0.05em; z-index:2; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                    <i class="fas fa-bullhorn me-2" style="font-size:1.3em; color:#fff200;"></i> Flash Info
                 </span>
+                <div class="w-100" style="overflow:hidden; position: relative;">
+                    <div style="width: 100%; overflow: hidden;">
+                        <div class="flash-info-wrapper" style="display: inline-block; white-space: nowrap; padding: 0 20px;">
+                            <!-- Premier passage du texte -->
+                            <span class="flash-info-text-inner-animated d-inline-block">
+                                @foreach($flashInfos as $index => $flashInfo)
+                                    {{ $flashInfo->message }}
+                                    @if(!$loop->last)
+                                        <span class="mx-3" style="font-weight:bold;">—</span>
+                                    @endif
+                                @endforeach
+                            </span>
+                            <!-- Dupliquer le contenu pour une transition fluide -->
+                            <span class="flash-info-text-inner-animated d-inline-block">
+                                @foreach($flashInfos as $index => $flashInfo)
+                                    {{ $flashInfo->message }}
+                                    @if(!$loop->last)
+                                        <span class="mx-3" style="font-weight:bold;">—</span>
+                                    @endif
+                                @endforeach
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
     <!-- Actualités Section -->
     <section class="content-inner-1 py-5" data-aos="fade-up">
@@ -929,6 +950,66 @@
 @endpush
 
 @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashWrapper = document.querySelector('.flash-info-wrapper');
+            const flashText = document.querySelector('.flash-info-text-inner-animated');
+            
+            if (!flashWrapper || !flashText) return;
+            
+            // Fonction pour gérer l'animation de défilement
+            function animateFlashInfo() {
+                const container = flashWrapper.parentElement.parentElement;
+                const containerWidth = container.offsetWidth;
+                const textWidth = flashText.offsetWidth;
+                
+                // Si le texte est plus large que le conteneur, on active le défilement
+                if (textWidth > containerWidth) {
+                    const duration = (textWidth / 30) * 1000; // Vitesse de défilement (px/s)
+                    
+                    // Réinitialiser la position
+                    flashWrapper.style.transition = 'none';
+                    flashWrapper.style.transform = 'translateX(0)';
+                    
+                    // Forcer un recalcul du style pour appliquer la réinitialisation
+                    void flashWrapper.offsetWidth;
+                    
+                    // Démarrer l'animation
+                    flashWrapper.style.transition = `transform ${duration}ms linear`;
+                    flashWrapper.style.transform = `translateX(-${textWidth}px)`;
+                    
+                    // Réinitialiser l'animation une fois terminée
+                    setTimeout(() => {
+                        // Réinitialiser sans transition pour éviter les clignotements
+                        flashWrapper.style.transition = 'none';
+                        flashWrapper.style.transform = 'translateX(0)';
+                        // Démarrer une nouvelle animation après un court délai
+                        setTimeout(animateFlashInfo, 20);
+                    }, duration);
+                }
+            }
+            
+            // Attendre que les polices soient chargées avant de calculer les dimensions
+            document.fonts.ready.then(() => {
+                // Démarrer l'animation après un court délai
+                setTimeout(animateFlashInfo, 1000);
+                
+                // Redémarrer l'animation lors du redimensionnement de la fenêtre
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
+                        // Réinitialiser l'animation
+                        flashWrapper.style.transition = 'none';
+                        flashWrapper.style.transform = 'translateX(0)';
+                        // Redémarrer après un court délai
+                        setTimeout(animateFlashInfo, 100);
+                    }, 250);
+                });
+            });
+        });
+    </script>
+    
     <!-- Script de correction pour le carousel -->
     <script src="{{ asset('js/carousel-fix.js') }}"></script>
     <script>

@@ -15,9 +15,11 @@ use App\Models\Slide;
 use App\Observers\SlideObserver;
 use App\Providers\FilamentServiceProvider;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use League\Flysystem\Filesystem;
 use Cloudinary\Cloudinary;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryStorageAdapter;
+use App\Http\View\Composers\FlashInfoComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,6 +51,9 @@ class AppServiceProvider extends ServiceProvider
         }
 
         $performanceMonitor = app(PerformanceMonitor::class);
+        
+        // Enregistrer le View Composer pour les flash infos
+        View::composer('*', FlashInfoComposer::class);
         $performanceMonitor->startMeasure();
 
         // Force HTTPS in production
