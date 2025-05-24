@@ -95,20 +95,21 @@
                                 <span class="mx-2">•</span>
                                 <span>
                                     <i class="far fa-clock me-1"></i>
-                                    3 min de lecture
+                                    {{ $article->formatted_reading_time }}
                                 </span>
                             </div>
                             <h5 class="card-title mb-1" style="font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin: 0; padding: 0; min-height: 2.8em;">
                                 @php
                                     $maxWords = 18;
-                                    $title = html_entity_decode($article->title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                                    $words = str_word_count($title, 1, 'àâäéèêëîïôöùûüÿçæœÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇÆŒ"\'');
+                                    $title = $article->clean_title;
+                                    // Découpage du titre en mots en préservant les guillemets et autres caractères spéciaux
+                                    $words = preg_split('/\s+/u', $title);
                                     $truncated = implode(' ', array_slice($words, 0, $maxWords));
                                     if (count($words) > $maxWords) {
                                         $truncated .= '...';
                                     }
                                 @endphp
-                                {{ $truncated }}
+                                {!! htmlspecialchars($truncated, ENT_QUOTES, 'UTF-8', false) !!}
                             </h5>
                             <p class="text-muted small mb-2" style="font-size: 0.85rem; line-height: 1.4;">
                                 @php

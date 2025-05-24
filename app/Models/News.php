@@ -37,4 +37,37 @@ class News extends Model
     {
         return $this->morphMany(Media::class, 'mediable');
     }
+
+    /**
+     * Calcule le temps de lecture estimé en minutes
+     * Basé sur une vitesse de lecture moyenne de 200 mots par minute
+     *
+     * @return int
+     */
+    public function getReadingTimeAttribute(): int
+    {
+        $wordCount = str_word_count(strip_tags($this->content));
+        return max(1, round($wordCount / 200)); // Au moins 1 minute
+    }
+
+    /**
+     * Nettoie le titre pour l'affichage
+     *
+     * @return string
+     */
+    public function getCleanTitleAttribute(): string
+    {
+        return html_entity_decode($this->title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    }
+
+    /**
+     * Formatte le temps de lecture pour l'affichage
+     *
+     * @return string
+     */
+    public function getFormattedReadingTimeAttribute(): string
+    {
+        $minutes = $this->getReadingTimeAttribute();
+        return $minutes . ' min' . ($minutes > 1 ? 's' : '') . ' de lecture';
+    }
 } 
