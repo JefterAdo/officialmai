@@ -155,7 +155,7 @@
     </section>
 
     <!-- Nos Valeurs Section -->
-    <section class="bg-secondary py-5" data-aos="fade-up">
+    <section class="py-5" style="background-color: #f28c03;" data-aos="fade-up">
         <div class="container">
             <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
                 <h5 class="sub-title text-white">NOS VALEURS</h5>
