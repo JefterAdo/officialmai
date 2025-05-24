@@ -50,7 +50,7 @@
     <section class="content-inner-1 py-5" data-aos="fade-up">
         <div class="container">
             <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-                <h5 class="sub-title text-primary">ACTUALITÉS</h5>
+                <h5 class="sub-title" style="color: #f28c03;">ACTUALITÉS</h5>
                 <h2>Dernières Nouvelles du Parti</h2>
             </div>
             <div class="row">
@@ -65,29 +65,77 @@
                 @forelse($latestNews as $article)
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100 news-card">
-                        <div class="card-img-top-wrapper">
+                        <div class="card-img-top-wrapper position-relative" style="height: 200px; overflow: hidden;">
                             @if($article->featured_image)
-                                <img src="/storage/{{ $article->featured_image }}" class="card-img-top" alt="{{ $article->title }}">
+                                <img src="/storage/{{ $article->featured_image }}" 
+                                     class="card-img-top h-100 w-100" 
+                                     style="object-fit: cover;"
+                                     alt="{{ $article->title }}">
                             @else
-                                <img src="{{ asset('images/le_RHDP_Côte_d_Ivoire.png') }}" class="card-img-top" alt="Image par défaut">
+                                <img src="{{ asset('images/le_RHDP_Côte_d_Ivoire.png') }}" 
+                                     class="card-img-top h-100 w-100"
+                                     style="object-fit: contain; padding: 20px; background: #f8f9fa;"
+                                     alt="Image par défaut">
                             @endif
+                            @if($article->category)
+                            <div class="position-absolute top-3 start-3">
+                                <span class="badge" style="background-color: #f28c03;">
+                                    {{ $article->category->name }}
+                                </span>
+                            </div>
+                            @endif
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                                <div class="d-flex align-items-center text-white small">
+                                    <span class="me-2">
+                                        <i class="far fa-calendar-alt me-1"></i>
+                                        {{ $article->published_at->locale('fr')->isoFormat('LL') }}
+                                    </span>
+                                    <span class="mx-2">•</span>
+                                    <span>
+                                        <i class="far fa-clock me-1"></i>
+                                        3 min de lecture
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $article->title }}</h5>
-                            <p class="card-text text-muted small">{{ $article->published_at->locale('fr')->isoFormat('LL') }}</p>
-                            <p class="card-text flex-grow-1">{{ $article->excerpt ?: Str::limit(strip_tags($article->content), 150) }}</p>
-                            <a href="{{ route('actualites.show', $article->slug) }}" class="btn btn-outline-primary mt-auto align-self-start">Lire la suite</a>
+                            <h5 class="card-title">{{ Str::limit($article->title, 70) }}</h5>
+                            <p class="card-text text-muted small">
+                                <i class="far fa-user me-1"></i>
+                                Par RHDP
+                            </p>
+                            <p class="card-text flex-grow-1">
+                                {{ $article->excerpt ?: Str::limit(strip_tags($article->content), 120) }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <a href="{{ route('actualites.show', $article->slug) }}" class="btn btn-sm" style="background-color: #f28c03; border-color: #f28c03; color: white;">
+                                    Lire la suite
+                                    <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <div class="d-flex">
+                                    <img src="{{ asset('images/rhdp_logo.png') }}" 
+                                         class="border border-2 border-white" 
+                                         style="width: 32px; height: 32px; object-fit: contain;"
+                                         alt="Logo RHDP">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 @empty
-                <div class="col-12 text-center">
-                    <p>Aucune actualité n'est disponible pour le moment.</p>
+                <div class="col-12 text-center py-5">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Aucune actualité disponible pour le moment.
+                    </div>
                 </div>
                 @endforelse
             </div>
             <div class="text-center mt-4">
-                <a href="{{ route('actualites.index') }}" class="btn btn-primary">Voir toutes les actualités</a>
+                <a href="{{ route('actualites.index') }}" class="btn" style="background-color: #f28c03; border-color: #f28c03; color: white;">
+                    Voir toutes les actualités
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -607,7 +655,7 @@
 
     .hero-btn-primary:hover,
     .hero-btn-primary:focus {
-        background-color: #E67E00; /* Darker orange */
+        background-color: #d97d02; /* Darker orange */
         color: #FFFFFF;
         transform: scale(1.03);
         filter: brightness(110%);
