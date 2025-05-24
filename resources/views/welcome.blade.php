@@ -230,7 +230,7 @@
     <section class="party-structure-section py-5" data-aos="fade-up">
         <div class="container">
             <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-                <h5 class="sub-title text-primary">LE PARTI</h5>
+                <h5 class="sub-title" style="color: #f28c03;">LE PARTI</h5>
                 <h2>Notre Organisation</h2>
                 <p>Une structure solide au service de la Côte d'Ivoire.</p>
             </div>
@@ -245,7 +245,7 @@
                                     <img src="{{ asset('images/membres/Alassane_Outtara.png') }}" class="img-fluid rounded-circle" alt="Président du Parti">
                                 </div>
                                 <h3 class="president-name">SEM Alassane Ouattara</h3>
-                                <p class="president-title text-primary">Président du RHDP</p>
+                                <p class="president-title" style="color: #f28c03;">Président du RHDP</p>
                             </div>
                         </a>
                     </div>
@@ -261,7 +261,7 @@
                             <img src="{{ asset('images/membres/directoire/beugre.webp') }}" class="img-fluid rounded-circle" alt="Vice-Président">
                         </div>
                         <h5 class="team-member-name">M. Robert Beugré Mambé</h5>
-                        <p class="team-member-title text-primary">Vice-Président</p>
+                        <p class="team-member-title" style="color: #f28c03;">Vice-Président</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
@@ -270,7 +270,7 @@
                             <img src="{{ asset('images/membres/directoire/kandia-camara.jpg') }}" class="img-fluid rounded-circle" alt="Vice-Présidente">
                         </div>
                         <h5 class="team-member-name">Mme Kandia Camara</h5>
-                        <p class="team-member-title text-primary">Vice-Présidente</p>
+                        <p class="team-member-title" style="color: #f28c03;">Vice-Présidente</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
@@ -279,7 +279,7 @@
                             <img src="{{ asset('images/membres/directoire/M. ABDALLAH TOIKEUSSE MABRI.jpg') }}" class="img-fluid rounded-circle" alt="Vice-Président">
                         </div>
                         <h5 class="team-member-name">M. Abdallah Toikeusse Mabri</h5>
-                        <p class="team-member-title text-primary">Vice-Président</p>
+                        <p class="team-member-title" style="color: #f28c03;">Vice-Président</p>
                     </div>
                 </div>
                 <!-- Trésorier Général -->
@@ -289,7 +289,7 @@
                             <img src="{{ asset('images/membres/directoire/Tene-Brahima-Ouattara.jpeg') }}" class="img-fluid rounded-circle" alt="Trésorier Général">
             </div>
                         <h5 class="team-member-name">M. Tene Birahima Ouattara</h5>
-                        <p class="team-member-title text-primary">Trésorier Général</p>
+                        <p class="team-member-title" style="color: #f28c03;">Trésorier Général</p>
                 </div>
                 </div>
                 <!-- Porte-Paroles -->
@@ -299,7 +299,7 @@
                             <img src="{{ asset('images/membres/directoire/Kobenan_Kouassi_Adjoumani.jpg') }}" class="img-fluid rounded-circle" alt="Porte-Parole Principal">
                         </div>
                         <h5 class="team-member-name">M. Kouassi Kobenan Adjoumani</h5>
-                        <p class="team-member-title text-primary">Porte-Parole Principal</p>
+                        <p class="team-member-title" style="color: #f28c03;">Porte-Parole Principal</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
@@ -308,7 +308,7 @@
                             <img src="{{ asset('images/membres/directoire/mamadou-toure.jpg') }}" class="img-fluid rounded-circle" alt="Porte-Parole Adjoint">
                         </div>
                         <h5 class="team-member-name">M. Mamadou Touré</h5>
-                        <p class="team-member-title text-primary">Porte-Parole Adjoint</p>
+                        <p class="team-member-title" style="color: #f28c03;">Porte-Parole Adjoint</p>
                     </div>
                 </div>
                 <!-- Secrétaire Exécutif -->
@@ -318,7 +318,7 @@
                             <img src="{{ asset('images/membres/directoire/cisse-bacongo.webp') }}" class="img-fluid rounded-circle" alt="Secrétaire Exécutif">
                         </div>
                         <h5 class="team-member-name">M. Bacongo Ibrahima Cisse</h5>
-                        <p class="team-member-title text-primary">Secrétaire Exécutif</p>
+                        <p class="team-member-title" style="color: #f28c03;">Secrétaire Exécutif</p>
                     </div>
                 </div>
                 <!-- Chargés de Mission -->
@@ -328,7 +328,7 @@
                             <img src="{{ asset('images/membres/directoire/felix-anoble.jpg') }}" class="img-fluid rounded-circle" alt="Chargé de Mission">
                         </div>
                         <h5 class="team-member-name">M. Félix Anoblé</h5>
-                        <p class="team-member-title text-primary">Chargé de la Stratégie Électorale</p>
+                        <p class="team-member-title" style="color: #f28c03;">Chargé de la Stratégie Électorale</p>
                     </div>
                 </div>
             </div>
@@ -342,7 +342,7 @@
     <section class="achievements-section py-5" data-aos="fade-up">
         <div class="container">
             <div class="section-head text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-                <h5 class="sub-title text-primary">LE RHDP EN ACTION</h5>
+                <h5 class="sub-title" style="color: #f28c03;">LE RHDP EN ACTION</h5>
                 <h2>Nos Réalisations</h2>
                 <p class="mt-3">Découvrez les actions concrètes menées par le RHDP pour le développement de la Côte d'Ivoire et le bien-être de ses citoyens.</p>
             </div>
@@ -430,7 +430,7 @@
     </section>
 
     <!-- Newsletter Section -->
-    <section class="bg-primary form-wrapper1 py-5" data-aos="fade-up">
+    <section class="py-5" style="background-color: #f28c03;" data-aos="fade-up">
         <div class="container">
             <div class="row align-items-center" data-aos="fade-up" data-aos-delay="100">
                 <div class="col-lg-4 text-white mb-4 mb-lg-0">

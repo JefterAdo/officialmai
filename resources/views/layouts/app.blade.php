@@ -241,7 +241,7 @@
         @yield('content')
     </main>
 
-    <footer class="footer mt-auto py-5 bg-secondary text-white">
+    <footer class="footer mt-auto py-5" style="background-color: #000000; color: white;">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
