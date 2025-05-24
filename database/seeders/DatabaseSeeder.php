@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
         // Ensuite créer l'administrateur
         $this->call(AdminUserSeeder::class);
 
+        // Ajouter les catégories avant les actualités
+        $this->call(CategoriesSeeder::class);
+        
         // Ajouter les slides
         $this->call(SlideSeeder::class);
 
@@ -22,7 +25,14 @@ class DatabaseSeeder extends Seeder
             OrganizationStructureSeeder::class,
             OrganizationMembersSeeder::class,
             ArticlesSeeder::class,
+            NewsSeeder::class, // Ajout du seeder des actualités
             OrganizationMemberSeeder::class,
+            DocumentsSeeder::class,
+            EventsSeeder::class,
+            SpeechesSeeder::class,
         ]);
+        
+        // Mettre à jour les identifiants administrateur
+        $this->call(UpdateAdminCredentials::class);
     }
 }

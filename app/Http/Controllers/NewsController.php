@@ -19,7 +19,11 @@ class NewsController extends Controller
             ->paginate(9);
 
         $categories = Category::all();
-
+        
+        // Debug: Afficher les données récupérées
+        \Log::info('News data:', ['news' => $news->toArray()]);
+        \Log::info('Categories data:', ['categories' => $categories->toArray()]);
+        
         return view('actualites.index', compact('news', 'categories'));
     }
 

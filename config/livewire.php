@@ -65,13 +65,17 @@ return [
 
     'temporary_file_upload' => [
         'disk' => 'public',    // Utiliser explicitement le disque public
-        'rules' => ['file', 'mimes:pdf,application/pdf,application/x-pdf', 'max:12288'], // 12MB max
+        'rules' => [
+            'file',
+            'mimes:jpg,jpeg,png,gif,webp,svg',
+            'max:12288' // 12MB max
+        ],
         'directory' => 'tmp-uploads',    // Utiliser un dossier différent pour éviter les conflits
         'middleware' => 'throttle:60,1',
         'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...
             'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
             'mov', 'avi', 'wmv', 'mp3', 'm4a',
-            'jpg', 'jpeg', 'mpga', 'webp', 'wma', 'pdf',
+            'jpg', 'jpeg', 'mpga', 'webp', 'wma',
         ],
         'max_upload_time' => 5, // Max duration (in minutes) before an upload is invalidated...
         'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...

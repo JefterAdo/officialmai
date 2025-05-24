@@ -8,85 +8,22 @@
 @endphp
 
 @section('content')
-    <!-- Modern Hero Slider Section -->
-    <section style="margin-bottom: -5px;">
-        @include('components.home.slider-alt')
-    </section>
+    <!-- Slider classique réintégré -->
+    @include('components.home.slider-alt')
 
-    <!-- Flash Info Section -->
-    @php
-        $activeFlashInfos = App\Models\FlashInfo::where('is_active', true)->orderBy('created_at', 'desc')->get();
-        $displayMode = $activeFlashInfos->first()?->display_mode ?? 'static';
-    @endphp
-    
-@if($activeFlashInfos->isNotEmpty())
-    <section class="bg-orange" style="margin-top: -5px;">
-        <div class="container">
-            <div class="flash-info-slider flash-info-{{ $displayMode }}">
-                @if($displayMode === 'fade')
-                    <div class="flash-messages-fade-container"> {{-- Container for fade messages --}}
-                        @foreach($activeFlashInfos as $index => $flashInfo)
-                            <div class="flash-message-item @if($index === 0) active @endif"> {{-- Class for individual fade messages --}}
-                                <div class="d-flex align-items-center justify-content-start"> {{-- For alignment --}}
-                                    <span class="flash-info-label me-4 text-white">
-                                        <i class="fas fa-bullhorn"></i>
-                                        <strong>Flash Info</strong>
-                                    </span>
-                                    <span class="flash-info-content-fade text-white">{{ $flashInfo->message }}</span> {{-- Content for fade --}}
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @else {{-- Handles 'marquee' or any other non-fade mode --}}
-                    <div class="flash-info-marquee-wrapper d-flex align-items-center"> {{-- Flex container for label + text area --}}
-                        <span class="flash-info-label flex-shrink-0 me-2 text-white"> {{-- Label, doesn't shrink --}}
-                            <i class="fas fa-bullhorn"></i>
-                            <strong>Flash Info</strong>
-                        </span>
-                        <div class="flash-info-text"> {{-- Static wrapper for animated text, has overflow:hidden from CSS --}}
-                            <span class="flash-info-text-inner-animated"> {{-- Actual animated text from CSS --}}
-                                @foreach($activeFlashInfos as $index => $flashInfo)
-                                    {{ $flashInfo->message }}@if(!$loop->last)&nbsp;|&nbsp;@endif
-                                @endforeach
-                            </span>
-                        </div>
-                    </div>
-                @endif
+    <!-- Section Flash Info modernisée -->
+    <section class="flash-info-bar position-relative" style="background: #f28c03; border-radius: 1rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin: 2rem 0; overflow:hidden;">
+        <div class="container py-2 d-flex align-items-center justify-content-center position-relative" style="min-height:48px;">
+            <span class="flash-info-label d-inline-flex align-items-center px-3 py-1 me-3 position-absolute start-0 top-50 translate-middle-y flash-info-mask" style="background:#f28c03; color:#fff; font-weight:700; border-radius:2rem; font-size:1.1rem; letter-spacing:0.05em; z-index:2; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                <i class="fas fa-bullhorn me-2" style="font-size:1.3em; color:#fff200;"></i> Flash Info
+            </span>
+            <div class="w-100" style="overflow:hidden;">
+                <span class="flash-info-text-inner-animated d-inline-block" style="padding-left:120px; will-change: transform; white-space:nowrap;">
+                    Flash info 1 <span class="mx-3" style="font-weight:bold;">—</span> Flash info 2 <span class="mx-3" style="font-weight:bold;">—</span> Flash info 3
+                </span>
             </div>
         </div>
     </section>
-
-    {{-- This script block is specifically for the 'fade' displayMode --}}
-    @if($displayMode === 'fade')
-        @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Ensure we only operate if fade elements exist
-                const messages = document.querySelectorAll('.flash-info-slider .flash-message-item');
-                if (messages.length === 0) return; // Exit if no messages to fade
-
-                let currentIndex = 0;
-                // Ensure the first message is active if not already
-                if (messages.length > 0 && !messages[currentIndex].classList.contains('active')) {
-                    messages[currentIndex].classList.add('active');
-                }
-
-                function showNextMessage() {
-                    if (messages.length < 2) return; // No need to cycle if less than 2 messages
-                    messages[currentIndex].classList.remove('active');
-                    currentIndex = (currentIndex + 1) % messages.length;
-                    messages[currentIndex].classList.add('active');
-                }
-
-                // Only set interval if there's more than one message to cycle through
-                if (messages.length > 1) {
-                   setInterval(showNextMessage, 5000); // Default 5s, can be adjusted
-                }
-            });
-        </script>
-        @endpush
-    @endif
-@endif
 
     <!-- Actualités Section -->
     <section class="content-inner-1 py-5" data-aos="fade-up">
@@ -973,10 +910,46 @@
         font-size: 1rem;
         line-height: 1.6;
     }
+
+    .flash-info-mask {
+        background: #f28c03 !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        position: absolute;
+        left: 2rem;
+        z-index: 2;
+    }
+    .flash-info-bar {
+        position: relative;
+        overflow: hidden;
+    }
+    .flash-info-text-inner-animated {
+        transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s;
+    }
 </style>
 @endpush
 
 @push('scripts')
     <!-- Script de correction pour le carousel -->
     <script src="{{ asset('js/carousel-fix.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashText = document.querySelector('.flash-info-text-inner-animated');
+        if (!flashText) return;
+        let pos = 0;
+        let width = flashText.offsetWidth;
+        let container = flashText.parentElement.offsetWidth;
+        function animate() {
+            pos--;
+            if (Math.abs(pos) > width) {
+                pos = container;
+            }
+            flashText.style.transform = `translateX(${pos}px)`;
+            requestAnimationFrame(animate);
+        }
+        animate();
+        // Pause au survol
+        flashText.addEventListener('mouseenter', () => cancelAnimationFrame(animate));
+        flashText.addEventListener('mouseleave', () => animate());
+    });
+    </script>
 @endpush
