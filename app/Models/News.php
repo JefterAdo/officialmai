@@ -16,6 +16,7 @@ class News extends Model
         'slug',
         'content',
         'excerpt',
+        'meta_description',
         'featured_image',
         'category_id',
         'is_published',

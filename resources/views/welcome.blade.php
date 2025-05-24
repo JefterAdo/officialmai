@@ -4,6 +4,7 @@
 
 @php
     use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Str;
     $slides = App\Models\Slide::where('is_active', true)->orderBy('order')->get();
 @endphp
 
@@ -63,59 +64,71 @@
                 @endphp
 
                 @forelse($latestNews as $article)
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100 news-card">
-                        <div class="card-img-top-wrapper position-relative" style="height: 200px; overflow: hidden;">
+                <div class="col-lg-4 col-md-6 mb-4 d-flex">
+                    <div class="card news-card border-0 shadow-sm w-100" style="display: flex; flex-direction: column; height: 100%;">
+                        <div class="card-img-top-wrapper position-relative" style="height: 160px; overflow: hidden; flex-shrink: 0;">
                             @if($article->featured_image)
                                 <img src="/storage/{{ $article->featured_image }}" 
-                                     class="card-img-top h-100 w-100" 
-                                     style="object-fit: cover;"
+                                     class="h-100 w-100" 
+                                     style="object-fit: cover; transition: transform 0.3s ease;"
                                      alt="{{ $article->title }}">
                             @else
                                 <img src="{{ asset('images/le_RHDP_Côte_d_Ivoire.png') }}" 
-                                     class="card-img-top h-100 w-100"
+                                     class="h-100 w-100"
                                      style="object-fit: contain; padding: 20px; background: #f8f9fa;"
                                      alt="Image par défaut">
                             @endif
                             @if($article->category)
                             <div class="position-absolute top-3 start-3">
-                                <span class="badge" style="background-color: #f28c03;">
+                                <span class="badge" style="background-color: #f28c03; font-size: 0.7rem; padding: 0.35em 0.65em;">
                                     {{ $article->category->name }}
                                 </span>
                             </div>
                             @endif
-                            <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
-                                <div class="d-flex align-items-center text-white small">
-                                    <span class="me-2">
-                                        <i class="far fa-calendar-alt me-1"></i>
-                                        {{ $article->published_at->locale('fr')->isoFormat('LL') }}
-                                    </span>
-                                    <span class="mx-2">•</span>
-                                    <span>
-                                        <i class="far fa-clock me-1"></i>
-                                        3 min de lecture
-                                    </span>
-                                </div>
-                            </div>
                         </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ Str::limit($article->title, 70) }}</h5>
-                            <p class="card-text text-muted small">
-                                <i class="far fa-user me-1"></i>
-                                Par RHDP
+                        <div class="card-body d-flex flex-column p-3" style="flex: 1 0 auto;">
+                            <div class="d-flex align-items-center mb-2" style="font-size: 0.75rem; color: #6c757d;">
+                                <span>
+                                    <i class="far fa-calendar-alt me-1"></i>
+                                    {{ $article->published_at->locale('fr')->isoFormat('LL') }}
+                                </span>
+                                <span class="mx-2">•</span>
+                                <span>
+                                    <i class="far fa-clock me-1"></i>
+                                    3 min de lecture
+                                </span>
+                            </div>
+                            <h5 class="card-title mb-1" style="font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin: 0; padding: 0; min-height: 2.8em;">
+                                @php
+                                    $maxWords = 18;
+                                    $title = html_entity_decode($article->title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                    $words = str_word_count($title, 1, 'àâäéèêëîïôöùûüÿçæœÀÂÄÉÈÊËÎÏÔÖÙÛÜŸÇÆŒ"\'');
+                                    $truncated = implode(' ', array_slice($words, 0, $maxWords));
+                                    if (count($words) > $maxWords) {
+                                        $truncated .= '...';
+                                    }
+                                @endphp
+                                {{ $truncated }}
+                            </h5>
+                            <p class="text-muted small mb-2" style="font-size: 0.85rem; line-height: 1.4;">
+                                @php
+                                    $description = !empty($article->meta_description) 
+                                        ? $article->meta_description 
+                                        : Str::limit(strip_tags($article->content), 160);
+                                @endphp
+                                {{ $description }}
                             </p>
-                            <p class="card-text flex-grow-1">
-                                {{ $article->excerpt ?: Str::limit(strip_tags($article->content), 120) }}
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <a href="{{ route('actualites.show', $article->slug) }}" class="btn btn-sm" style="background-color: #f28c03; border-color: #f28c03; color: white;">
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ route('actualites.show', $article->slug) }}" class="btn btn-sm" style="background-color: #f28c03; border-color: #f28c03; color: white; font-size: 0.8rem; font-weight: 500; padding: 0.3rem 0.8rem;">
                                     Lire la suite
                                     <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
-                                <div class="d-flex">
+                                <div class="d-flex align-items-center" style="font-size: 0.8rem; color: #6c757d;">
+                                    <span class="me-2">Par RHDP</span>
                                     <img src="{{ asset('images/rhdp_logo.png') }}" 
-                                         class="border border-2 border-white" 
-                                         style="width: 32px; height: 32px; object-fit: contain;"
+                                         style="width: 24px; height: 24px; object-fit: contain;"
                                          alt="Logo RHDP">
                                 </div>
                             </div>

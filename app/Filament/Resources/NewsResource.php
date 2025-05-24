@@ -50,6 +50,23 @@ class NewsResource extends Resource
                                 ->maxLength(255)
                                 ->unique(News::class, 'slug', ignoreRecord: true),
                 
+                            Forms\Components\Textarea::make('meta_description')
+                                ->label('Meta Description (SEO)')
+                                ->helperText('Généralement affichée dans les résultats de recherche. Idéalement entre 150-160 caractères.')
+                                ->maxLength(160)
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                    // Si l'utilisateur commence à saisir, on ne modifie plus automatiquement
+                                    if (!empty($state)) {
+                                        $set('meta_description', $state);
+                                    } else {
+                                        // Si le champ est vide, on génère une description à partir du contenu
+                                        $content = strip_tags($get('content') ?? '');
+                                        $set('meta_description', Str::limit($content, 160));
+                                    }
+                                })
+                                ->columnSpanFull(),
+
                             Forms\Components\RichEditor::make('content')
                                 ->required()
                                 ->columnSpanFull()
@@ -71,7 +88,13 @@ class NewsResource extends Resource
                                     'underline',
                                     'undo',
                                 ])
-                                ->extraAttributes(['style' => 'min-height: 24rem;']),
+                                ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                    // Si le champ meta_description est vide, on le remplit avec un extrait du contenu
+                                    if (empty($get('meta_description'))) {
+                                        $set('meta_description', Str::limit(strip_tags($state), 160));
+                                    }
+                                })
+                                ->extraAttributes(['style' => 'min-height: 20rem;']),
                 
                             Forms\Components\Select::make('category_id')
                                 ->relationship('category', 'name')
@@ -111,8 +134,11 @@ class NewsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->description(fn (News $record) => Str::limit($record->meta_description, 50))
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('category.name')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
