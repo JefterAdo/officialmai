@@ -60,11 +60,13 @@ class OrganizationMemberResource extends Resource
                 Forms\Components\Select::make('role')
                     ->options([
                         'president' => 'Président',
+                        'president_directoire' => 'Président du Directoire',
                         'vice_president' => 'Vice-Président',
                         'tresorier' => 'Trésorier',
                         'porte_parole' => 'Porte-Parole',
                         'porte_parole_adjoint' => 'Porte-Parole Adjoint',
                         'secretaire_executif' => 'Secrétaire Exécutif',
+                        'charge_mission' => 'Chargé de Mission',
                         'membre' => 'Membre',
                     ])
                     ->required(),
@@ -86,7 +88,13 @@ class OrganizationMemberResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('order', 'asc')
             ->columns([
+                Tables\Columns\TextColumn::make('order')
+                    ->sortable()
+                    ->label('Position')
+                    ->alignCenter()
+                    ->weight('bold'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -99,13 +107,29 @@ class OrganizationMemberResource extends Resource
                     ->square()
                     ->defaultImageUrl(asset('images/default-member.jpg')),
                 Tables\Columns\TextColumn::make('role')
-                    ->searchable(),
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'president' => 'Président',
+                        'president_directoire' => 'Président du Directoire',
+                        'vice_president' => 'Vice-Président',
+                        'tresorier' => 'Trésorier',
+                        'porte_parole' => 'Porte-Parole',
+                        'porte_parole_adjoint' => 'Porte-Parole Adjoint',
+                        'secretaire_executif' => 'Secrétaire Exécutif',
+                        'charge_mission' => 'Chargé de Mission',
+                        'membre' => 'Membre',
+                        default => ucfirst(str_replace('_', ' ', $state)),
+                    }),
                 Tables\Columns\TextColumn::make('group')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('order')
-                    ->sortable(),
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'directoire' => 'Directoire',
+                        'secretariat_executif' => 'Secrétariat Exécutif',
+                        default => ucfirst($state),
+                    }),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('Actif'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -119,11 +143,13 @@ class OrganizationMemberResource extends Resource
                 Tables\Filters\SelectFilter::make('role')
                     ->options([
                         'president' => 'Président',
+                        'president_directoire' => 'Président du Directoire',
                         'vice_president' => 'Vice-Président',
                         'tresorier' => 'Trésorier',
                         'porte_parole' => 'Porte-Parole',
                         'porte_parole_adjoint' => 'Porte-Parole Adjoint',
                         'secretaire_executif' => 'Secrétaire Exécutif',
+                        'charge_mission' => 'Chargé de Mission',
                         'membre' => 'Membre',
                     ]),
                 Tables\Filters\SelectFilter::make('group')

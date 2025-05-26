@@ -13,34 +13,49 @@
         box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        border-left: 4px solid #FF8C00;
+        border-left: 4px solid #FF6B00;
     }
     .org-card h3 {
-        color: #FF8C00;
-        font-size: 1.25rem;
-        margin-bottom: 1rem;
+        color: #FF6B00;
+        font-size: 1.5rem;
+        margin-bottom: 1.25rem;
+        font-weight: 700;
+        font-family: 'Poppins', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     .org-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
+        gap: 1.5rem;
         margin: 2rem 0;
     }
     .stat-card {
-        background-color: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 0.5rem;
+        background-color: #fff;
+        padding: 1.75rem 1.25rem;
+        border-radius: 0.75rem;
         text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(255, 107, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: rgba(255, 107, 0, 0.3);
     }
     .stat-number {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #FF8C00;
-        margin-bottom: 0.5rem;
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #FF6B00;
+        margin-bottom: 0.75rem;
+        font-family: 'Poppins', sans-serif;
     }
     .stat-label {
-        color: #6c757d;
-        font-size: 0.9rem;
+        color: #4a5568;
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.4;
     }
     .org-image {
         width: 100%;
@@ -57,7 +72,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-left: 5px solid #FF8C00;
+        border-left: 5px solid #FF6B00;
     }
     .organigramme-container {
         max-width: 1400px;
@@ -73,7 +88,7 @@
         border-radius: 15px;
         padding: 20px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border: 2px solid #FF8C00;
+        border: 2px solid #FF6B00;
     }
     .president-card .member-image {
         width: 100%;
@@ -81,7 +96,7 @@
         object-fit: cover;
         border-radius: 10px;
         margin-bottom: 20px;
-        border: 3px solid #FF8C00;
+        border: 3px solid #FF6B00;
     }
     .president-card .member-name {
         font-size: 2rem;
@@ -94,7 +109,7 @@
         font-size: 1.2rem;
         color: #333;
         font-weight: 600;
-        background: #FF8C00;
+        background: #FF6B00;
         color: white;
         padding: 10px 20px;
         border-radius: 5px;

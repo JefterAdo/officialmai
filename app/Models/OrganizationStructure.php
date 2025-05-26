@@ -41,6 +41,11 @@ class OrganizationStructure extends Model
         // Nettoyer le chemin
         $path = ltrim($this->image, '/');
         
+        // Si le chemin commence déjà par storage/, c'est un chemin Filament
+        if (str_starts_with($path, 'storage/')) {
+            return asset($path);
+        }
+        
         // Vérifier si le fichier existe directement dans le dossier public
         if (file_exists(public_path($path))) {
             return asset($path);
@@ -77,11 +82,14 @@ class OrganizationStructure extends Model
         parent::boot();
 
         static::saving(function ($model) {
-            if ($model->image && !str_starts_with($model->image, 'images/') && !filter_var($model->image, FILTER_VALIDATE_URL)) {
-                // Assurez-vous que l'image est dans le bon dossier
-                if (!str_starts_with($model->image, 'membres/')) {
-                    $model->image = 'membres/' . $model->image;
-                }
+            // Ne pas modifier le chemin si c'est déjà une URL complète ou une image Filament
+            if ($model->image && 
+                !str_starts_with($model->image, 'images/') && 
+                !filter_var($model->image, FILTER_VALIDATE_URL) &&
+                !str_starts_with($model->image, 'membres/') &&
+                !str_contains($model->image, '/storage/')
+            ) {
+                $model->image = 'membres/' . $model->image;
             }
         });
     }

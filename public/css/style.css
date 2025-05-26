@@ -2,10 +2,10 @@
 
 /* Define primary color based on RHDP branding */
 :root {
-    --bs-primary: #f28c00; /* RHDP Orange */
-    --bs-primary-rgb: 242, 140, 0; /* RGB version of the primary color */
+    --bs-primary: #FF6B00; /* RHDP Orange */
+    --bs-primary-rgb: 255, 107, 0; /* RGB version of the primary color */
     --bs-secondary: #1a1a1a; /* Gris foncé/Noir pour correspondre au style */
---bs-secondary-rgb: 26, 26, 26; /* RGB version of the secondary color */
+    --bs-secondary-rgb: 26, 26, 26; /* RGB version of the secondary color */
 }
 
 body {
@@ -77,25 +77,33 @@ p {
     font-size: 1.1rem;
 }
 .btn-primary {
-    --bs-btn-bg: var(--bs-primary);
-    --bs-btn-border-color: var(--bs-primary);
-    --bs-btn-hover-bg: #cc7a00; /* Darker orange for hover */
-    --bs-btn-hover-border-color: #b36b00; /* Even darker orange */
-    --bs-btn-active-bg: #b36b00; /* Even darker orange */
-    --bs-btn-active-border-color: #995c00; /* Darkest orange */
-    --bs-btn-disabled-bg: var(--bs-primary);
-    --bs-btn-disabled-border-color: var(--bs-primary);
+    --bs-btn-bg: #FF6B00; /* RHDP Orange */
+    --bs-btn-border-color: #FF6B00;
+    --bs-btn-hover-bg: #e66100; /* Slightly darker orange for hover */
+    --bs-btn-hover-border-color: #cc5600;
+    --bs-btn-active-bg: #cc5600; /* Even darker orange */
+    --bs-btn-active-border-color: #b34c00;
+    --bs-btn-disabled-bg: #FF6B00;
+    --bs-btn-disabled-border-color: #FF6B00;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease-in-out;
 }
 
 .btn-outline-primary {
-    --bs-btn-color: var(--bs-primary);
-    --bs-btn-border-color: var(--bs-primary);
-    --bs-btn-hover-bg: var(--bs-primary);
-    --bs-btn-hover-border-color: var(--bs-primary);
-    --bs-btn-active-bg: var(--bs-primary);
-    --bs-btn-active-border-color: var(--bs-primary);
-    --bs-btn-disabled-color: var(--bs-primary);
-    --bs-btn-disabled-border-color: var(--bs-primary);
+    --bs-btn-color: #FF6B00;
+    --bs-btn-border-color: #FF6B00;
+    --bs-btn-hover-bg: #FF6B00;
+    --bs-btn-hover-border-color: #FF6B00;
+    --bs-btn-active-bg: #FF6B00;
+    --bs-btn-active-border-color: #FF6B00;
+    --bs-btn-disabled-color: #FF6B00;
+    --bs-btn-disabled-border-color: #FF6B00;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease-in-out;
 }
 
 .text-primary {
@@ -841,7 +849,7 @@ p {
 
 /* Flash Info Styles */
 .bg-orange {
-    background-color: #ff8c00 !important;
+    background-color: #FF6B00 !important;
     position: relative;
     z-index: 2;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
