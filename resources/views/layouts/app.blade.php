@@ -25,9 +25,11 @@
     <style>
         /* Header Styling */
         .main-navbar {
-            position: sticky;
+            position: sticky; /* Prioritized sticky positioning */
             top: 0;
-            z-index: 1030; /* Ensure it's above most content */
+            left: 0; /* Added for completeness with sticky, though width 100% usually covers */
+            width: 100%;
+            z-index: 1030; /* Ensure it's above most content, standard for navbars */
             transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             /* Initial transparent state */
             background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
@@ -47,9 +49,9 @@
         /* Navigation Links Styling */
         .main-navbar .navbar-nav .nav-link {
             font-weight: 500;
-            color: #333; /* Darker color for better readability on light bg */
+            color: #FF6B00;
             position: relative;
-            padding-bottom: 0.3rem; /* Space for underline */
+            padding-bottom: 0.3rem;
             transition: color 0.2s ease;
         }
 
@@ -61,14 +63,14 @@
             transform: translateX(-50%);
             width: 0;
             height: 2px;
-            background-color: #FF8C00; /* Orange underline */
+            background-color: #FF6B00; /* Official orange underline */
             transition: width 0.3s ease-in-out;
         }
 
         .main-navbar .navbar-nav .nav-link:hover,
         .main-navbar .navbar-nav .nav-link:focus,
-        .main-navbar .navbar-nav .nav-link.active { /* Style active link similarly */
-            color: #000; /* Slightly darker on hover/focus */
+        .main-navbar .navbar-nav .nav-link.active {
+            color: #FF6B00;
         }
 
         .main-navbar .navbar-nav .nav-link:hover::after,
@@ -78,7 +80,7 @@
         }
          /* Ensure dropdown toggles also get hover effect */
         .main-navbar .navbar-nav .nav-item.dropdown:hover > .nav-link {
-             color: #000;
+             color: #FF6B00;
         }
          .main-navbar .navbar-nav .nav-item.dropdown:hover > .nav-link::after {
              width: 60%;
@@ -123,8 +125,8 @@
         }
         .main-navbar .dropdown-item:hover,
         .main-navbar .dropdown-item:focus {
-            background-color: #f8f9fa; /* Light grey background on hover */
-            color: #FF8C00; /* Orange text on hover */
+            background-color: #f8f9fa;
+            color: #FF6B00;
         }
 
         .hover-orange:hover {
@@ -149,7 +151,7 @@
     </style>
     @stack('styles')
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <!-- Added class 'main-navbar' and removed default Bootstrap bg/shadow classes -->
         <nav class="navbar navbar-expand-lg main-navbar">
@@ -238,11 +240,11 @@
         </nav>
     </header>
 
-    <main class="page-content bg-white">
+    <main class="page-content bg-white flex-grow-1" style="min-height: calc(100vh - 120px); padding-top: 80px;">
         @yield('content')
     </main>
 
-    <footer class="footer mt-auto py-5" style="background-color: #000000; color: white;">
+    <footer class="footer py-5 mt-auto" style="background-color: #000000; color: white; position:relative; bottom:0; width:100%; z-index:100;">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">

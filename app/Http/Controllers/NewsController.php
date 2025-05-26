@@ -18,7 +18,12 @@ class NewsController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(9);
 
-        $categories = Category::all();
+        // Récupérer les catégories avec le comptage des articles publiés
+        $categories = Category::withCount([
+            'news as news_count' => function ($query) {
+                $query->where('is_published', true);
+            }
+        ])->get();
         
         // Debug: Afficher les données récupérées
         \Log::info('News data:', ['news' => $news->toArray()]);

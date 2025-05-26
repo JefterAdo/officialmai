@@ -30,7 +30,7 @@
         <div class="card-body">
             <ul class="list-unstyled">
                 <li class="mb-2">
-                    <a href="{{ route('actualites.index') }}" class="text-decoration-none">
+                    <a href="{{ route('actualites.index') }}" class="text-decoration-none" style="color: #FF6B00; transition: color 0.2s;" onmouseover="this.style.color='#e05e00'" onmouseout="this.style.color='#FF6B00'">
                         Actualités
                     </a>
                 </li>

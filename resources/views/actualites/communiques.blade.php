@@ -24,7 +24,7 @@
         display: flex;
         flex-direction: column;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-left: 4px solid #FF8C00;
+        border-left: 4px solid #FF6B00;
     }
 
     .communique-item:hover {
@@ -43,7 +43,7 @@
         font-size: 1.25rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: #FF8C00;
+        color: #FF6B00;
     }
 
     .communique-date {
@@ -59,7 +59,7 @@
     }
 
     .read-more {
-        color: #28a745;
+        color: #FF6B00;
         font-weight: 600;
         text-decoration: none;
         transition: color 0.2s ease;
@@ -67,7 +67,7 @@
     }
 
     .read-more:hover {
-        color: #2c6e38;
+        color: #e05e00;
     }
 
     .file-info {

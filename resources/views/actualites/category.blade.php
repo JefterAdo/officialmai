@@ -67,13 +67,13 @@
     }
 
     .news-content h2 a {
-        color: var(--bs-primary);
+        color: #FF6B00;
         text-decoration: none;
         transition: color 0.2s ease;
     }
 
     .news-content h2 a:hover {
-        color: #cc7a00;
+        color: #e05e00;
     }
 
     .news-date {
@@ -89,7 +89,7 @@
     }
 
     .read-more {
-        color: var(--bs-secondary);
+        color: #FF6B00;
         font-weight: 600;
         text-decoration: none;
         transition: color 0.2s ease;
@@ -97,7 +97,7 @@
     }
 
     .read-more:hover {
-        color: #2c6e38;
+        color: #e05e00;
     }
 
     .pagination {
@@ -106,12 +106,12 @@
     }
 
     .pagination .page-item .page-link {
-        color: var(--bs-primary);
+        color: #FF6B00;
     }
 
     .pagination .page-item.active .page-link {
-        background-color: var(--bs-primary);
-        border-color: var(--bs-primary);
+        background-color: #FF6B00;
+        border-color: #FF6B00;
         color: white;
     }
 
@@ -124,13 +124,13 @@
 @section('content')
 <main class="container mx-auto px-4 py-8">
     <div class="mb-4">
-        <a href="{{ route('actualites.index') }}" class="text-primary hover:text-primary-dark">
+        <a href="{{ route('actualites.index') }}" style="color: #FF6B00; transition: color 0.2s;" onmouseover="this.style.color='#e05e00'" onmouseout="this.style.color='#FF6B00'">
             <i class="fas fa-arrow-left mr-2"></i> Toutes les actualités
         </a>
     </div>
 
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-primary">{{ $category->name }}</h1>
+        <h1 class="text-3xl font-bold text-[#FF6B00]">{{ $category->name }}</h1>
         @if($category->description)
         <p class="text-gray-600 mt-2">{{ $category->description }}</p>
         @endif
@@ -147,7 +147,7 @@
                 @endif
             </div>
             <div class="news-content">
-                <h2><a href="{{ route('actualites.show', $article->slug) }}">{{ $article->title }}</a></h2>
+                <h2><a href="{{ route('actualites.show', $article->slug) }}" style="color: #FF6B00; transition: color 0.2s;" onmouseover="this.style.color='#e05e00'" onmouseout="this.style.color='#FF6B00'">{{ $article->title }}</a></h2>
                 <p class="news-date">
                     <time datetime="{{ $article->published_at->format('Y-m-d') }}">
                         {{ $article->published_at->locale('fr')->isoFormat('LL') }}

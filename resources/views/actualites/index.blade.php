@@ -7,43 +7,56 @@
     <style>
         .news-grid {
             display: grid;
-            grid-template-columns: 1fr; /* 1 colonne par défaut (mobile) */
+            grid-template-columns: 1fr;
             gap: 2rem;
+            padding: 1rem;
         }
 
-        @media (min-width: 768px) { /* Tablette et plus */
+        @media (min-width: 768px) {
             .news-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (min-width: 1024px) { /* Desktop */
+        @media (min-width: 1024px) {
             .news-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         .news-preview-item {
             background-color: #fff;
-            border-radius: 0.375rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
         .news-preview-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1;
         }
 
         .news-image-placeholder {
             height: 200px;
-            background-color: #e9ecef; /* Placeholder color */
+            background-color: #f8f9fa;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #6c757d;
+            position: relative;
+        }
+        .news-image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(255, 107, 0, 0.05) 100%);
         }
         .news-image-placeholder img {
             width: 100%;
@@ -53,9 +66,10 @@
 
         .news-content {
             padding: 1.5rem;
-            flex-grow: 1; /* Permet au contenu de remplir l'espace */
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
+            gap: 0.75rem;
         }
 
         .news-content h2 {
@@ -64,12 +78,13 @@
             margin-bottom: 0.5rem;
         }
         .news-content h2 a {
-            color: var(--bs-primary); /* Orange title link */
+            color: #FF6B00;
             text-decoration: none;
             transition: color 0.2s ease;
         }
         .news-content h2 a:hover {
-            color: #cc7a00; /* Darker orange */
+            color: #e05e00;
+            text-decoration: underline;
         }
 
         .news-date {
@@ -85,14 +100,18 @@
         }
 
         .read-more {
-            color: var(--bs-secondary); /* Green link */
+            color: #FF6B00;
             font-weight: 600;
             text-decoration: none;
             transition: color 0.2s ease;
-            align-self: flex-start; /* Aligne le lien en bas à gauche */
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .read-more:hover {
-            color: #2c6e38; /* Darker green */
+            color: #e05e00;
+            text-decoration: underline;
         }
 
         /* Pagination Styles (Basic Bootstrap structure) */
@@ -101,11 +120,15 @@
             margin-top: 3rem;
         }
         .pagination .page-item .page-link {
-             color: var(--bs-primary);
+             color: #FF6B00;
+             border: 1px solid #FF6B00;
         }
-         .pagination .page-item.active .page-link {
-             background-color: var(--bs-primary);
-             border-color: var(--bs-primary);
+        .pagination .page-item .page-link:hover {
+             background-color: #fff3e6;
+        }
+        .pagination .page-item.active .page-link {
+             background-color: #FF6B00;
+             border-color: #FF6B00;
              color: white;
          }
          .pagination .page-item.disabled .page-link {
@@ -116,19 +139,24 @@
 
     @section('content')
     <main class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-primary mb-6">Actualités du RHDP</h1>
+        <h1 class="text-3xl font-bold text-[#FF6B00] mb-6">Actualités du RHDP</h1>
 
         @if($categories->count() > 0)
-        <div class="categories-filter mb-6">
-            <h2 class="text-xl mb-3">Catégories</h2>
-            <div class="flex flex-wrap gap-2">
-                <a href="{{ route('actualites.index') }}" class="btn btn-sm {{ request()->routeIs('actualites.index') && !request()->category ? 'btn-primary' : 'btn-outline-primary' }}">
-                    Toutes
+        <div class="categories-filter mb-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Filtrer par catégorie</h2>
+            <div class="flex flex-wrap gap-3">
+                <a href="{{ route('actualites.index') }}" class="px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 {{ request()->routeIs('actualites.index') && !request()->category ? 'bg-[#FF6B00] text-white' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100' }}">
+                    Toutes les actualités
                 </a>
                 @foreach($categories as $category)
                 <a href="{{ route('actualites.category', $category->slug) }}" 
-                   class="btn btn-sm {{ request()->category == $category->slug ? 'btn-primary' : 'btn-outline-primary' }}">
-                    {{ $category->name }}
+                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 {{ request()->category == $category->slug ? 'bg-[#FF6B00] text-white' : 'bg-[#FF6B00]/10 text-[#FF6B00] border border-[#FF6B00]/50 hover:bg-[#FF6B00]/10' }}">
+                    <span class="flex items-center gap-2">
+                        {{ $category->name }}
+                        <span class="bg-[#FF6B00]/10 text-[#FF6B00] px-2 py-0.5 rounded-full text-xs font-medium">
+                            {{ $category->news_count ?? 0 }}
+                        </span>
+                    </span>
                 </a>
                 @endforeach
             </div>
@@ -146,13 +174,27 @@
                     @endif
                 </div>
                 <div class="news-content">
-                    <h2><a href="{{ route('actualites.show', $article->slug) }}">{{ $article->title }}</a></h2>
-                    <p class="news-date">
-                        <time datetime="{{ $article->published_at->format('Y-m-d') }}">
-                            {{ $article->published_at->locale('fr')->isoFormat('LL') }}
-                        </time>
-                    </p>
-                    <p class="news-excerpt">{{ $article->excerpt ?: Str::limit(strip_tags($article->content), 150) }}</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        @if($article->category)
+                        <span class="px-3 py-1 bg-[#FF6B00]/10 text-[#FF6B00] text-xs font-medium rounded-full">
+                            {{ $article->category->name }}
+                        </span>
+                        @endif
+                        <span class="text-gray-500 text-sm">
+                            <i class="far fa-calendar-alt mr-1"></i>
+                            <time datetime="{{ $article->published_at->format('Y-m-d') }}">
+                                {{ $article->published_at->locale('fr')->isoFormat('LL') }}
+                            </time>
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-bold mb-2">
+                        <a href="{{ route('actualites.show', $article->slug) }}" class="hover:text-[#e05e00]">{{ $article->title }}</a>
+                    </h2>
+                    @if($article->meta_description)
+                        <p class="news-excerpt text-gray-700 mb-3">{{ $article->meta_description }}</p>
+                    @else
+                        <p class="news-excerpt text-gray-700 mb-3">{{ Str::limit(strip_tags($article->content), 160) }}</p>
+                    @endif
                     <a href="{{ route('actualites.show', $article->slug) }}" class="read-more">Lire la suite →</a>
                 </div>
             </article>
