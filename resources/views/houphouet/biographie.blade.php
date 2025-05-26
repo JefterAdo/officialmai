@@ -14,7 +14,7 @@
         <div class="col-lg-9">
             <article>
                 <header class="mb-4">
-                    <h1 class="display-5 fw-bold text-primary mb-3">Biographie de Félix Houphouët-Boigny</h1>
+                    <h1 class="display-5 fw-bold mb-3" style="color: #FF6B00;">Biographie de Félix Houphouët-Boigny</h1>
                     <p class="lead">
                         Découvrez le parcours exceptionnel de Félix Houphouët-Boigny, premier Président de la Côte d'Ivoire, architecte de l'indépendance et père fondateur de la nation moderne. Son héritage de paix, d'unité et de dialogue continue d'inspirer le RHDP.
                     </p>
@@ -39,17 +39,18 @@
                     </p>
                 </section>
 
-                <figure class="figure float-md-start me-md-4 mb-3" style="max-width: 450px;">
-                    <img src="{{ asset('images/Felix_Houphouet/Félix HOUPHOUËT-BOIGNY le 03 Mai 1976 à Paris ( France ).jpg') }}" class="figure-img img-fluid rounded shadow" alt="Houphouët-Boigny lors d'un discours à Paris">
-                    <figcaption class="figure-caption text-center">Félix Houphouët-Boigny lors d'une visite officielle à Paris, le 3 mai 1976.</figcaption>
-                </figure>
-
-                <section class="mb-5">
-                    <h2 class="h3 fw-semibold mb-3">Vers l'Indépendance</h2>
-                    <p>
+                <div class="d-flex align-items-center mb-3">
+                    <figure class="figure me-4 mb-0" style="max-width: 200px;">
+                        <img src="{{ asset('images/Felix_Houphouet/Félix HOUPHOUËT-BOIGNY le 03 Mai 1976 à Paris ( France ).jpg') }}" class="figure-img img-fluid rounded shadow" alt="Houphouët-Boigny lors d'un discours à Paris">
+                        <figcaption class="figure-caption text-center">Félix Houphouët-Boigny lors d'une visite officielle à Paris, le 3 mai 1976.</figcaption>
+                    </figure>
+                    <h2 class="h3 fw-semibold mb-0" style="border-bottom: 2px solid #FF6B00; padding-bottom: 0.5rem; display: inline-block;">Vers l'Indépendance</h2>
+                </div>
+                <div class="clearfix">
+                    <p class="mb-5">
                         En 1946, Houphouët-Boigny cofonde le Rassemblement Démocratique Africain (RDA), premier grand mouvement panafricain francophone. Après une alliance initiale avec le Parti Communiste Français, il opte en 1950 pour une stratégie de coopération avec la France. Ministre dans plusieurs gouvernements français (1956-1959), il négocie habilement l'autonomie progressive des colonies. Architecte de la Communauté Franco-Africaine (1958), il conduit finalement la Côte d'Ivoire à l'indépendance le 7 août 1960, tout en maintenant des relations privilégiées avec l'ancienne métropole.
                     </p>
-                </section>
+                </div>
 
                 <figure class="figure text-center d-block my-5" style="max-width: 100%;">
                     <img src="{{ asset('images/Felix_Houphouet/Presi.jpg') }}" class="figure-img img-fluid rounded shadow" alt="Félix Houphouët-Boigny, Président de la République">
@@ -124,8 +125,8 @@
     }
 
     article section h2 {
-        color: var(--bs-secondary);
-        border-bottom: 2px solid var(--bs-primary);
+        color: #343a40;
+        border-bottom: 2px solid #FF6B00;
         padding-bottom: 0.5rem;
         margin-bottom: 1.5rem !important;
     }
@@ -159,8 +160,8 @@
 
     aside h4 {
         margin-bottom: 1rem;
-        color: var(--bs-primary);
-        border-bottom: 2px solid var(--bs-primary);
+        color: #FF6B00;
+        border-bottom: 2px solid #FF6B00;
         padding-bottom: 0.5rem;
     }
 
@@ -172,7 +173,7 @@
 
     aside ul li::before {
         content: "•";
-        color: var(--bs-primary);
+        color: #FF6B00;
         position: absolute;
         left: 0;
     }
