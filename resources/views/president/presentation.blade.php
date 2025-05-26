@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="bg-primary text-white py-5">
+    <section class="text-white py-5" style="background-color: #FF6B00;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
@@ -28,7 +28,7 @@
                 <div class="col-lg-6">
                     <div class="position-relative">
                         <img src="{{ asset('images/president/president-portrait.jpg') }}" alt="Président Alassane Ouattara" class="img-fluid rounded-3 shadow-lg">
-                        <div class="position-absolute bottom-0 end-0 bg-primary p-3 rounded-top-start">
+                        <div class="position-absolute bottom-0 end-0 p-3 rounded-top-start" style="background-color: #FF6B00;">
                             <h6 class="text-white mb-0">Président de la République</h6>
                             <small class="text-white-50">Depuis 2011</small>
                         </div>
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <div class="content-text" data-aos="fade-up">
-                        <p class="lead fw-bold text-primary">
+                        <p class="lead fw-bold" style="color: #FF6B00;">
                             Depuis son accession à la magistrature suprême en 2011, le Président Alassane Ouattara a insufflé 
                             une dynamique de transformation sans précédent en Côte d'Ivoire.
                         </p>
@@ -95,16 +95,16 @@
                             des États de l'Afrique de l'Ouest (BCEAO).
                         </p>
                         <p>
-                            Son ascension fulgurante, de Directeur de la Recherche à Gouverneur de la BCEAO, témoigne de sa 
-                            compétence et de sa vision. En 1990, le Président Félix Houphouët-Boigny, conscient de son talent, 
-                            le nomme Premier Ministre, poste qu'il occupe jusqu'en 1993.
+                            Son parcours exemplaire, marqué par des postes à responsabilité comme Directeur de la Recherche et Gouverneur de la BCEAO, 
+                            démontre son expertise économique reconnue. En 1990, le Président Félix Houphouët-Boigny lui confie le poste de Premier Ministre, 
+                            reconnaissant ainsi son talent exceptionnel et sa vision pour le développement de la Côte d'Ivoire.
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-badge bg-primary">
+                            <div class="timeline-badge" style="background-color: #FF6B00;">
                                 <i class="fas fa-star"></i>
                             </div>
                             <div class="timeline-content">
@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-badge bg-primary">
+                            <div class="timeline-badge" style="background-color: #FF6B00;">
                                 <i class="fas fa-university"></i>
                             </div>
                             <div class="timeline-content">
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-badge bg-primary">
+                            <div class="timeline-badge" style="background-color: #FF6B00;">
                                 <i class="fas fa-landmark"></i>
                             </div>
                             <div class="timeline-content">
@@ -144,7 +144,7 @@
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body">
-                            <div class="text-primary mb-3">
+                            <div class="mb-3" style="color: #FF6B00;">
                                 <i class="fas fa-balance-scale fa-2x"></i>
                             </div>
                             <h4 class="card-title h5">Paix et Stabilité</h4>
@@ -158,7 +158,7 @@
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body">
-                            <div class="text-primary mb-3">
+                            <div class="mb-3" style="color: #FF6B00;">
                                 <i class="fas fa-chart-line fa-2x"></i>
                             </div>
                             <h4 class="card-title h5">Croissance Économique</h4>
@@ -172,7 +172,7 @@
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body">
-                            <div class="text-primary mb-3">
+                            <div class="mb-3" style="color: #FF6B00;">
                                 <i class="fas fa-city fa-2x"></i>
                             </div>
                             <h4 class="card-title h5">Infrastructures Modernes</h4>
@@ -209,7 +209,7 @@
                     <div class="row g-4">
                         <div class="col-6">
                             <div class="achievement-card bg-white p-4 rounded-3 shadow-sm text-center">
-                                <div class="text-primary mb-2">
+                                <div class="mb-2" style="color: #FF6B00;">
                                     <i class="fas fa-handshake fa-2x"></i>
                                 </div>
                                 <h5>Dialogue</h5>
@@ -218,7 +218,7 @@
                         </div>
                         <div class="col-6">
                             <div class="achievement-card bg-white p-4 rounded-3 shadow-sm text-center">
-                                <div class="text-primary mb-2">
+                                <div class="mb-2" style="color: #FF6B00;">
                                     <i class="fas fa-users fa-2x"></i>
                                 </div>
                                 <h5>Rassemblement</h5>
@@ -227,7 +227,7 @@
                         </div>
                         <div class="col-6">
                             <div class="achievement-card bg-white p-4 rounded-3 shadow-sm text-center">
-                                <div class="text-primary mb-2">
+                                <div class="mb-2" style="color: #FF6B00;">
                                     <i class="fas fa-globe-africa fa-2x"></i>
                                 </div>
                                 <h5>Rayonnement</h5>
@@ -236,7 +236,7 @@
                         </div>
                         <div class="col-6">
                             <div class="achievement-card bg-white p-4 rounded-3 shadow-sm text-center">
-                                <div class="text-primary mb-2">
+                                <div class="mb-2" style="color: #FF6B00;">
                                     <i class="fas fa-building fa-2x"></i>
                                 </div>
                                 <h5>Développement</h5>
@@ -250,13 +250,13 @@
     </section>
 
     <!-- Citation Section -->
-    <section class="py-5 bg-primary text-white">
+    <section class="py-5" style="background-color: #FF6B00; color: white;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 mx-auto text-center" data-aos="fade-up">
-                    <i class="fas fa-quote-left fa-3x mb-3"></i>
+                    <i class="fas fa-quote-left fa-3x mb-3" style="color: white;"></i>
                     <blockquote class="blockquote">
-                        <p class="mb-4 h4">
+                        <p class="mb-4 h4" style="color: white;">
                             "Le Président Alassane Ouattara se distingue comme un bâtisseur infatigable, un visionnaire 
                             dont les actions ont profondément transformé la Côte d'Ivoire."
                         </p>

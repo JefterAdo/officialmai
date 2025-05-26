@@ -1,6 +1,6 @@
 <!-- Statistiques de l'Organisation -->
 <section class="org-section mt-5">
-    <h2 class="text-2xl font-semibold text-primary mb-4 text-center">Chiffres Clés</h2>
+    <h2 class="text-2xl font-semibold mb-4 text-center" style="color: #FF6B00;">Chiffres Clés</h2>
     <div class="org-stats">
         <div class="stat-card">
             <div class="stat-number">7902</div>
@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <h2 class="text-2xl font-semibold text-primary mb-4 text-center mt-8">Organes Décentralisés</h2>
+    <h2 class="text-2xl font-semibold mb-4 text-center mt-8" style="color: #FF6B00;">Organes Décentralisés</h2>
     <div class="org-stats">
         <div class="stat-card">
             <div class="stat-number">350</div>

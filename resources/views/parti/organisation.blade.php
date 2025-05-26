@@ -197,7 +197,7 @@
 
 @section('content')
 <main class="container-fluid px-4 py-8">
-    <h1 class="text-3xl font-bold text-primary mb-6 text-center">Organisation du RHDP</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center" style="color: #FF6B00;">Organisation du RHDP</h1>
 
     <div class="organigramme-container">
         <!-- Président -->

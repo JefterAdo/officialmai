@@ -12,7 +12,7 @@
             border-bottom: none;
         }
         .vision-section h2 {
-            color: var(--bs-primary); /* Orange title */
+            color: #FF6B00;
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
@@ -20,7 +20,7 @@
         .vision-section h2 i {
             font-size: 1.8rem; /* Slightly smaller icon */
             margin-right: 0.75rem;
-            color: var(--bs-secondary); /* Green icon */
+            color: #FF6B00; /* RHDP orange icon */
             width: 40px; /* Fixed width for alignment */
             text-align: center;
         }
@@ -32,7 +32,7 @@
             content: "\f00c"; /* Font Awesome check icon */
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
-            color: var(--bs-secondary); /* Green check */
+            color: #FF6B00; /* RHDP orange check */
             margin-right: 0.5rem;
         }
     </style>
@@ -40,7 +40,7 @@
 
     @section('content')
     <main class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-primary mb-5 text-center">Notre Vision pour la Côte d'Ivoire</h1>
+        <h1 class="text-4xl font-bold mb-5 text-center" style="color: #FF6B00;">Notre Vision pour la Côte d'Ivoire</h1>
 
         <p class="lead text-gray-700 mb-8 text-center max-w-3xl mx-auto">
             Le RHDP porte une ambition forte : bâtir une Côte d'Ivoire réconciliée, unie dans sa diversité, résolument engagée sur la voie d'un développement économique accéléré, socialement inclusif et durable, dans la paix et la stabilité retrouvées.
@@ -118,7 +118,7 @@
             </section>
 
             <section class="vision-section bg-light p-5 rounded mt-5">
-                <h2 class="text-secondary"><i class="fas fa-compass"></i>Un Héritage Vivant : L'Houphouëtisme comme Boussole</h2>
+                <h2 style="color: #FF6B00;"><i class="fas fa-compass"></i>Un Héritage Vivant : L'Houphouëtisme comme Boussole</h2>
                 <p class="text-gray-700 mb-4">Cette vision ambitieuse puise ses racines dans la pensée et l'action de Félix Houphouët-Boigny. L'Houphouëtisme, basé sur le pragmatisme, la recherche constante du dialogue, la primauté de la paix et le développement au service de l'homme, reste notre boussole.</p>
                 <p class="text-gray-700">Nous adaptons cet héritage précieux aux réalités du XXIe siècle pour construire une Côte d'Ivoire fidèle à ses valeurs fondamentales et résolument tournée vers l'avenir.</p>
                  {{-- Placeholder image --}}

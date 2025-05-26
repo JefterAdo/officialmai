@@ -6,7 +6,7 @@
     <style>
         .value-block {
             background-color: #f8f9fa;
-            border-left: 5px solid var(--bs-secondary);
+            border-left: 5px solid #FF6B00;
             padding: 1.5rem;
             margin-bottom: 1rem;
             border-radius: 0.25rem;
@@ -16,7 +16,7 @@
             transform: translateY(-5px);
         }
         .value-block h3 {
-            color: var(--bs-secondary);
+            color: #FF6B00;
             margin-bottom: 0.5rem;
             font-size: 1.25rem;
         }
@@ -43,7 +43,7 @@
         }
         .section-divider {
             height: 4px;
-            background: linear-gradient(90deg, var(--bs-primary) 0%, var(--bs-secondary) 100%);
+            background: #FF6B00;
             margin: 3rem 0;
             border-radius: 2px;
         }
@@ -73,7 +73,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-7 pe-lg-5">
-                        <h1 class="text-3xl font-bold text-primary mb-4">Découvrir le RHDP</h1>
+                        <h1 class="text-3xl font-bold mb-4" style="color: #FF6B00;">Découvrir le RHDP</h1>
                         <p class="lead text-gray-700 mb-6">
                             Le Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP) est la force politique majeure engagée pour la stabilité, l'unité et le développement durable de la Côte d'Ivoire, fidèle à l'héritage du Président Félix Houphouët-Boigny.
                         </p>
@@ -86,7 +86,7 @@
         <div class="section-divider"></div>
 
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-primary mb-4">Nos Racines et Notre Histoire</h2>
+            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Nos Racines et Notre Histoire</h2>
             <div class="md:flex md:items-center">
                 <div class="md:w-2/3 md:pr-8">
                     <p class="text-gray-700 mb-4">
@@ -110,7 +110,7 @@
         <div class="section-divider"></div>
 
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-primary mb-4">Nos Valeurs Fondamentales</h2>
+            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Nos Valeurs Fondamentales</h2>
             <div class="image-gallery mb-5">
                 <div class="image-card">
                     <img src="{{ asset('images/RHDP/photo_2025-04-05_19-10-40.jpg') }}" alt="Valeurs du RHDP">
@@ -146,7 +146,7 @@
         <div class="section-divider"></div>
 
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-primary mb-4">Notre Mission Aujourd'hui</h2>
+            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Notre Mission Aujourd'hui</h2>
             <div class="md:flex md:items-center">
                 <div class="md:w-1/3 mb-4 md:mb-0 md:mr-8">
                     <div class="image-card">
