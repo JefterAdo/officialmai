@@ -567,8 +567,15 @@ p {
     margin-top: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    -moz-line-clamp: 2;
+    -ms-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -ms-box-orient: vertical;
+    box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Owl Carousel Navigation */
@@ -700,9 +707,7 @@ p {
     transform: scale(1.05); /* Zoom image slightly */
 }
 
-.news-card .card-body {
-    /* Ensure body content is well-spaced */
-}
+/* Règle supprimée car vide et non nécessaire */
 
 .news-card .card-title {
     font-size: 1.2rem; /* Slightly larger title */
