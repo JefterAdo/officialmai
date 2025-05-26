@@ -19,7 +19,7 @@
             <div class="stat-label">Membres du Présidium</div>
         </div>
         <div class="stat-card">
-            <div class="stat-number">51</div>
+            <div class="stat-number">58</div>
             <div class="stat-label">Membres du Directoire</div>
         </div>
         <div class="stat-card">
