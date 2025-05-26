@@ -219,11 +219,12 @@
                                 Médiathèque
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="mediaDropdown">
+                                <li><a class="dropdown-item" href="{{ route('mediatheque.communiques') }}">Communiqués</a></li>
+                                <li><a class="dropdown-item" href="{{ route('mediatheque.textes') }}">Textes Officiels</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.photos') }}">Photos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.videos') }}">Vidéos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.discours') }}">Discours</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.audio') }}">Audio</a></li>
-                                <li><a class="dropdown-item" href="{{ route('mediatheque.textes') }}">Textes Officiels</a></li>
                             </ul>
                         </li>
                         {{-- Moved button to the end using ms-auto on the li --}}
@@ -241,24 +242,24 @@
         @yield('content')
     </main>
 
-    <footer class="footer mt-auto py-5 bg-dark text-white">
+    <footer class="footer mt-auto py-5" style="background-color: #000000; color: white;">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
-                    <h5 class="text-primary mb-3">A PROPOS DE NOUS</h5>
+                    <h5 class="text-primary-600 mb-3">A PROPOS DE NOUS</h5>
                     <p class="mb-0">Le Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP), uni pour le développement et la stabilité de la Côte d'Ivoire.</p>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h5 class="text-primary mb-3">MILITER</h5>
+                    <h5 class="text-primary-600 mb-3">MILITER</h5>
                     <ul class="list-unstyled mb-0">
                         <li class="mb-2"><a href="{{ route('militer.adhesion') }}" class="text-white text-decoration-none hover-orange">J'adhère</a></li>
                         <li class="mb-2"><a href="{{ route('militer.propositions') }}" class="text-white text-decoration-none hover-orange">Je fais des propositions</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h5 class="text-primary mb-3">NOUS CONTACTER</h5>
+                    <h5 class="text-primary-600 mb-3">NOUS CONTACTER</h5>
                     <p class="mb-3"><i class="fas fa-envelope me-2"></i>contact@rhdpofficiel.ci</p>
-                    <h5 class="text-primary mb-3">NOUS SUIVRE</h5>
+                    <h5 class="text-primary-600 mb-3">NOUS SUIVRE</h5>
                     <div class="social-icons">
                         <a href="https://www.facebook.com/rhdpciv" class="text-white me-3 hover-orange"><i class="fab fa-facebook-f fa-lg"></i></a>
                         <a href="https://x.com/RhdpO" class="text-white me-3 hover-orange"><i class="fab fa-twitter fa-lg"></i></a>
@@ -275,7 +276,7 @@
                     <a href="{{ route('terms') }}" class="text-white text-decoration-none me-4 hover-orange">Conditions générales</a>
                     <a href="{{ route('privacy') }}" class="text-white text-decoration-none hover-orange">Politique de confidentialité</a>
                 </div>
-                <p class="text-muted mb-0">© <script>document.write(new Date().getFullYear())</script> RHDP - Tous droits réservés</p>
+                <p class="text-gray-400 mb-0">© <script>document.write(new Date().getFullYear())</script> RHDP - Tous droits réservés</p>
             </div>
         </div>
     </footer>
