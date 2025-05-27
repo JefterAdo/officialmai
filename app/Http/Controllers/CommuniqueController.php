@@ -22,7 +22,7 @@ class CommuniqueController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(12);
 
-        return view('mediatheque.communiques.index', compact('communiques'));
+        return view('communiques.index', compact('communiques'));
     }
 
     /**
@@ -44,7 +44,7 @@ class CommuniqueController extends Controller
             return $this->download($communique, $attachmentId);
         }
 
-        return view('mediatheque.communiques.show', compact('communique'));
+        return view('communiques.show', compact('communique'));
     }
     
     /**
@@ -60,42 +60,128 @@ class CommuniqueController extends Controller
         if ($attachmentId) {
             $attachment = $communique->attachments()->findOrFail($attachmentId);
             
-            // Vérifier que le fichier existe
-            if (!Storage::disk('public')->exists($attachment->file_path)) {
-                abort(404, 'Le fichier demandé n\'existe pas.');
-            }
-            
-            // Incrémenter le compteur de téléchargements
-            $attachment->increment('download_count');
-            
-            // Télécharger le fichier
-            return Storage::disk('public')->download(
-                $attachment->file_path, 
-                $attachment->download_name
-            );
+            return $this->downloadAttachment($attachment);
         }
         
         // Si aucun ID n'est spécifié, vérifier s'il y a une seule pièce jointe
         if ($communique->attachments->count() === 1) {
             $attachment = $communique->attachments->first();
             
-            // Vérifier que le fichier existe
-            if (!Storage::disk('public')->exists($attachment->file_path)) {
-                abort(404, 'Le fichier demandé n\'existe pas.');
+            return $this->downloadAttachment($attachment);
+        }
+        
+        // Si plusieurs pièces jointes sont disponibles mais qu'aucun ID n'est spécifié,
+        // créer une archive ZIP avec toutes les pièces jointes
+        if ($communique->attachments->count() > 1) {
+            return $this->downloadAllAttachments($communique);
+        }
+        
+        // Si aucune pièce jointe n'est disponible, rediriger vers la page du communiqué
+        return redirect()->route('communiques.show', $communique->slug)
+            ->with('warning', 'Aucun fichier n\'est disponible pour ce communiqué.');
+    }
+    
+    /**
+     * Télécharge une pièce jointe spécifique
+     * 
+     * @param CommuniqueAttachment $attachment
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    protected function downloadAttachment(CommuniqueAttachment $attachment)
+    {
+        $path = $attachment->file_path;
+        
+        // Vérifier si le fichier existe
+        if (!Storage::disk('public')->exists($path)) {
+            \Log::warning("Fichier non trouvé : {$path}");
+            
+            // Essayer avec un chemin alternatif
+            $basename = basename($path);
+            $altPath = "communiques/documents/{$basename}";
+            
+            if (Storage::disk('public')->exists($altPath)) {
+                \Log::info("Fichier trouvé avec chemin alternatif : {$altPath}");
+                $path = $altPath;
+            } else {
+                abort(404, 'Le fichier demandé n\'existe pas ou a été déplacé.');
             }
+        }
+        
+        // Incrémenter le compteur de téléchargements
+        $attachment->increment('download_count');
+        
+        // Télécharger le fichier
+        return Storage::disk('public')->download(
+            $path, 
+            $attachment->download_name,
+            ['Content-Type' => $attachment->mime_type ?? 'application/octet-stream']
+        );
+    }
+    
+    /**
+     * Télécharge toutes les pièces jointes d'un communiqué en tant qu'archive ZIP
+     * 
+     * @param Communique $communique
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    protected function downloadAllAttachments(Communique $communique)
+    {
+        // Créer un nom de fichier temporaire pour le ZIP
+        $zipFileName = 'communique-' . $communique->id . '-' . Str::slug(substr($communique->title, 0, 50)) . '.zip';
+        $zipFilePath = 'tmp-uploads/' . $zipFileName;
+        
+        // Créer un nouveau fichier ZIP
+        $zip = new \ZipArchive();
+        $fullZipPath = Storage::disk('public')->path($zipFilePath);
+        
+        if ($zip->open($fullZipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+            abort(500, 'Impossible de créer l\'archive ZIP.');
+        }
+        
+        $files = [];
+        
+        // Ajouter chaque pièce jointe au ZIP
+        foreach ($communique->attachments as $attachment) {
+            $path = $attachment->file_path;
+            
+            // Vérifier si le fichier existe
+            if (!Storage::disk('public')->exists($path)) {
+                // Essayer avec un chemin alternatif
+                $basename = basename($path);
+                $altPath = "communiques/documents/{$basename}";
+                
+                if (Storage::disk('public')->exists($altPath)) {
+                    $path = $altPath;
+                } else {
+                    continue; // Ignorer ce fichier s'il n'existe pas
+                }
+            }
+            
+            // Chemin complet du fichier
+            $fullPath = Storage::disk('public')->path($path);
+            
+            // Ajouter au ZIP avec le nom original
+            $zip->addFile($fullPath, $attachment->download_name);
             
             // Incrémenter le compteur de téléchargements
             $attachment->increment('download_count');
             
-            // Télécharger le fichier
-            return Storage::disk('public')->download(
-                $attachment->file_path, 
-                $attachment->download_name
-            );
+            $files[] = $path;
         }
         
-        // Si plusieurs pièces jointes sont disponibles, rediriger vers la page du communiqué
-        return redirect()->route('mediatheque.communiques.show', $communique->slug);
+        $zip->close();
+        
+        // Vérifier si l'archive a été créée et contient des fichiers
+        if (!Storage::disk('public')->exists($zipFilePath) || count($files) === 0) {
+            abort(404, 'Aucun fichier n\'est disponible pour ce communiqué.');
+        }
+        
+        // Télécharger l'archive ZIP
+        return Storage::disk('public')->download(
+            $zipFilePath, 
+            $zipFileName,
+            ['Content-Type' => 'application/zip']
+        );
     }
     
     /**

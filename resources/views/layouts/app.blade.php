@@ -204,7 +204,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="actualitesDropdown">
                                 <li><a class="dropdown-item" href="{{ route('actualites.index') }}">Articles</a></li>
-                                <li><a class="dropdown-item" href="{{ route('actualites.communiques') }}">Communiqués</a></li>
+                                <li><a class="dropdown-item" href="{{ route('communiques.index') }}">Communiqués</a></li>
                             </ul>
                         </li>
                          <li class="nav-item dropdown">
@@ -221,7 +221,7 @@
                                 Médiathèque
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="mediaDropdown">
-                                <li><a class="dropdown-item" href="{{ route('mediatheque.communiques') }}">Communiqués</a></li>
+                                <li><a class="dropdown-item" href="{{ route('communiques.index') }}">Communiqués</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.textes') }}">Textes Officiels</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.photos') }}">Photos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.videos') }}">Vidéos</a></li>
@@ -278,7 +278,7 @@
                     <a href="{{ route('terms') }}" class="text-white text-decoration-none me-4 hover-orange">Conditions générales</a>
                     <a href="{{ route('privacy') }}" class="text-white text-decoration-none hover-orange">Politique de confidentialité</a>
                 </div>
-                <p class="text-gray-400 mb-0">© <script>document.write(new Date().getFullYear())</script> RHDP - Tous droits réservés</p>
+                <p class="text-gray-400 mb-0">  RHDP - Tous droits réservés</p>
             </div>
         </div>
     </footer>

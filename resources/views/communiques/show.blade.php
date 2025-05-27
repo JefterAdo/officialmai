@@ -119,7 +119,7 @@
 @section('content')
 <div class="communique-header">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <a href="{{ route('mediatheque.communiques') }}" class="btn-back">
+        <a href="{{ route('communiques.index') }}" class="btn-back">
             <i class="fas fa-arrow-left"></i>
             Retour aux communiqués
         </a>
@@ -161,7 +161,7 @@
                 <div class="document-container mb-8">
                     <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                         <h3 class="text-lg font-medium text-gray-900">Pièce jointe #{{ $index + 1 }}</h3>
-                        <a href="{{ route('mediatheque.communiques.show', ['slug' => $communique->slug, 'download' => 1, 'attachment' => $attachment->id]) }}" 
+                        <a href="{{ route('communiques.show', ['slug' => $communique->slug, 'download' => 1, 'attachment' => $attachment->id]) }}" 
                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
                             <i class="fas fa-download mr-1"></i>
                             Télécharger
@@ -205,14 +205,14 @@
         @endif
         
         <div class="flex flex-wrap items-center justify-between mt-6">
-            <a href="{{ route('mediatheque.communiques') }}" class="btn-back">
+            <a href="{{ route('communiques.index') }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i>
                 Retour à la liste
             </a>
             
             @if(!$communique->attachments->isEmpty() && $communique->attachments->count() > 1)
                 <div class="flex space-x-3">
-                    <a href="{{ route('mediatheque.communiques.show', ['slug' => $communique->slug, 'download' => 1]) }}" 
+                    <a href="{{ route('communiques.show', ['slug' => $communique->slug, 'download' => 1]) }}" 
                        class="document-download-btn">
                         <i class="fas fa-download"></i>
                         Télécharger tout (ZIP)
@@ -240,9 +240,6 @@
 
 @push('scripts')
 <script>
-    // Vérifier si nous devons forcer le téléchargement
-    @if(request()->has('download') && request()->download == 1)
-        window.location.href = '{{ route('mediatheque.communiques.download', $communique->slug) }}';
-    @endif
+    // Le JavaScript pour forcer le téléchargement a été supprimé car géré côté serveur.
 </script>
 @endpush

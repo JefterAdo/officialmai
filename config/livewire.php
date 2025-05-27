@@ -64,21 +64,22 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk' => 'public',    // Utiliser explicitement le disque public
+        'disk' => 'local',     // Utiliser le disque local pour les fichiers temporaires
         'rules' => [
             'file',
-            'mimes:jpg,jpeg,png,gif,webp,svg',
+            'mimes:jpg,jpeg,png,gif,webp,svg,pdf,doc,docx',
             'max:12288' // 12MB max
         ],
-        'directory' => 'tmp-uploads',    // Utiliser un dossier différent pour éviter les conflits
+        'directory' => 'livewire-tmp',    // Utiliser un dossier dédié distinct de tmp-uploads
         'middleware' => 'throttle:60,1',
         'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...
             'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
             'mov', 'avi', 'wmv', 'mp3', 'm4a',
             'jpg', 'jpeg', 'mpga', 'webp', 'wma',
+            'pdf', 'doc', 'docx',
         ],
-        'max_upload_time' => 5, // Max duration (in minutes) before an upload is invalidated...
-        'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...
+        'max_upload_time' => 10, // Augmentation de la durée avant invalidation (en minutes)
+        'cleanup' => true, // Nettoyage automatique des fichiers temporaires
     ],
 
     /*

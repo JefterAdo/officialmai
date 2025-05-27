@@ -3,7 +3,7 @@
 @section('title', 'Faites vos Propositions - RHDP')
 
 @section('content')
-<div class="page-banner" style="background-image: url('{{ asset('images/rhdp_foule.jpg') }}');">
+<div class="page-banner" style="background-image: url('{{ asset('storage/images/militants.jpg') }}');">
     <div class="container">
         <div class="row">
             <div class="col-12">

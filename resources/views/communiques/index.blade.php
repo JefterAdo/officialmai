@@ -237,12 +237,12 @@
                                 </span>
                                 
                                 <div class="document-actions">
-                                    <a href="{{ route('mediatheque.communiques.show', $communique->slug) }}" 
+                                    <a href="{{ route('communiques.show', $communique->slug) }}" 
                                        class="btn-view"
                                        title="Voir le communiqué">
                                         <i class="far fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('mediatheque.communiques.show', $communique->slug) }}?download=1" 
+                                    <a href="{{ route('communiques.show', $communique->slug) }}?download=1" 
                                        class="btn-download"
                                        title="Télécharger">
                                         <i class="fas fa-download"></i>

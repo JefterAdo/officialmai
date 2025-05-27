@@ -140,36 +140,66 @@ class CommuniqueResource extends Resource
                                     ->appendFiles()
                                     ->preserveFilenames()
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
-                                        // Vérifier le type MIME du fichier
-                                        $mimeType = $file->getMimeType();
-                                        $originalName = $file->getClientOriginalName();
-                                        
-                                        // Journaliser les informations sur le fichier
-                                        \Log::info('Tentative de téléchargement de fichier', [
-                                            'nom' => $originalName,
-                                            'type' => $mimeType,
-                                            'taille' => $file->getSize(),
-                                        ]);
-                                        
                                         try {
-                                            // Télécharger le fichier
-                                            $path = $file->store('communiques/documents', 'public');
+                                            // Générer un nom de fichier sécurisé basé sur le nom original
+                                            $originalName = $file->getClientOriginalName();
+                                            $extension = $file->getClientOriginalExtension() ?: pathinfo($originalName, PATHINFO_EXTENSION);
+                                            $cleanName = preg_replace('/[^\w\-\.]/', '_', pathinfo($originalName, PATHINFO_FILENAME));
+                                            $secureName = $cleanName . '_' . uniqid() . '.' . $extension;
+                                            
+                                            // Déterminer le type MIME de façon sécurisée
+                                            try {
+                                                $mimeType = $file->getMimeType() ?: 'application/octet-stream';
+                                            } catch (\Exception $e) {
+                                                \Log::warning("Impossible de déterminer le type MIME, utilisation d'un type par défaut", [
+                                                    'fichier' => $originalName, 
+                                                    'erreur' => $e->getMessage()
+                                                ]);
+                                                $mimeType = 'application/octet-stream';
+                                            }
+                                            
+                                            // Journaliser les informations sur le fichier
+                                            \Log::info('Tentative de téléchargement de fichier', [
+                                                'nom_original' => $originalName,
+                                                'nom_sécurisé' => $secureName,
+                                                'type' => $mimeType,
+                                                'taille' => $file->getSize(),
+                                            ]);
+                                            
+                                            // Obtenir le chemin temporaire local du fichier
+                                            $tempPath = $file->getRealPath();
+                                            
+                                            if (!file_exists($tempPath)) {
+                                                throw new \Exception("Le fichier temporaire n'existe pas: {$tempPath}");
+                                            }
+                                            
+                                            // Stocker le fichier directement avec un nouveau nom
+                                            $destinationPath = 'communiques/documents/' . $secureName;
+                                            
+                                            // Utiliser l'API directe de stockage plutôt que les méthodes du fichier temporaire
+                                            $result = Storage::disk('public')->put($destinationPath, file_get_contents($tempPath));
+                                            
+                                            if (!$result) {
+                                                throw new \Exception("Impossible d'enregistrer le fichier sur le disque");
+                                            }
                                             
                                             // Vérifier si le fichier a été correctement enregistré
-                                            if (!Storage::disk('public')->exists($path)) {
+                                            if (!Storage::disk('public')->exists($destinationPath)) {
                                                 throw new \Exception("Le fichier n'a pas pu être enregistré sur le disque");
                                             }
                                             
                                             \Log::info('Fichier téléchargé avec succès', [
-                                                'chemin' => $path,
-                                                'taille' => Storage::disk('public')->size($path),
+                                                'nom_original' => $originalName,
+                                                'chemin' => $destinationPath,
+                                                'taille' => filesize($tempPath),
                                             ]);
                                             
-                                            return $originalName;
+                                            // Retourner le chemin complet (pas juste le nom original)
+                                            return $destinationPath;
                                         } catch (\Exception $e) {
                                             \Log::error('Erreur lors du téléchargement du fichier', [
                                                 'erreur' => $e->getMessage(),
-                                                'fichier' => $originalName,
+                                                'fichier' => $file->getClientOriginalName() ?? 'inconnu',
                                                 'trace' => $e->getTraceAsString(),
                                             ]);
                                             

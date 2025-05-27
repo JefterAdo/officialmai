@@ -320,6 +320,21 @@
         transform: translateX(-3px);
     }
     
+    /* Communique File Section */
+    .communique-file-section {
+        /* Styles for the new communique file section */
+    }
+
+    .btn-rhdp-orange {
+        background-color: #FF6B00 !important;
+        border-color: #FF6B00 !important;
+        color: white !important;
+    }
+    .btn-rhdp-orange:hover {
+        background-color: #e05e00 !important;
+        border-color: #c75000 !important;
+    }
+
     /* Responsive Adjustments */
     @media (max-width: 768px) {
         .article-title {
@@ -390,6 +405,26 @@
             <div class="article-content">
                 {!! $news->content !!}
             </div>
+
+            @if(isset($news->file_path) && $news->file_path)
+                <div class="communique-file-section my-4 p-4 border rounded bg-light">
+                    <h4 class="mb-3">Fichier du Communiqué</h4>
+                    @if(isset($news->file_type) && strtolower($news->file_type) == 'image')
+                        <div class="mb-3 text-center">
+                            <img src="{{ asset('storage/' . $news->file_path) }}" alt="Aperçu du communiqué: {{ $news->title }}" class="img-fluid rounded shadow-sm" style="max-height: 70vh; width: auto; border: 1px solid #ddd;">
+                        </div>
+                    @elseif(isset($news->file_type))
+                        <p><i class="fas fa-info-circle"></i> Type de fichier : <strong>{{ strtoupper($news->file_type) }}</strong></p>
+                    @endif
+
+                    <a href="{{ asset('storage/' . $news->file_path) }}" download="{{ basename($news->file_path) }}" class="btn btn-primary btn-rhdp-orange">
+                        <i class="fas fa-download"></i> Télécharger le fichier
+                        @if(isset($news->file_type) && method_exists($news, 'getHumanFileSize') && $news->getHumanFileSize())
+                            ({{ $news->getHumanFileSize() }})
+                        @endif
+                    </a>
+                </div>
+            @endif
             
             <div class="social-share">
                 <div class="share-label">Partager cet article :</div>

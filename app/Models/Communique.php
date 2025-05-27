@@ -24,9 +24,10 @@ class Communique extends Model
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
+        'has_attachments' => 'boolean',
     ];
 
-    protected $appends = ['file_url', 'human_file_size'];
+    protected $appends = ['file_url', 'human_file_size', 'file_path', 'file_type'];
 
     /**
      * Obtenir les pièces jointes du communiqué
@@ -58,6 +59,24 @@ class Communique extends Model
         $power = $size > 0 ? floor(log($size, 1024)) : 0;
         
         return number_format($size / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
+    }
+
+    /**
+     * Obtenir le chemin du premier fichier attaché.
+     */
+    public function getFilePathAttribute()
+    {
+        $attachment = $this->attachments()->first();
+        return $attachment ? $attachment->file_path : null;
+    }
+
+    /**
+     * Obtenir le type du premier fichier attaché.
+     */
+    public function getFileTypeAttribute()
+    {
+        $attachment = $this->attachments()->first();
+        return $attachment ? $attachment->file_type : null;
     }
 
     /**
