@@ -1,0 +1,119 @@
+/* 
+ * Corrections pour le slider principal
+ * Ces styles résolvent les problèmes de flash blanc et de disparition au défilement
+ */
+
+/* Base du carousel */
+.carousel {
+    position: relative;
+    perspective: 1000px;
+    overflow: visible;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* Correction des transitions */
+.carousel-fade .carousel-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+    visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+.carousel-fade .carousel-item.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Correction pour le z-index et l'affichage lors du défilement */
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+    opacity: 0;
+    z-index: 0;
+}
+
+.carousel-fade .carousel-item-next.carousel-item-start,
+.carousel-fade .carousel-item-prev.carousel-item-end {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Indicateurs du carousel */
+.carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.carousel-indicators button {
+    position: relative;
+    flex: 0 1 auto;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-indicators button.active {
+    background-color: #fff;
+    width: 12px;
+    height: 12px;
+}
+
+/* Contrôles du carousel */
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    color: #fff;
+    text-align: center;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    opacity: 0.9;
+}
+
+/* Corrections pour l'affichage sur mobile */
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 500px !important;
+    }
+}

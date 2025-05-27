@@ -86,7 +86,7 @@
         <div class="section-divider"></div>
 
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Nos Racines et Notre Histoire</h2>
+            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Nos racines et notre Histoire</h2>
             <div class="md:flex md:items-center">
                 <div class="md:w-2/3 md:pr-8">
                     <p class="text-gray-700 mb-4">
@@ -110,7 +110,7 @@
         <div class="section-divider"></div>
 
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Nos Valeurs Fondamentales</h2>
+            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Nos valeurs fondamentales</h2>
             <div class="image-gallery mb-5">
                 <div class="image-card">
                     <img src="{{ asset('images/RHDP/photo_2025-04-05_19-10-40.jpg') }}" alt="Valeurs du RHDP">
@@ -137,7 +137,7 @@
                     <p>Nous promouvons une société plus juste et solidaire, où personne n'est laissé pour compte.</p>
                 </div>
                 <div class="value-block">
-                    <h3><i class="fas fa-balance-scale me-2"></i>Démocratie & État de Droit</h3>
+                    <h3><i class="fas fa-balance-scale me-2"></i>Démocratie & État de droit</h3>
                     <p>Nous sommes attachés aux principes démocratiques, au respect des institutions et des libertés.</p>
                 </div>
             </div>
@@ -146,7 +146,7 @@
         <div class="section-divider"></div>
 
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Notre Mission Aujourd'hui</h2>
+            <h2 class="text-2xl font-semibold mb-4" style="color: #FF6B00;">Notre mission aujourd'hui</h2>
             <div class="md:flex md:items-center">
                 <div class="md:w-1/3 mb-4 md:mb-0 md:mr-8">
                     <div class="image-card">

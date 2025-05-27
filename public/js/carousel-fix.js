@@ -94,22 +94,38 @@ class TailwindCarousel {
             index = this.options.wrap ? 0 : this.slides.length - 1;
         }
         
-        // Masquer tous les slides
-        this.slides.forEach((slide, i) => {
-            slide.classList.remove('active');
-            slide.setAttribute('hidden', '');
-            if (this.indicators[i]) {
-                this.indicators[i].setAttribute('aria-current', 'false');
-                this.indicators[i].classList.remove('active');
-            }
-        });
+        // Éviter de réafficher le même slide
+        if (index === this.activeIndex) return;
         
-        // Afficher le slide actif
-        this.slides[index].classList.add('active');
+        // Préparer le nouveau slide avant de masquer l'ancien
+        // pour éviter les flashs blancs
+        this.slides[index].style.opacity = '0';
         this.slides[index].removeAttribute('hidden');
+        
+        // Forcer un reflow pour que la transition s'applique correctement
+        void this.slides[index].offsetHeight;
+        
+        // Appliquer la transition sur le nouveau slide
+        this.slides[index].style.opacity = '1';
+        this.slides[index].classList.add('active');
+        
+        // Mettre à jour les indicateurs
         if (this.indicators[index]) {
             this.indicators[index].setAttribute('aria-current', 'true');
             this.indicators[index].classList.add('active');
+        }
+        
+        // Masquer l'ancien slide seulement après un délai
+        const previousIndex = this.activeIndex;
+        if (previousIndex !== null && previousIndex !== index) {
+            setTimeout(() => {
+                this.slides[previousIndex].classList.remove('active');
+                this.slides[previousIndex].setAttribute('hidden', '');
+                if (this.indicators[previousIndex]) {
+                    this.indicators[previousIndex].setAttribute('aria-current', 'false');
+                    this.indicators[previousIndex].classList.remove('active');
+                }
+            }, 600); // Légèrement plus long que la transition CSS
         }
         
         this.activeIndex = index;

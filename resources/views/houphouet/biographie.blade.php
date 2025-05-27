@@ -33,7 +33,7 @@
                 </section>
 
                 <section class="mb-5">
-                    <h2 class="h3 fw-semibold mb-3">Débuts en Politique et Lutte Syndicale</h2>
+                    <h2 class="h3 fw-semibold mb-3">Débuts en politique et Lutte Syndicale</h2>
                     <p>
                         Confronté aux injustices du système colonial, notamment envers les planteurs africains, il fonde en 1944 le Syndicat Agricole Africain (SAA). Ce mouvement devient rapidement une force politique majeure. Élu député à l'Assemblée constituante française en 1945, il œuvre activement pour l'abolition du travail forcé, obtenant gain de cause avec la loi du 11 avril 1946, dite "loi Houphouët-Boigny". Cette victoire historique consolide sa position comme leader incontesté du mouvement nationaliste ivoirien.
                     </p>
@@ -101,14 +101,7 @@
                     </ul>
                 </div>
 
-                <div class="p-4">
-                    <h4 class="fst-italic text-primary">Explorer Plus</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-decoration-none">Chronologie Détaillée</a></li>
-                        <li><a href="#" class="text-decoration-none">Discours Emblématiques</a></li>
-                        <li><a href="#" class="text-decoration-none">Citations Célèbres</a></li>
-                    </ul>
-                </div>
+                <!-- Section Explorer Plus supprimée -->
             </aside>
         </div>
     </div>

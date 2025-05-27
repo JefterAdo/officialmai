@@ -81,9 +81,9 @@ Route::middleware(['web'])->group(function () {
         Route::get('/photos/{gallery:slug}', [PhotoController::class, 'show'])->name('photos.show');
         Route::get('/discours', [SpeechController::class, 'index'])->name('discours');
         Route::get('/discours/{slug}', [SpeechController::class, 'show'])->name('discours.show');
-        Route::get('/audio', function () {
-            return view('mediatheque.audio');
-        })->name('audio');
+        // Route::get('/audio', function () {
+        //     return view('mediatheque.audio');
+        // })->name('audio'); // Désactivé temporairement
         Route::get('/textes', [\App\Http\Controllers\Mediatheque\OfficialTextsController::class, 'index'])->name('textes');
     });
 

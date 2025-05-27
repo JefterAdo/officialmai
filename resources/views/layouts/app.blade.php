@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Animate On Scroll (AOS) CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Slider Fix CSS -->
+    <link href="{{ asset('css/slider-fix.css') }}" rel="stylesheet">
 
     <style>
         /* Header Styling */
@@ -227,7 +229,9 @@
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.photos') }}">Photos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.videos') }}">Vidéos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.discours') }}">Discours</a></li>
+                                {{-- Section Audio temporairement désactivée
                                 <li><a class="dropdown-item" href="{{ route('mediatheque.audio') }}">Audio</a></li>
+                                --}}
                             </ul>
                         </li>
                         {{-- Moved button to the end using ms-auto on the li --}}
@@ -292,6 +296,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Animate On Scroll (AOS) JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom CSS -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <!-- Slider Fix CSS -->
+    <link href="{{ asset('css/slider-fix.css') }}" rel="stylesheet">
     <!-- Custom JS -->
     <script src="{{ asset('js/script.js') }}"></script>
 

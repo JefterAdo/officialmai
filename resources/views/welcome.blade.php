@@ -535,29 +535,6 @@
         margin-bottom: 2rem;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
-
-    .slider-cta-container {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .slider-cta {
-        padding: 1rem 2.5rem;
-        font-size: 1.2rem;
-        border-radius: 50px;
-        transition: all 0.3s ease;
-    }
-
-    .slider-cta:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .slider-item {
             height: 60vh;
         }
 
@@ -1076,23 +1053,17 @@
     <script src="{{ asset('js/carousel-fix.js') }}"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const flashText = document.querySelector('.flash-info-text-inner-animated');
-        if (!flashText) return;
-        let pos = 0;
-        let width = flashText.offsetWidth;
-        let container = flashText.parentElement.offsetWidth;
-        function animate() {
-            pos--;
-            if (Math.abs(pos) > width) {
-                pos = container;
-            }
-            flashText.style.transform = `translateX(${pos}px)`;
-            requestAnimationFrame(animate);
-        }
-        animate();
-        // Pause au survol
-        flashText.addEventListener('mouseenter', () => cancelAnimationFrame(animate));
-        flashText.addEventListener('mouseleave', () => animate());
+        // Initialiser tous les carousels Tailwind sur la page
+        const carousels = document.querySelectorAll('[data-carousel]');
+        carousels.forEach(carousel => {
+            new TailwindCarousel(carousel, {
+                interval: 5000,
+                autoplay: true,
+                wrap: true
+            });
+        });
+        
+        console.log('Carousels initialisés:', carousels.length);
     });
     </script>
 @endpush
