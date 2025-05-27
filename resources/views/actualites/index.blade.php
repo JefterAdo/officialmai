@@ -149,15 +149,17 @@
                     Toutes les actualités
                 </a>
                 @foreach($categories as $category)
+                @if(!in_array(strtolower($category->name), ['communiqués', 'communiques', 'documents']))
                 <a href="{{ route('actualites.category', $category->slug) }}" 
-                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 {{ request()->category == $category->slug ? 'bg-[#FF6B00] text-white' : 'bg-[#FF6B00]/10 text-[#FF6B00] border border-[#FF6B00]/50 hover:bg-[#FF6B00]/10' }}">
+                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 {{ request()->category == $category->slug ? 'bg-[#FF6B00] text-white' : 'bg-[#FF6B00]/10 text-[#FF6B00] border border-[#FF6B00]/50 hover:bg-[#FF6B00]/10' }}" style="color: #FF6B00; border-color: #FF6B00;">
                     <span class="flex items-center gap-2">
                         {{ $category->name }}
-                        <span class="bg-[#FF6B00]/10 text-[#FF6B00] px-2 py-0.5 rounded-full text-xs font-medium">
+                        <span class="bg-[#FF6B00]/10 px-2 py-0.5 rounded-full text-xs font-medium" style="color: #FF6B00; background-color: rgba(255, 107, 0, 0.1);">
                             {{ $category->news_count ?? 0 }}
                         </span>
                     </span>
                 </a>
+                @endif
                 @endforeach
             </div>
         </div>
@@ -175,8 +177,8 @@
                 </div>
                 <div class="news-content">
                     <div class="flex flex-wrap gap-2 mb-2">
-                        @if($article->category)
-                        <span class="px-3 py-1 bg-[#FF6B00]/10 text-[#FF6B00] text-xs font-medium rounded-full">
+                        @if($article->category && !in_array(strtolower($article->category->name), ['communiqués', 'communiques', 'documents']))
+                        <span class="px-3 py-1 bg-[#FF6B00] text-white text-xs font-medium rounded-full">
                             {{ $article->category->name }}
                         </span>
                         @endif
