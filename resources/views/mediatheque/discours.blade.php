@@ -49,41 +49,31 @@
     }
 
     .video-badge {
-        background-color: #dc3545;
+        background-color: #FF6B00;
         color: white;
     }
 
     .audio-badge {
-        background-color: #198754;
+        background-color: #FF6B00;
         color: white;
     }
 </style>
 @endpush
 
 @section('content')
-<div class="page-banner" style="background-image: url('{{ asset('images/banner_placeholder_3.jpg') }}');">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-white">Discours Officiels</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a href="/">Accueil</a></li>
-                        <li class="breadcrumb-item"><a href="#">Médiathèque</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Discours</li>
-                    </ol>
-                </nav>
-            </div>
+<div class="container mt-5 mb-4">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h5 class="sub-title" style="color: #FF6B00;">MÉDIATHÈQUE</h5>
+            <h1 class="section-title fw-bold mb-3" style="color: #FF6B00;">Discours Officiels</h1>
+            <p class="section-subtitle lead text-muted">Retrouvez les discours marquants des figures clés du RHDP.</p>
         </div>
     </div>
 </div>
 
 <section class="section-padding">
     <div class="container">
-        <div class="section-title text-center mb-5">
-            <h2>Paroles Engagées</h2>
-            <p>Retrouvez les discours marquants des figures clés du RHDP.</p>
-        </div>
+        <!-- Section title supprimé, déjà présent dans l'en-tête -->
 
         <div class="row g-4">
             @forelse($speeches as $speech)
@@ -132,8 +122,8 @@
                             @endif
 
                             <div class="mt-3">
-                                <a href="{{ route('mediatheque.discours.show', $speech->slug) }}" class="btn btn-primary">
-                                    Lire le discours
+                                <a href="{{ route('mediatheque.discours.show', $speech->slug) }}" class="btn" style="color: #FF6B00; border: 1px solid #FF6B00; padding: 0.5rem 1rem; font-weight: 500;">
+                                    Lire le discours <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
                             </div>
                         </div>

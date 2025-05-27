@@ -12,7 +12,7 @@
     }
 
     .speech-title {
-        color: var(--bs-primary);
+        color: #FF6B00;
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 1rem;
@@ -41,7 +41,7 @@
         font-size: 1.25rem;
         font-weight: 600;
         margin-bottom: 1rem;
-        color: var(--bs-primary);
+        color: #FF6B00;
     }
 
     .file-download {
@@ -73,7 +73,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background-color: var(--bs-primary);
+        background-color: #FF6B00;
         color: white;
         padding: 0.75rem 1.5rem;
         border-radius: 0.375rem;
@@ -82,7 +82,7 @@
     }
 
     .download-button:hover {
-        background-color: var(--bs-primary-dark);
+        background-color: #E65C00;
         color: white;
     }
 
@@ -96,7 +96,7 @@
     }
 
     .back-link:hover {
-        color: var(--bs-primary);
+        color: #FF6B00;
     }
 
     .related-speeches {
@@ -117,7 +117,7 @@
 
 @section('content')
 <main class="container py-5">
-    <a href="{{ route('mediatheque.discours') }}" class="back-link">
+    <a href="{{ route('mediatheque.discours') }}" class="back-link" style="color: #6c757d; text-decoration: none;">
         <i class="fas fa-arrow-left"></i>
         Retour aux discours
     </a>

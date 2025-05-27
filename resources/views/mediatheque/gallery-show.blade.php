@@ -50,7 +50,7 @@
 @section('content')
 <div class="gallery-header">
     <div class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold text-primary mb-3">{{ $gallery->title }}</h1>
+        <h1 class="text-3xl font-bold text-orange-600 mb-3">{{ $gallery->title }}</h1>
         @if($gallery->event_date)
             <p class="text-gray-600 mb-3">
                 <i class="fas fa-calendar-alt mr-2"></i>
@@ -88,7 +88,7 @@
     @endif
 
     <div class="mt-8">
-        <a href="{{ route('mediatheque.photos') }}" class="btn btn-outline-primary">
+        <a href="{{ route('mediatheque.photos') }}" class="btn btn-outline-orange">
             <i class="fas fa-arrow-left mr-2"></i>
             Retour aux galeries
         </a>

@@ -6,15 +6,16 @@
 @section('content')
 <section class="video-gallery-section">
     <div class="container">
-        <div class="section-header text-center mb-4">
-            <h2 class="section-title fw-bold text-primary">Vidéos du RHDP</h2>
+        <div class="section-header text-center mb-5">
+            <h5 class="sub-title" style="color: #FF6B00;">MÉDIATHÈQUE</h5>
+            <h1 class="section-title fw-bold mb-3" style="color: #FF6B00;">Vidéos du RHDP</h1>
             <p class="section-subtitle lead text-muted">Découvrez les discours, événements et messages importants du parti en vidéo.</p>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 mb-4">
             @forelse ($videos as $video)
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="video-thumbnail-card h-100 shadow-sm rounded overflow-hidden border-0 transition-all">
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="video-thumbnail-card h-100 shadow rounded overflow-hidden border-0 transition-all card-hover-effect">
                         <div class="video-thumbnail position-relative">
                             <img src="{{ $video['snippet']['thumbnails']['high']['url'] }}" 
                                  class="w-100 img-fluid" 
@@ -22,15 +23,22 @@
                             <a href="{{ route('mediatheque.videos.show', $video['id']['videoId']) }}" 
                                class="play-btn-wrapper" 
                                aria-label="Lancer la vidéo {{ $video['snippet']['title'] }}">
-                                <div class="play-btn-circle">
+                                <div class="play-btn-circle" style="background-color: #FF6B00;">
                                     <i class="fas fa-play"></i>
                                 </div>
                             </a>
+                            <div class="video-duration position-absolute bottom-0 right-0 bg-dark text-white px-2 py-1 m-2 rounded-pill small">
+                                <i class="fas fa-clock me-1"></i> YouTube
+                            </div>
                         </div>
-                        <div class="video-content p-2">
-                            <h6 class="video-title mb-1 small fw-bold">{{ Str::limit($video['snippet']['title'], 40) }}</h6>
-                            <div class="video-meta d-flex align-items-center">
-                                <span class="text-muted small">{{ \Carbon\Carbon::parse($video['snippet']['publishedAt'])->format('d/m/Y') }}</span>
+                        <div class="video-content p-3">
+                            <h5 class="video-title mb-2 fw-bold" style="color: #FF6B00;">{{ Str::limit($video['snippet']['title'], 60) }}</h5>
+                            <div class="video-description mb-2 small text-muted">
+                                {{ Str::limit($video['snippet']['description'] ?? 'Vidéo officielle du RHDP', 100) }}
+                            </div>
+                            <div class="video-meta d-flex justify-content-between align-items-center">
+                                <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> {{ \Carbon\Carbon::parse($video['snippet']['publishedAt'])->format('d/m/Y') }}</span>
+                                <a href="{{ route('mediatheque.videos.show', $video['id']['videoId']) }}" class="btn btn-sm" style="color: #FF6B00; border: 1px solid #FF6B00;">Voir <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
@@ -49,7 +57,7 @@
         </div>
 
         <div class="text-center mt-5">
-            <a href="https://www.youtube.com/@rassemblementwebtv5828" target="_blank" class="btn btn-primary">
+            <a href="https://www.youtube.com/@rassemblementwebtv5828" target="_blank" class="btn" style="color: #FF6B00; border: 1px solid #FF6B00; padding: 0.5rem 1rem; font-weight: 500;">
                 Voir toutes les vidéos sur YouTube <i class="fas fa-external-link-alt ms-1"></i>
             </a>
         </div>
@@ -78,6 +86,53 @@
 
 @push('styles')
 <style>
+    .video-gallery-section {
+        padding: 3rem 0;
+        background-color: #f8f9fa;
+    }
+    
+    .play-btn-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .video-thumbnail-card:hover .play-btn-wrapper {
+        opacity: 1;
+    }
+    
+    .play-btn-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #FF6B00;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+    
+    .play-btn-circle:hover {
+        transform: scale(1.1);
+    }
+    
+    .video-thumbnail img {
+        transition: transform 0.5s ease;
+    }
+    
+    .video-thumbnail-card:hover img {
+        transform: scale(1.05);
+    }
+    
     .page-banner {
         padding: 80px 0;
         background-color: #fd7e14;

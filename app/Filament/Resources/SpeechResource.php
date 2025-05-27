@@ -73,7 +73,28 @@ class SpeechResource extends Resource
                                 if ($state) {
                                     $extension = pathinfo($state, PATHINFO_EXTENSION);
                                     $set('file_type', $extension);
-                                    $set('file_size', filesize(storage_path('app/public/' . $state)));
+                                    
+                                    // Gérer correctement les chemins de fichiers temporaires et permanents
+                                    try {
+                                        // Vérifier si le fichier est un chemin relatif (stocké) ou un chemin temporaire
+                                        if (str_starts_with($state, 'livewire-tmp/')) {
+                                            // Fichier temporaire Livewire
+                                            $tempPath = storage_path('app/' . $state);
+                                            if (file_exists($tempPath)) {
+                                                $set('file_size', filesize($tempPath));
+                                            }
+                                        } else {
+                                            // Fichier déjà stocké dans public
+                                            $publicPath = storage_path('app/public/' . $state);
+                                            if (file_exists($publicPath)) {
+                                                $set('file_size', filesize($publicPath));
+                                            }
+                                        }
+                                    } catch (\Exception $e) {
+                                        // En cas d'erreur, ne pas bloquer l'interface
+                                        // Nous mettrons à jour la taille lors de la sauvegarde
+                                        $set('file_size', 0);
+                                    }
                                 }
                             })
                             ->label('Fichier (PDF, DOCX)'),

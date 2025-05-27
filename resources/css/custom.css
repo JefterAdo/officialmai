@@ -388,3 +388,113 @@ input:checked + .toggle-slider:before {
         margin: 2cm;
     }
 }
+
+/* RHDP Orange Theme - Remplacer tous les éléments bleus par la couleur orange du RHDP */
+
+/* Variables de couleur RHDP */
+:root {
+    --primary-color: #FF6B00; /* Orange RHDP */
+    --primary-hover: #E65C00; /* Orange plus foncé pour le hover */
+    --primary-active: #D45400; /* Orange encore plus foncé pour le active */
+    --primary-light: #FFE3CC; /* Orange clair pour les arrière-plans */
+}
+
+/* Texte primaire - remplace le bleu par l'orange */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-blue-500, .text-blue-600, .text-blue-700 {
+    color: var(--primary-color) !important;
+}
+
+/* Boutons outline */
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    color: white;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Bouton orange outline */
+.btn-outline-orange {
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    background-color: transparent;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.btn-outline-orange:hover {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+/* Boutons pleins */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.btn-primary:active {
+    background-color: var(--primary-active) !important;
+    border-color: var(--primary-active) !important;
+}
+
+/* Liens */
+a.text-primary, a.text-blue-500, a.text-blue-600, a.text-blue-700 {
+    color: var(--primary-color) !important;
+}
+
+a.text-primary:hover, a.text-blue-500:hover, a.text-blue-600:hover, a.text-blue-700:hover {
+    color: var(--primary-hover) !important;
+}
+
+/* Pagination */
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.pagination .page-link {
+    color: var(--primary-color);
+}
+
+.pagination .page-link:hover {
+    color: var(--primary-hover);
+    background-color: var(--primary-light);
+    border-color: var(--primary-hover);
+}
+
+/* Classes Tailwind */
+.text-orange-600 {
+    color: var(--primary-color) !important;
+}
+
+/* Arrière-plans */
+.bg-primary, .bg-blue-500, .bg-blue-600, .bg-blue-700 {
+    background-color: var(--primary-color) !important;
+}
+
+/* Bordures */
+.border-primary, .border-blue-500, .border-blue-600, .border-blue-700 {
+    border-color: var(--primary-color) !important;
+}

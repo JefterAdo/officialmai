@@ -51,7 +51,7 @@
         font-size: 1.25rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: #333;
+        color: #FF6B00;
     }
     
     .gallery-date {
@@ -91,8 +91,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <h5 class="sub-title text-primary">MÉDIATHÈQUE</h5>
-                <h1 class="mb-4">Galeries Photos</h1>
+                <h5 class="sub-title text-orange-600">MÉDIATHÈQUE</h5>
+                <h1 class="mb-4 text-orange-600">Galeries Photos</h1>
                 <p class="lead">Découvrez les moments forts du RHDP à travers nos galeries photos.</p>
             </div>
         </div>
@@ -101,9 +101,12 @@
 
 <div class="container">
     @php
+        // Charger les galeries avec seulement la première image pour l'affichage
+        // et un comptage séparé pour le nombre total d'images
         $galleries = App\Models\Gallery::with(['images' => function($query) {
             $query->orderBy('order')->take(1);
         }])
+        ->withCount('images') // Ajoute un attribut images_count à chaque galerie
         ->where('is_published', true)
         ->orderBy('event_date', 'desc')
         ->paginate(12);
@@ -140,7 +143,7 @@
                             @endif
                             <div class="gallery-count">
                                 <i class="fas fa-images"></i>
-                                {{ $gallery->images->count() }} photos
+                                {{ $gallery->images_count }} photos
                             </div>
                         </div>
                     </div>
