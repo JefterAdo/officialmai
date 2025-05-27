@@ -7,7 +7,7 @@
     <style>
         /* Hero Section */
         .adhesion-hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/rhdp_foule.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/storage/slides/RHDP adhésion.jpg');
             background-size: cover;
             background-position: center;
             color: white;

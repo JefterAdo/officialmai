@@ -3,7 +3,7 @@
 @section('title', 'Faites vos Propositions - RHDP')
 
 @section('content')
-<div class="page-banner" style="background-image: url('{{ asset('images/banner_placeholder.jpg') }}');">
+<div class="page-banner" style="background-image: url('{{ asset('images/rhdp_foule.jpg') }}');">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -46,39 +46,41 @@
                 @endif --}}
 
                 {{-- In a real application, this form would submit to a controller --}}
-                <form action="#" method="POST">
-                    @csrf {{-- Important for security --}}
+                <div class="form-wrapper p-4 p-md-5 shadow-sm rounded bg-white">
+                    <form action="#" method="POST">
+                        @csrf {{-- Important for security --}}
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="nom" class="form-label">Nom Complet <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-control-lg" id="nom" name="nom" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nom" class="form-label">Nom Complet <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg" id="nom" name="nom" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Adresse Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Adresse Email <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+
+                        <div class="mb-3">
+                            <label for="telephone" class="form-label">Numéro de Téléphone</label>
+                            <input type="tel" class="form-control form-control-lg" id="telephone" name="telephone">
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="telephone" class="form-label">Numéro de Téléphone</label>
-                        <input type="tel" class="form-control form-control-lg" id="telephone" name="telephone">
-                    </div>
+                        <div class="mb-3">
+                            <label for="sujet" class="form-label">Sujet de la Proposition <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" id="sujet" name="sujet" required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="sujet" class="form-label">Sujet de la Proposition <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-lg" id="sujet" name="sujet" required>
-                    </div>
+                        <div class="mb-4">
+                            <label for="proposition" class="form-label">Votre Proposition <span class="text-danger">*</span></label>
+                            <textarea class="form-control form-control-lg" id="proposition" name="proposition" rows="6" required></textarea>
+                        </div>
 
-                    <div class="mb-4">
-                        <label for="proposition" class="form-label">Votre Proposition <span class="text-danger">*</span></label>
-                        <textarea class="form-control form-control-lg" id="proposition" name="proposition" rows="6" required></textarea>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary btn-lg">Soumettre ma Proposition</button>
-                    </div>
-                </form>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Soumettre ma Proposition</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -132,21 +134,40 @@
         padding: 80px 0;
     }
     .section-title h2 {
-        color: var(--bs-primary); /* Use primary color */
+        color: #FF6B00; /* RHDP Orange */
         font-weight: 700;
         margin-bottom: 15px;
     }
     .form-label {
         font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    .form-wrapper {
+        /* Styles applied via Bootstrap classes: p-4 p-md-5 shadow-sm rounded bg-white */
+        /* Add any additional custom styles here if needed */
+    }
+    .form-control {
+        border-color: #ced4da;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        padding: 0.75rem 1rem; /* Slightly larger padding */
+        font-size: 1rem;
+    }
+    .form-control:focus {
+        border-color: #FF6B00; /* RHDP Orange on focus */
+        box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.25); /* RHDP Orange shadow on focus */
     }
      .btn-primary {
-         /* Change button color to green */
-          background-color: #198754; /* Bootstrap success green */
-          border-color: #198754;
+          background-color: #FF6B00; /* RHDP Orange */
+          border-color: #FF6B00; /* RHDP Orange */
+          color: white;
+          padding: 0.75rem 1.5rem;
+          font-size: 1.1rem;
+          font-weight: 600;
      }
       .btn-primary:hover {
-          background-color: #157347; /* Darker green for hover */
-          border-color: #146c43;
+          background-color: #e65c00; /* Darker Orange for hover */
+          border-color: #cc5200; /* Darker Orange for hover */
+          color: white;
       }
 </style>
 @endpush
