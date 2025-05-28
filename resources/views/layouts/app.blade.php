@@ -298,10 +298,10 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- Custom CSS -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <!-- Slider Fix CSS -->
-    <link href="{{ asset('css/slider-fix.css') }}" rel="stylesheet">
     <!-- Custom JS -->
     <script src="{{ asset('js/script.js') }}"></script>
+    <!-- Carousel Fix JS -->
+    <script src="{{ asset('js/carousel-fix.js') }}"></script>
 
     <script>
         // Navbar scroll effect

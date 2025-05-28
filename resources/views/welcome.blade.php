@@ -254,6 +254,16 @@
 
             <!-- Direction -->
             <div class="row justify-content-center g-4">
+                <!-- Président du Directoire -->
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="team-member text-center">
+                        <div class="team-member-img mb-3">
+                            <img src="{{ asset('storage/membres/directoire/Gilbert_Koné_Kafana.jpg') }}" class="img-fluid rounded-circle" alt="Président du Directoire">
+                        </div>
+                        <h5 class="team-member-name">M. Gilbert Koné KAFNA</h5>
+                        <p class="team-member-title" style="color: #f28c03;">Président du Directoire</p>
+                    </div>
+                </div>
                 <!-- Vice-Présidents -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="team-member text-center">
@@ -273,42 +283,34 @@
                         <p class="team-member-title" style="color: #f28c03;">Vice-Présidente</p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                     <div class="team-member text-center">
-                        <div class="team-member-img mb-3">
-                            <img src="{{ asset('images/membres/directoire/M. ABDALLAH TOIKEUSSE MABRI.jpg') }}" class="img-fluid rounded-circle" alt="Vice-Président">
-                        </div>
-                        <h5 class="team-member-name">M. Abdallah Toikeusse Mabri</h5>
-                        <p class="team-member-title" style="color: #f28c03;">Vice-Président</p>
-                    </div>
-                </div>
                 <!-- Trésorier Général -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="team-member text-center">
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/Tene-Brahima-Ouattara.jpeg') }}" class="img-fluid rounded-circle" alt="Trésorier Général">
-            </div>
+                        </div>
                         <h5 class="team-member-name">M. Tene Birahima Ouattara</h5>
                         <p class="team-member-title" style="color: #f28c03;">Trésorier Général</p>
+                    </div>
                 </div>
-                </div>
-                <!-- Porte-Paroles -->
+                <!-- Porte-Parole Principal -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="team-member text-center">
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/Kobenan_Kouassi_Adjoumani.jpg') }}" class="img-fluid rounded-circle" alt="Porte-Parole Principal">
                         </div>
-                        <h5 class="team-member-name">M. Kouassi Kobenan Adjoumani</h5>
+                        <h5 class="team-member-name">M. Kobenan ADJOUMANI</h5>
                         <p class="team-member-title" style="color: #f28c03;">Porte-Parole Principal</p>
                     </div>
                 </div>
+                <!-- Vice-Président (Mabri) -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="team-member text-center">
                         <div class="team-member-img mb-3">
-                            <img src="{{ asset('images/membres/directoire/mamadou-toure.jpg') }}" class="img-fluid rounded-circle" alt="Porte-Parole Adjoint">
+                            <img src="{{ asset('images/membres/directoire/M. ABDALLAH TOIKEUSSE MABRI.jpg') }}" class="img-fluid rounded-circle" alt="Vice-Président">
                         </div>
-                        <h5 class="team-member-name">M. Mamadou Touré</h5>
-                        <p class="team-member-title" style="color: #f28c03;">Porte-Parole Adjoint</p>
+                        <h5 class="team-member-name">M. Abdallah Toikeusse Mabri</h5>
+                        <p class="team-member-title" style="color: #f28c03;">Vice-Président</p>
                     </div>
                 </div>
                 <!-- Secrétaire Exécutif -->
@@ -317,18 +319,18 @@
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/cisse-bacongo.webp') }}" class="img-fluid rounded-circle" alt="Secrétaire Exécutif">
                         </div>
-                        <h5 class="team-member-name">M. Bacongo Ibrahima Cisse</h5>
+                        <h5 class="team-member-name">M. Bacongo CISSE</h5>
                         <p class="team-member-title" style="color: #f28c03;">Secrétaire Exécutif</p>
                     </div>
                 </div>
-                <!-- Chargés de Mission -->
+                <!-- Membre -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="team-member text-center">
                         <div class="team-member-img mb-3">
-                            <img src="{{ asset('images/membres/directoire/felix-anoble.jpg') }}" class="img-fluid rounded-circle" alt="Chargé de Mission">
+                            <img src="{{ asset('storage/membres/directoire/fidele-sirrasorro.jpeg') }}" class="img-fluid rounded-circle" alt="Membre">
                         </div>
-                        <h5 class="team-member-name">M. Félix Anoblé</h5>
-                        <p class="team-member-title" style="color: #f28c03;">Chargé de la Stratégie Électorale</p>
+                        <h5 class="team-member-name">M. Fidele Sarassoro</h5>
+                        <p class="team-member-title" style="color: #f28c03;">Membre</p>
                     </div>
                 </div>
             </div>
@@ -423,9 +425,7 @@
                 @endforelse
             </div>
             
-            <div class="text-center mt-5">
-                <a href="#" class="btn btn-primary">Voir le Bilan Détaillé</a>
-            </div>
+            <!-- Bouton Voir le Bilan Détaillé supprimé -->
         </div>
     </section>
 

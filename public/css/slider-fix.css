@@ -1,52 +1,169 @@
 /* 
- * Corrections pour le slider principal
- * Ces styles résolvent les problèmes de flash blanc et de disparition au défilement
+ * Corrections pour le slider principal - Version optimisée
+ * Solution complète pour les problèmes de flash blanc, d'affichage et de performance
  */
+
+/* Conteneur du hero carousel avec isolation du contexte d'empilement */
+.hero-carousel-container {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    width: 100%;
+    height: 600px;
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+    will-change: transform;
+}
 
 /* Base du carousel */
 .carousel {
     position: relative;
+    width: 100%;
+    height: 100%;
     perspective: 1000px;
-    overflow: visible;
     transform-style: preserve-3d;
-    will-change: transform;
 }
 
 .carousel-inner {
     position: relative;
     width: 100%;
+    height: 100%;
     overflow: hidden;
-    backface-visibility: hidden;
     transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
-/* Correction des transitions */
-.carousel-fade .carousel-item {
+/* Indicateurs optimisés */
+.carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.carousel-indicators button {
+    position: relative;
+    width: 30px;
+    height: 3px;
+    margin: 0 3px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 0;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.carousel-indicators button.active {
+    opacity: 1;
+    background-color: #fff;
+}
+
+/* Correction des items du carousel */
+.carousel-item {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    opacity: 0;
-    will-change: opacity;
-    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
-    visibility: hidden;
+    height: 100%;
+    display: none;
     transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.carousel-item.active {
+    display: block;
+    z-index: 1;
+}
+
+/* Style pour l'arrière-plan des items */
+.carousel-item-bg {
+    width: 100%;
+    height: 600px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Effets de transition */
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    visibility: hidden;
 }
 
 .carousel-fade .carousel-item.active {
-    position: relative;
     opacity: 1;
     visibility: visible;
 }
 
-/* Correction pour le z-index et l'affichage lors du défilement */
-.carousel-fade .active.carousel-item-start,
-.carousel-fade .active.carousel-item-end {
-    opacity: 0;
-    z-index: 0;
+/* Style pour les captions */
+.carousel-caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
 }
 
+.caption-content {
+    max-width: 800px;
+    width: 80%;
+    transition: transform 0.3s ease;
+}
+
+/* Contrôles du carousel */
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    background: transparent;
+    border: 0;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.carousel-control-prev {
+    left: 0;
+}
+
+.carousel-control-next {
+    right: 0;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+    color: white;
+}
+
+/* Animation des transitions */
 .carousel-fade .carousel-item-next.carousel-item-start,
 .carousel-fade .carousel-item-prev.carousel-item-end {
     opacity: 1;

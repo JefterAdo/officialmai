@@ -1,39 +1,47 @@
 /**
- * Script de carousel compatible avec Tailwind CSS
+ * Script de carousel optimisé pour RHDP
  * 
- * Cette implémentation utilise JavaScript vanilla pour créer un carousel 
- * sans dépendance à Bootstrap.
+ * Cette implémentation utilise JavaScript vanilla pour créer un carousel robuste
+ * qui fonctionne sans dépendance à Bootstrap tout en étant compatible avec sa structure.
+ * Optimisé pour éviter les problèmes de rendu et de transition.
  */
 
-class TailwindCarousel {
+class EnhancedCarousel {
     constructor(element, options = {}) {
-        this.carousel = element;
-        if (!this.carousel) return;
+        // Élément principal du carousel
+        this.carousel = typeof element === 'string' ? document.querySelector(element) : element;
+        if (!this.carousel) {
+            console.error('Carousel element not found');
+            return;
+        }
         
+        // Options avec valeurs par défaut
         this.options = {
             interval: options.interval || 5000,
             wrap: options.wrap !== undefined ? options.wrap : true,
             keyboard: options.keyboard !== undefined ? options.keyboard : true,
             pause: options.pause || 'hover',
-            autoplay: options.autoplay !== undefined ? options.autoplay : true
+            autoplay: options.autoplay !== undefined ? options.autoplay : true,
+            transitionDuration: options.transitionDuration || 800
         };
         
+        // Éléments du carousel
         this.slides = Array.from(this.carousel.querySelectorAll('[data-carousel-item]'));
         if (!this.slides.length) {
-            // Compatibilité avec l'ancienne structure
+            // Compatibilité avec l'ancienne structure Bootstrap
             this.slides = Array.from(this.carousel.querySelectorAll('.carousel-item'));
         }
         
-        if (!this.slides.length) return;
+        if (!this.slides.length) {
+            console.error('No slides found in carousel');
+            return;
+        }
         
-        this.activeIndex = this.slides.findIndex(slide => 
-            slide.classList.contains('active') || 
-            !slide.hasAttribute('hidden')
-        );
-        
+        // Déterminer l'index actif
+        this.activeIndex = this.slides.findIndex(slide => slide.classList.contains('active'));
         if (this.activeIndex === -1) this.activeIndex = 0;
         
-        // Configurer les contrôles
+        // Contrôles du carousel
         this.prevButton = this.carousel.querySelector('[data-carousel-prev]') || 
                           this.carousel.querySelector('.carousel-control-prev');
         this.nextButton = this.carousel.querySelector('[data-carousel-next]') || 
@@ -42,13 +50,19 @@ class TailwindCarousel {
         this.indicators = Array.from(this.carousel.querySelectorAll('[data-carousel-indicator]') || 
                                      this.carousel.querySelectorAll('.carousel-indicators button'));
         
+        // Variables d'état
+        this.isSliding = false;
+        this.interval = null;
+        this.touchStartX = 0;
+        this.touchEndX = 0;
+        
         this.init();
     }
     
     init() {
-        console.log('Initialisation du carousel Tailwind...', this.slides.length, 'slides');
+        console.log('Initialisation du carousel amélioré...', this.slides.length, 'slides');
         
-        // Définir le premier slide comme actif
+        // Activer le premier slide et l'indicateur correspondant
         this.showSlide(this.activeIndex);
         
         // Configurer les contrôles
@@ -157,26 +171,42 @@ class TailwindCarousel {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialiser tous les carousels sur la page
+    // Détection et initialisation de tous les carousels
     const carousels = document.querySelectorAll('[data-carousel]');
     
     if (carousels.length > 0) {
         carousels.forEach(carousel => {
-            new TailwindCarousel(carousel, {
+            new EnhancedCarousel(carousel, {
                 interval: parseInt(carousel.dataset.interval || 5000),
                 wrap: carousel.dataset.wrap !== 'false',
                 keyboard: carousel.dataset.keyboard !== 'false',
                 pause: carousel.dataset.pause || 'hover',
-                autoplay: carousel.dataset.autoplay !== 'false'
+                autoplay: carousel.dataset.autoplay !== 'false',
+                transitionDuration: parseInt(carousel.dataset.transitionDuration || 800)
             });
         });
+        console.log(`${carousels.length} carousel(s) initialisé(s) avec succès`);
     } else {
-        // Support de l'ancien carousel
+        // Support de l'ancien carousel (par ID)
         const heroCarousel = document.getElementById('heroCarousel');
         if (heroCarousel) {
-            new TailwindCarousel(heroCarousel);
+            new EnhancedCarousel(heroCarousel);
+            console.log('Carousel héro initialisé avec succès');
         } else {
-            console.warn('Aucun carousel trouvé sur la page');
+            console.warn('Aucun carousel détecté sur la page');
         }
     }
+
+    // Vérifier si les images sont préchargées pour éviter les flashs blancs
+    const preloadSliderImages = () => {
+        const slides = document.querySelectorAll('.carousel-item-bg');
+        slides.forEach(slide => {
+            const bgUrl = slide.style.backgroundImage.replace(/url\(['"]+(.+)['"]\)/gi, '$1');
+            if (bgUrl && bgUrl !== 'none') {
+                const img = new Image();
+                img.src = bgUrl;
+            }
+        });
+    };
+    preloadSliderImages();
 });
