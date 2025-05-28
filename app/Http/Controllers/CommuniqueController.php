@@ -6,8 +6,10 @@ use App\Models\Communique;
 use App\Models\CommuniqueAttachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CommuniqueController extends Controller
 {
@@ -93,18 +95,39 @@ class CommuniqueController extends Controller
         
         // Vérifier si le fichier existe
         if (!Storage::disk('public')->exists($path)) {
-            \Log::warning("Fichier non trouvé : {$path}");
+            Log::warning("Fichier non trouvé : {$path}", [
+                'attachment_id' => $attachment->id,
+                'communique_id' => $attachment->communique_id
+            ]);
             
             // Essayer avec un chemin alternatif
             $basename = basename($path);
             $altPath = "communiques/documents/{$basename}";
             
             if (Storage::disk('public')->exists($altPath)) {
-                \Log::info("Fichier trouvé avec chemin alternatif : {$altPath}");
+                Log::info("Fichier trouvé avec chemin alternatif : {$altPath}", [
+                    'attachment_id' => $attachment->id
+                ]);
                 $path = $altPath;
             } else {
                 abort(404, 'Le fichier demandé n\'existe pas ou a été déplacé.');
             }
+        }
+        
+        // Vérifier le type MIME pour la sécurité
+        $mimeType = $attachment->mime_type ?? 'application/octet-stream';
+        $actualFile = Storage::disk('public')->path($path);
+        $actualMimeType = mime_content_type($actualFile);
+        
+        // S'assurer que le type MIME déclaré correspond au type réel
+        if ($mimeType !== $actualMimeType && $mimeType !== 'application/octet-stream') {
+            Log::warning("Discordance de type MIME détectée", [
+                'attachment_id' => $attachment->id,
+                'declared_mime' => $mimeType,
+                'actual_mime' => $actualMimeType
+            ]);
+            // Utiliser le type MIME réel pour plus de sécurité
+            $mimeType = $actualMimeType;
         }
         
         // Incrémenter le compteur de téléchargements
@@ -114,7 +137,7 @@ class CommuniqueController extends Controller
         return Storage::disk('public')->download(
             $path, 
             $attachment->download_name,
-            ['Content-Type' => $attachment->mime_type ?? 'application/octet-stream']
+            ['Content-Type' => $mimeType]
         );
     }
     
@@ -187,38 +210,63 @@ class CommuniqueController extends Controller
     /**
      * Supprime une pièce jointe
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Communique  $communique
      * @param  int  $attachmentId
      * @return \Illuminate\Http\Response
      */
-    public function deleteAttachment(Communique $communique, $attachmentId)
+    public function deleteAttachment(Request $request, Communique $communique, $attachmentId)
     {
         try {
-            // Vérifier que l'utilisateur est authentifié et a les droits nécessaires
-            if (!auth()->check() || !auth()->user()->can('update', $communique)) {
+            // Utiliser le système de Gate de Laravel pour une meilleure autorisation
+            if (Gate::denies('update', $communique)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Action non autorisée.'
                 ], 403);
             }
             
-            // Trouver la pièce jointe
+            // Vérifier le jeton CSRF pour les requêtes AJAX
+            if (!$request->hasValidSignature() && !$request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jeton de sécurité invalide.'
+                ], 419);
+            }
+            
+            // Trouver la pièce jointe avec vérification qu'elle appartient bien au communiqué spécifié
             $attachment = $communique->attachments()->findOrFail($attachmentId);
             $filePath = $attachment->file_path;
             
             // Supprimer le fichier du stockage
             if (Storage::disk('public')->exists($filePath)) {
                 Storage::disk('public')->delete($filePath);
+                
+                // Vérifier si d'autres chemins alternatifs doivent aussi être supprimés
+                $basename = basename($filePath);
+                $altPath = "communiques/documents/{$basename}";
+                if (Storage::disk('public')->exists($altPath)) {
+                    Storage::disk('public')->delete($altPath);
+                }
             }
             
-            // Supprimer l'enregistrement de la base de données
-            $attachment->delete();
+            // Supprimer l'enregistrement de la base de données dans une transaction
+            \DB::transaction(function () use ($communique, $attachment) {
+                // Supprimer l'enregistrement de la base de données
+                $attachment->delete();
+                
+                // Vérifier si c'est la dernière pièce jointe
+                if ($communique->attachments()->count() === 0) {
+                    // Mettre à jour le statut du communiqué si nécessaire
+                    $communique->update(['has_attachments' => false]);
+                }
+            });
             
-            // Vérifier si c'est la dernière pièce jointe
-            if ($communique->attachments()->count() === 0) {
-                // Mettre à jour le statut du communiqué si nécessaire
-                $communique->update(['has_attachments' => false]);
-            }
+            Log::info('Pièce jointe supprimée', [
+                'attachment_id' => $attachmentId,
+                'communique_id' => $communique->id,
+                'user_id' => auth()->id()
+            ]);
             
             return response()->json([
                 'success' => true,
@@ -226,7 +274,13 @@ class CommuniqueController extends Controller
             ]);
             
         } catch (\Exception $e) {
-            \Log::error('Erreur lors de la suppression de la pièce jointe : ' . $e->getMessage());
+            Log::error('Erreur lors de la suppression de la pièce jointe', [
+                'error' => $e->getMessage(),
+                'attachment_id' => $attachmentId,
+                'communique_id' => $communique->id,
+                'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString()
+            ]);
             
             return response()->json([
                 'success' => false,

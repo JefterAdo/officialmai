@@ -15,6 +15,72 @@ return [
     'key' => env('APP_KEY'),
     'cipher' => 'AES-256-CBC',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration de sécurité
+    |--------------------------------------------------------------------------
+    |
+    | Paramètres de sécurité pour l'application
+    |
+    */
+    'security' => [
+        // Domaines autorisés pour les URLs externes
+        'allowed_domains' => [
+            'rhdp.ci',
+            'www.rhdp.ci',
+            'storage.rhdp.ci',
+            'media.rhdp.ci',
+            'docs.rhdp.ci',
+        ],
+        
+        // Types MIME autorisés pour les téléchargements
+        'allowed_mime_types' => [
+            // Documents
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+            'text/plain',
+            'text/csv',
+            
+            // Images
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/svg+xml',
+            'image/webp',
+            
+            // Audio/Video
+            'audio/mpeg',
+            'audio/mp4',
+            'video/mp4',
+            'video/mpeg',
+            'video/quicktime',
+            
+            // Archives
+            'application/zip',
+            'application/x-rar-compressed',
+        ],
+        
+        // Taille maximale de téléchargement (en octets)
+        'max_upload_size' => 20 * 1024 * 1024, // 20 MB
+        
+        // Durée de vie des tokens CSRF (en minutes)
+        'csrf_token_lifetime' => 120,
+        
+        // Paramètres de sécurité des headers HTTP
+        'headers' => [
+            'x-frame-options' => 'SAMEORIGIN',
+            'x-content-type-options' => 'nosniff',
+            'x-xss-protection' => '1; mode=block',
+            'referrer-policy' => 'strict-origin-when-cross-origin',
+            'content-security-policy' => null, // À configurer selon les besoins
+        ],
+    ],
+
     'providers' => [
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,

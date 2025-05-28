@@ -18,11 +18,14 @@ use Illuminate\Validation\ValidationException;
 // via App\Filament\Pages\Auth\Login.php et la configuration dans AdminPanelProvider.
 
 // Application des middlewares globaux
-Route::middleware(['web'])->group(function () {
-    // Routes pour les communiqués (à placer avant les routes génériques)
-    Route::delete('/communiques/{communique}/attachments/{attachment}', [CommuniqueController::class, 'deleteAttachment'])
-        ->name('communiques.attachments.destroy')
-        ->middleware(['auth']);
+Route::middleware(['web', 'throttle:60,1'])->group(function () {
+    // Groupe principal pour toutes les routes
+    // Routes d'administration nécessitant une authentification
+    Route::middleware(['auth', 'verified', 'signed'])->group(function () {
+        // Routes pour les communiqués nécessitant une authentification
+        Route::delete('/communiques/{communique}/attachments/{attachment}', [CommuniqueController::class, 'deleteAttachment'])
+            ->name('communiques.attachments.destroy');
+    });
 
     // Routes pour les communiqués (maintenant autonome)
     Route::get('/communiques', [CommuniqueController::class, 'index'])->name('communiques.index');
@@ -105,13 +108,18 @@ Route::middleware(['web'])->group(function () {
         return view('pages.privacy');
     })->name('privacy');
 
-    // Routes pour les documents
-    Route::prefix('documents')->name('documents.')->group(function () {
+    // Routes pour les documents avec limitation de débit pour éviter les abus
+    Route::prefix('documents')->name('documents.')->middleware(['throttle:30,1'])->group(function () {
         Route::get('{slug}/download', [DocumentController::class, 'download'])->name('download');
         Route::get('{slug}/view', [DocumentController::class, 'view'])->name('view');
     });
 
     // Routes pour les pages (à placer en dernier car elles sont génériques)
     Route::get('/', [PageController::class, 'home'])->name('home');
-    Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');
+    
+    // Utiliser une expression régulière pour limiter les caractères valides dans le slug
+    // Cela empêche les injections de chemin et autres attaques
+    Route::get('/{slug}', [PageController::class, 'show'])
+        ->where('slug', '[a-z0-9\-]+') // Uniquement des lettres minuscules, chiffres et tirets
+        ->name('page.show');
 });
