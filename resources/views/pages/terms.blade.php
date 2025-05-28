@@ -11,8 +11,7 @@
     <div class="content">
         <section class="mb-5">
             <h2 class="h4 mb-3 text-primary">1. Présentation du site</h2>
-            <p>Le site www.zertos.online (ci-après « le Site ») est édité par le Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP), parti politique ivoirien dont le siège social est situé à Abidjan, Côte d'Ivoire.</p>
-            <p>Le directeur de la publication est le Secrétaire Exécutif du RHDP.</p>
+            <p>Le site www.rhdpofficiel.ci (ci-après « le Site ») est édité par le Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP), parti politique ivoirien dont le siège social est situé à Abidjan, Côte d'Ivoire.</p>
             <p>Le site est hébergé par Hostinger International Ltd.</p>
         </section>
 
@@ -75,7 +74,7 @@
 
         <section class="mb-5">
             <h2 class="h4 mb-3 text-primary">10. Contact</h2>
-            <p>Pour toute question relative aux présentes conditions générales d'utilisation, vous pouvez contacter le RHDP à l'adresse suivante : <a href="mailto:contact@rhdp.ci">contact@rhdp.ci</a>.</p>
+            <p>Pour toute question relative aux présentes conditions générales d'utilisation, vous pouvez contacter le RHDP à l'adresse suivante : <a href="mailto:contact@rhdpofficiel.ci">contact@rhdpofficiel.ci</a>.</p>
         </section>
     </div>
 </div>

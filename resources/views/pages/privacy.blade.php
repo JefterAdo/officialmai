@@ -11,7 +11,7 @@
     <div class="content">
         <section class="mb-5">
             <h2 class="h4 mb-3 text-primary">1. Introduction</h2>
-            <p>Le Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP) s'engage à protéger la vie privée des utilisateurs de son site web www.zertos.online (ci-après « le Site »). La présente politique de confidentialité décrit les informations que nous collectons et comment nous les utilisons.</p>
+            <p>Le Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP) s'engage à protéger la vie privée des utilisateurs de son site web www.rhdpofficiel.ci (ci-après « le Site »). La présente politique de confidentialité décrit les informations que nous collectons et comment nous les utilisons.</p>
             <p>Nous vous invitons à lire attentivement cette politique avant d'utiliser notre Site ou de nous communiquer des informations personnelles. En utilisant notre Site, vous acceptez les pratiques décrites dans la présente politique.</p>
         </section>
 
@@ -148,7 +148,7 @@
                 <strong>Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP)</strong><br>
                 Siège social<br>
                 Abidjan, Côte d'Ivoire<br>
-                Email : <a href="mailto:contact@rhdp.ci">contact@rhdp.ci</a>
+                Email : <a href="mailto:contact@rhdpofficiel.ci">contact@rhdpofficiel.ci</a>
             </address>
         </section>
     </div>

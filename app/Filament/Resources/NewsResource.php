@@ -71,7 +71,7 @@ class NewsResource extends Resource
                                 ->required()
                                 ->columnSpanFull()
                                 ->fileAttachmentsDisk('public')
-                                ->fileAttachmentsDirectory('images')
+                                ->fileAttachmentsDirectory('news/content-images')
                                 ->toolbarButtons([
                                     'attachFiles',
                                     'blockquote',
@@ -86,6 +86,7 @@ class NewsResource extends Resource
                                     'redo',
                                     'strike',
                                     'underline',
+                                    'image',
                                     'undo',
                                 ])
                                 ->afterStateUpdated(function ($state, callable $set, callable $get) {
