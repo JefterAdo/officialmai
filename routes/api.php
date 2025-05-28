@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CspReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route pour recevoir les rapports de violation CSP
+// Cette route ne nécessite pas d'authentification car elle est appelée par le navigateur
+Route::post('/csp-report', [CspReportController::class, 'report'])->name('api.csp-report');

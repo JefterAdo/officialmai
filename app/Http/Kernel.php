@@ -14,6 +14,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\SecurityHeadersMiddleware::class,
+        \App\Http\Middleware\SqlInjectionProtectionMiddleware::class,
     ];
 
     protected $middlewareGroups = [
@@ -53,5 +54,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'security-headers' => \App\Http\Middleware\SecurityHeadersMiddleware::class,
+        'strong.password' => \App\Http\Middleware\StrongPasswordMiddleware::class,
+        'login.throttle' => \App\Http\Middleware\LoginThrottleMiddleware::class,
     ];
 }

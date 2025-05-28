@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\File;
 class DocumentController extends Controller
 {
     /**
-     * Télécharger un document
+     * Télécharger un document avec sécurité renforcée
      *
      * @param string $slug
      * @return \Illuminate\Http\Response
@@ -25,78 +25,107 @@ class DocumentController extends Controller
     public function download($slug)
     {
         try {
-            // Récupérer le document actif
-            $document = Document::where('slug', $slug)
-                ->where('is_active', true)
-                ->firstOrFail();
+            // Limiter le nombre de tentatives de téléchargement pour prévenir les attaques par force brute
+            if (SecurityService::hasTooManyAttempts('document_download', 10, 1)) {
+                SecurityService::logUnauthorizedAccess('too_many_download_attempts', null, request());
+                return response()->view('errors.too-many-requests', [], 429);
+            }
+            
+            // Incrémenter le compteur de tentatives
+            SecurityService::incrementAttempts('document_download', 1);
+            
+            // Récupérer le document
+            $document = Document::where('slug', $slug)->firstOrFail();
+            
+            // Vérifier l'autorisation de téléchargement en utilisant la politique
+            if (auth()->user() ? !auth()->user()->can('download', $document) : !Gate::allows('download', $document)) {
+                SecurityService::logUnauthorizedAccess('unauthorized_document_download', $document, request());
+                return back()->with('error', 'Vous n\'avez pas l\'autorisation de télécharger ce document.');
+            }
             
             // Journaliser la tentative de téléchargement
             Log::info('Tentative de téléchargement de document', [
                 'document_id' => $document->id,
                 'document_title' => $document->title,
                 'user_id' => auth()->id(),
-                'ip' => request()->ip()
+                'ip' => request()->ip(),
+                'user_agent' => request()->userAgent()
             ]);
 
             // Récupérer le chemin original du fichier
             $originalPath = $document->getRawOriginal('file_path');
             
-            // Si c'est une URL externe, vérifier qu'elle est sécurisée
+            // Si c'est une URL externe, appliquer des vérifications de sécurité renforcées
             if (filter_var($originalPath, FILTER_VALIDATE_URL)) {
-                // Vérifier que l'URL est sécurisée et provient d'un domaine autorisé
+                // Vérifier que l'URL est sécurisée (HTTPS uniquement)
                 if (!FileSecurityService::isSecureUrl($originalPath)) {
-                    Log::warning('Tentative de téléchargement d\'une URL non sécurisée', [
-                        'document_id' => $document->id,
-                        'url' => $originalPath,
-                        'user_id' => auth()->id(),
-                        'ip' => request()->ip()
-                    ]);
-                    return back()->with('error', 'L\'URL du document n\'est pas sécurisée.');
+                    SecurityService::logUnauthorizedAccess('insecure_url_download', $document, request());
+                    return back()->with('error', 'L\'URL du document n\'est pas sécurisée. Seules les URLs HTTPS sont autorisées.');
                 }
                 
+                // Vérifier que le domaine est sur la liste blanche
                 if (!FileSecurityService::isAllowedDomain($originalPath)) {
-                    Log::warning('Tentative de téléchargement depuis un domaine non autorisé', [
-                        'document_id' => $document->id,
-                        'url' => $originalPath,
-                        'user_id' => auth()->id(),
-                        'ip' => request()->ip()
-                    ]);
-                    return back()->with('error', 'Le domaine de l\'URL n\'est pas autorisé.');
+                    SecurityService::logUnauthorizedAccess('unauthorized_domain_download', $document, request());
+                    return back()->with('error', 'Le domaine de l\'URL n\'est pas autorisé pour des raisons de sécurité.');
+                }
+                
+                // Vérifier l'extension du fichier dans l'URL
+                $urlPath = parse_url($originalPath, PHP_URL_PATH);
+                $extension = strtolower(pathinfo($urlPath, PATHINFO_EXTENSION));
+                
+                if (in_array($extension, FileSecurityService::$dangerousExtensions)) {
+                    SecurityService::logUnauthorizedAccess('dangerous_extension_download', $document, request());
+                    return back()->with('error', 'Le type de fichier n\'est pas autorisé pour des raisons de sécurité.');
                 }
                 
                 // Incrémenter le compteur de téléchargements
                 $document->increment('download_count');
                 
+                // Réinitialiser le compteur de tentatives après un téléchargement réussi
+                SecurityService::resetAttempts('document_download');
+                
                 // Rediriger vers l'URL externe
                 return redirect($originalPath);
             }
 
-            // Vérifier si le chemin est sécurisé
+            // Vérifier si le chemin est sécurisé (protection contre la traversée de répertoire)
             if (!FileSecurityService::isSecurePath($originalPath)) {
-                Log::warning('Tentative de téléchargement avec un chemin non sécurisé', [
-                    'document_id' => $document->id,
-                    'path' => $originalPath,
-                    'user_id' => auth()->id(),
-                    'ip' => request()->ip()
-                ]);
+                SecurityService::logUnauthorizedAccess('insecure_path_download', $document, request());
                 return back()->with('error', 'Le chemin du fichier n\'est pas sécurisé.');
             }
 
+            // Normaliser le chemin pour éviter les attaques par traversée de répertoire
+            $normalizedPath = FileSecurityService::normalizePath($originalPath);
+            
             // Trouver le fichier, éventuellement dans un chemin alternatif
-            $path = FileSecurityService::findAlternativePath($originalPath);
+            $path = FileSecurityService::findAlternativePath($normalizedPath);
             
             if (!$path) {
                 Log::warning('Fichier non trouvé pour téléchargement', [
                     'document_id' => $document->id,
                     'path' => $originalPath,
+                    'normalized_path' => $normalizedPath,
                     'user_id' => auth()->id(),
                     'ip' => request()->ip()
                 ]);
                 return back()->with('error', 'Le fichier demandé n\'est pas disponible.');
             }
             
+            // Vérifier le type MIME du fichier avant le téléchargement
+            $fullPath = Storage::disk('public')->path($path);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($fullPath);
+            
+            if (!FileSecurityService::isAllowedMimeType($mimeType)) {
+                SecurityService::logUnauthorizedAccess('unauthorized_mime_type', $document, request());
+                return back()->with('error', 'Le type de fichier n\'est pas autorisé pour des raisons de sécurité.');
+            }
+            
             // Incrémenter le compteur de téléchargements
             $document->increment('download_count');
+            
+            // Réinitialiser le compteur de tentatives après un téléchargement réussi
+            SecurityService::resetAttempts('document_download');
             
             // Générer un nom de fichier sécurisé pour le téléchargement
             $downloadName = FileSecurityService::generateSecureFilename(

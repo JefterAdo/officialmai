@@ -5,6 +5,42 @@
 
     RewriteEngine On
     
+    # En-têtes de sécurité pour toutes les ressources
+    <IfModule mod_headers.c>
+        # Protection contre le MIME-sniffing
+        Header always set X-Content-Type-Options "nosniff"
+        
+        # Protection contre le clickjacking
+        Header always set X-Frame-Options "SAMEORIGIN"
+        
+        # Protection XSS pour les anciens navigateurs
+        Header always set X-XSS-Protection "1; mode=block"
+        
+        # Contrôle des informations de référence transmises
+        Header always set Referrer-Policy "strict-origin-when-cross-origin"
+        
+        # En-tête de sécurité pour HTTPS strict
+        Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        
+        # Politique de permissions
+        Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
+        
+        # Protection contre le cross-site request forgery (CSRF)
+        Header always set X-CSRF-Protection "1"
+        
+        # Contrôle des ressources partagées entre origines (CORS)
+        Header always set Cross-Origin-Resource-Policy "same-origin"
+        
+        # Empêcher l'inclusion dans les iframes de sites externes
+        Header always set Cross-Origin-Opener-Policy "same-origin"
+        
+        # Isolation des origines
+        Header always set Cross-Origin-Embedder-Policy "require-corp"
+        
+        # Protection contre les attaques par déni de service (DoS)
+        Header always set X-DNS-Prefetch-Control "off"
+    </IfModule>
+    
     # Autoriser l'accès direct au répertoire .well-known pour Let's Encrypt
     RewriteRule ^.well-known/(.*)$ .well-known/$1 [L]
     

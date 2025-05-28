@@ -110,7 +110,7 @@ Route::middleware(['web', 'throttle:60,1'])->group(function () {
 
     // Routes pour les documents avec limitation de débit pour éviter les abus
     Route::prefix('documents')->name('documents.')->middleware(['throttle:30,1'])->group(function () {
-        Route::get('{slug}/download', [DocumentController::class, 'download'])->name('download');
+        Route::get('{slug}/download', [DocumentController::class, 'download'])->middleware('auth')->name('download');
         Route::get('{slug}/view', [DocumentController::class, 'view'])->name('view');
     });
 

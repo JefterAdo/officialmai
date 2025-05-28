@@ -163,15 +163,135 @@ class SecurityService
      */
     public static function getSecurityHeaders(): array
     {
+        // Définir le domaine principal pour les politiques
+        $domain = config('app.url');
+        $parsed = parse_url($domain);
+        $host = $parsed['host'] ?? 'rhdp.ci';
+        
         return [
+            // Protection contre le MIME-sniffing
             'X-Content-Type-Options' => 'nosniff',
+            
+            // Protection contre le clickjacking
             'X-Frame-Options' => 'SAMEORIGIN',
+            
+            // Protection XSS (déprécié mais encore utile pour les anciens navigateurs)
             'X-XSS-Protection' => '1; mode=block',
+            
+            // Contrôle des informations de référence transmises
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
-            'Content-Security-Policy' => "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; form-action 'self';",
-            'Permissions-Policy' => 'camera=(), microphone=(), geolocation=()',
-            'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
+            
+            // En-tête de sécurité pour HTTPS strict
+            'Strict-Transport-Security' => 'max-age=63072000; includeSubDomains; preload',
+            
+            // Politique de sécurité du contenu (CSP)
+            'Content-Security-Policy' => self::getContentSecurityPolicy($host),
+            
+            // Politique de permissions (anciennement Feature-Policy)
+            'Permissions-Policy' => 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()',
+            
+            // Protection contre le cross-site request forgery (CSRF)
+            'X-CSRF-Protection' => '1',
+            
+            // Contrôle du cache pour les données sensibles
+            'Cache-Control' => 'no-store, max-age=0',
+            
+            // Empêcher l'inclusion dans les iframes de sites externes
+            'Cross-Origin-Opener-Policy' => 'same-origin',
+            
+            // Contrôle des ressources partagées entre origines (CORS)
+            'Cross-Origin-Resource-Policy' => 'same-origin',
+            
+            // Isolation des origines
+            'Cross-Origin-Embedder-Policy' => 'require-corp',
+            
+            // Protection contre les attaques par déni de service (DoS)
+            'X-DNS-Prefetch-Control' => 'off',
         ];
+    }
+    
+    /**
+     * Générer une politique de sécurité du contenu (CSP) adaptée au site RHDP
+     *
+     * @param string $host Le nom d'hôte principal
+     * @return string La politique CSP formatée
+     */
+    private static function getContentSecurityPolicy(string $host): string
+    {
+        // Liste des domaines externes autorisés pour diverses ressources
+        $trustedScriptSources = [
+            'https://www.google-analytics.com',
+            'https://www.googletagmanager.com',
+            'https://cdn.jsdelivr.net',
+            'https://code.jquery.com',
+        ];
+        
+        $trustedStyleSources = [
+            'https://fonts.googleapis.com',
+            'https://cdn.jsdelivr.net',
+        ];
+        
+        $trustedFontSources = [
+            'https://fonts.gstatic.com',
+            'https://cdn.jsdelivr.net',
+        ];
+        
+        $trustedImageSources = [
+            'https:',  // Permet les images de n'importe quelle source HTTPS
+            'data:',   // Permet les images en base64
+        ];
+        
+        $trustedConnectSources = [
+            'https://www.google-analytics.com',
+        ];
+        
+        // Construction de la politique CSP
+        return implode('; ', [
+            // Source par défaut: uniquement depuis le même domaine
+            "default-src 'self'",
+            
+            // Scripts: domaine principal + sources externes approuvées + inline nécessaire pour certaines fonctionnalités
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' " . implode(' ', $trustedScriptSources),
+            
+            // Styles: domaine principal + sources externes approuvées + inline pour le styling dynamique
+            "style-src 'self' 'unsafe-inline' " . implode(' ', $trustedStyleSources),
+            
+            // Images: domaine principal + sources externes approuvées
+            "img-src 'self' " . implode(' ', $trustedImageSources),
+            
+            // Polices: domaine principal + sources externes approuvées
+            "font-src 'self' " . implode(' ', $trustedFontSources),
+            
+            // Connexions: domaine principal + APIs externes
+            "connect-src 'self' " . implode(' ', $trustedConnectSources),
+            
+            // Frames: uniquement depuis le même domaine
+            "frame-ancestors 'self'",
+            
+            // Actions de formulaire: uniquement vers le même domaine
+            "form-action 'self'",
+            
+            // Base URI: uniquement le domaine principal
+            "base-uri 'self'",
+            
+            // Objets: bloquer par défaut (Flash, etc.)
+            "object-src 'none'",
+            
+            // Manifest: uniquement depuis le domaine principal
+            "manifest-src 'self'",
+            
+            // Media: uniquement depuis le domaine principal
+            "media-src 'self'",
+            
+            // Worker: uniquement depuis le domaine principal
+            "worker-src 'self'",
+            
+            // Rapport des violations CSP vers notre endpoint dédié
+            "report-uri /api/csp-report",
+            
+            // Upgrade-Insecure-Requests: force les requêtes HTTP à être mises à niveau vers HTTPS
+            "upgrade-insecure-requests"
+        ]);
     }
 
     /**

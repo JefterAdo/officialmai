@@ -54,7 +54,7 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', env('LOG_STACK', 'single')),
+            'channels' => ['single', 'security'],
             'ignore_exceptions' => false,
         ],
 
@@ -126,7 +126,14 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
-
+        
+        'security' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/security.log'),
+            'level' => env('SECURITY_LOG_LEVEL', 'notice'),
+            'days' => 30,
+            'permission' => 0600, // Permissions restreintes pour les fichiers de log de sécurité
+        ],
     ],
 
 ];
