@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Services\FileSecurityService;
+use App\Services\SecurityService;
 use App\Services\DocumentValidationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,20 +27,25 @@ class DocumentController extends Controller
     {
         try {
             // Limiter le nombre de tentatives de téléchargement pour prévenir les attaques par force brute
-            if (SecurityService::hasTooManyAttempts('document_download', 10, 1)) {
-                SecurityService::logUnauthorizedAccess('too_many_download_attempts', null, request());
+            if (\App\Services\SecurityService::hasTooManyAttempts('document_download', 10, 1)) {
+                \App\Services\SecurityService::logUnauthorizedAccess('too_many_download_attempts', null, request());
                 return response()->view('errors.too-many-requests', [], 429);
             }
             
             // Incrémenter le compteur de tentatives
-            SecurityService::incrementAttempts('document_download', 1);
+            \App\Services\SecurityService::incrementAttempts('document_download', 1);
             
             // Récupérer le document
             $document = Document::where('slug', $slug)->firstOrFail();
             
-            // Vérifier l'autorisation de téléchargement en utilisant la politique
-            if (auth()->user() ? !auth()->user()->can('download', $document) : !Gate::allows('download', $document)) {
-                SecurityService::logUnauthorizedAccess('unauthorized_document_download', $document, request());
+            // Vérifier si le document est actif
+            if (!$document->is_active) {
+                return back()->with('error', 'Ce document n\'est pas disponible pour le téléchargement.');
+            }
+            
+            // Pour les utilisateurs authentifiés, vérifier les autorisations supplémentaires si nécessaire
+            if (auth()->check() && !auth()->user()->can('download', $document)) {
+                \App\Services\SecurityService::logUnauthorizedAccess('unauthorized_document_download', $document, request());
                 return back()->with('error', 'Vous n\'avez pas l\'autorisation de télécharger ce document.');
             }
             
@@ -58,14 +64,14 @@ class DocumentController extends Controller
             // Si c'est une URL externe, appliquer des vérifications de sécurité renforcées
             if (filter_var($originalPath, FILTER_VALIDATE_URL)) {
                 // Vérifier que l'URL est sécurisée (HTTPS uniquement)
-                if (!FileSecurityService::isSecureUrl($originalPath)) {
-                    SecurityService::logUnauthorizedAccess('insecure_url_download', $document, request());
+                if (!\App\Services\FileSecurityService::isSecureUrl($originalPath)) {
+                    \App\Services\SecurityService::logUnauthorizedAccess('insecure_url_download', $document, request());
                     return back()->with('error', 'L\'URL du document n\'est pas sécurisée. Seules les URLs HTTPS sont autorisées.');
                 }
                 
                 // Vérifier que le domaine est sur la liste blanche
-                if (!FileSecurityService::isAllowedDomain($originalPath)) {
-                    SecurityService::logUnauthorizedAccess('unauthorized_domain_download', $document, request());
+                if (!\App\Services\FileSecurityService::isAllowedDomain($originalPath)) {
+                    \App\Services\SecurityService::logUnauthorizedAccess('unauthorized_domain_download', $document, request());
                     return back()->with('error', 'Le domaine de l\'URL n\'est pas autorisé pour des raisons de sécurité.');
                 }
                 
@@ -73,8 +79,8 @@ class DocumentController extends Controller
                 $urlPath = parse_url($originalPath, PHP_URL_PATH);
                 $extension = strtolower(pathinfo($urlPath, PATHINFO_EXTENSION));
                 
-                if (in_array($extension, FileSecurityService::$dangerousExtensions)) {
-                    SecurityService::logUnauthorizedAccess('dangerous_extension_download', $document, request());
+                if (in_array($extension, \App\Services\FileSecurityService::$dangerousExtensions)) {
+                    \App\Services\SecurityService::logUnauthorizedAccess('dangerous_extension_download', $document, request());
                     return back()->with('error', 'Le type de fichier n\'est pas autorisé pour des raisons de sécurité.');
                 }
                 
@@ -82,23 +88,23 @@ class DocumentController extends Controller
                 $document->increment('download_count');
                 
                 // Réinitialiser le compteur de tentatives après un téléchargement réussi
-                SecurityService::resetAttempts('document_download');
+                \App\Services\SecurityService::resetAttempts('document_download');
                 
                 // Rediriger vers l'URL externe
                 return redirect($originalPath);
             }
 
             // Vérifier si le chemin est sécurisé (protection contre la traversée de répertoire)
-            if (!FileSecurityService::isSecurePath($originalPath)) {
-                SecurityService::logUnauthorizedAccess('insecure_path_download', $document, request());
+            if (!\App\Services\FileSecurityService::isSecurePath($originalPath)) {
+                \App\Services\SecurityService::logUnauthorizedAccess('insecure_path_download', $document, request());
                 return back()->with('error', 'Le chemin du fichier n\'est pas sécurisé.');
             }
 
             // Normaliser le chemin pour éviter les attaques par traversée de répertoire
-            $normalizedPath = FileSecurityService::normalizePath($originalPath);
+            $normalizedPath = \App\Services\FileSecurityService::normalizePath($originalPath);
             
             // Trouver le fichier, éventuellement dans un chemin alternatif
-            $path = FileSecurityService::findAlternativePath($normalizedPath);
+            $path = \App\Services\FileSecurityService::findAlternativePath($normalizedPath);
             
             if (!$path) {
                 Log::warning('Fichier non trouvé pour téléchargement', [
@@ -117,7 +123,7 @@ class DocumentController extends Controller
             $mimeType = $finfo->file($fullPath);
             
             if (!FileSecurityService::isAllowedMimeType($mimeType)) {
-                SecurityService::logUnauthorizedAccess('unauthorized_mime_type', $document, request());
+                \App\Services\SecurityService::logUnauthorizedAccess('unauthorized_mime_type', $document, request());
                 return back()->with('error', 'Le type de fichier n\'est pas autorisé pour des raisons de sécurité.');
             }
             
@@ -125,7 +131,7 @@ class DocumentController extends Controller
             $document->increment('download_count');
             
             // Réinitialiser le compteur de tentatives après un téléchargement réussi
-            SecurityService::resetAttempts('document_download');
+            \App\Services\SecurityService::resetAttempts('document_download');
             
             // Générer un nom de fichier sécurisé pour le téléchargement
             $downloadName = FileSecurityService::generateSecureFilename(

@@ -10,7 +10,7 @@
 
 @section('content')
     <!-- Slider classique réintégré -->
-    @include('components.home.slider-alt')
+    @include('components.home.slider')
 
     <!-- Section Flash Info modernisée -->
     @if(isset($flashInfos) && $flashInfos->isNotEmpty())
@@ -504,6 +504,16 @@
 
     .slider-item::before {
         content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+    
+    .slider-overlay {
         position: absolute;
         top: 0;
         left: 0;

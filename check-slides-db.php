@@ -56,15 +56,10 @@ echo "Fichier existe: " . (file_exists($welcomePath) ? 'OUI' : 'NON') . "\n";
 if (file_exists($welcomePath)) {
     $content = file_get_contents($welcomePath);
     // Rechercher les références au slider
-    preg_match_all('/<div class="carousel-item.*?background-image: url\([\'"](.+?)[\'"]\).*?>/s', $content, $matches);
-    
-    echo "Références au slider trouvées: " . count($matches[0]) . "\n";
-    if (count($matches[0]) > 0) {
-        echo "URLs d'images utilisées:\n";
-        foreach ($matches[1] as $url) {
-            echo "- {$url}\n";
-        }
-    }
+    $includePattern = "/@include\s*\(\s*['\"]components\.home\.slider['\"]\s*\)/i";
+    $referencesFound = preg_match($includePattern, $content);
+
+    echo "Référence à @include('components.home.slider') trouvée: " . ($referencesFound ? 'OUI' : 'NON') . "\n";
 }
 
 echo "\nTerminé.\n";

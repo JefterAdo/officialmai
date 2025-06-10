@@ -110,8 +110,54 @@ Route::middleware(['web', 'throttle:60,1'])->group(function () {
 
     // Routes pour les documents avec limitation de débit pour éviter les abus
     Route::prefix('documents')->name('documents.')->middleware(['throttle:30,1'])->group(function () {
-        Route::get('{slug}/download', [DocumentController::class, 'download'])->middleware('auth')->name('download');
+        // Route de téléchargement simplifiée
+        Route::get('{slug}/download', function($slug) {
+            try {
+                $document = \App\Models\Document::where('slug', $slug)->firstOrFail();
+                $path = $document->getRawOriginal('file_path');
+                $filename = basename($path);
+                
+                // Vérifier si le fichier existe dans le répertoire documents
+                $fullPath = storage_path('app/public/documents/' . $filename);
+                if (file_exists($fullPath)) {
+                    return response()->download($fullPath, $filename);
+                }
+                
+                // Si le fichier n'existe pas, essayer avec le chemin original
+                $originalPath = storage_path('app/public/' . $path);
+                if (file_exists($originalPath)) {
+                    return response()->download($originalPath, $filename);
+                }
+                
+                return back()->with('error', 'Le fichier demandé n\'est pas disponible.');
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Erreur lors du téléchargement du document', [
+                    'error' => $e->getMessage(),
+                    'slug' => $slug
+                ]);
+                return back()->with('error', 'Une erreur est survenue lors du téléchargement du document.');
+            }
+        })->name('download');
+        
         Route::get('{slug}/view', [DocumentController::class, 'view'])->name('view');
+    });
+
+    // Temporary debug route to check documents
+    Route::get('/debug/documents', function() {
+        $documents = \App\Models\Document::all();
+        return response()->json([
+            'count' => $documents->count(),
+            'documents' => $documents->map(function($doc) {
+                return [
+                    'id' => $doc->id,
+                    'title' => $doc->title,
+                    'slug' => $doc->slug,
+                    'type' => $doc->type,
+                    'is_active' => $doc->is_active,
+                    'file_path' => $doc->file_path,
+                ];
+            })
+        ]);
     });
 
     // Routes pour les pages (à placer en dernier car elles sont génériques)

@@ -71,6 +71,8 @@
 
     <section class="bg-white py-8" data-aos="fade-up" data-aos-delay="200">
         <div class="max-w-4xl mx-auto">
+            <!-- Commentaire: Informations de débogage retirées -->
+            
             @if($documents->count())
                 <div class="document-table overflow-hidden rounded-lg shadow border border-gray-200">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -87,13 +89,13 @@
                                     <td class="py-4 px-4 whitespace-nowrap font-medium text-gray-800">{{ $doc->title }}</td>
                                     <td class="py-4 px-4 whitespace-nowrap capitalize text-gray-600">{{ str_replace('-', ' ', $doc->type) }}</td>
                                     <td class="py-4 px-4 whitespace-nowrap text-center">
-                                        <a href="{{ route('documents.download', ['slug' => $doc->slug]) }}"
-                                           class="download-btn inline-flex items-center justify-center gap-2 px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-150 ease-in-out">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                            </svg>
-                                            <span>Télécharger</span>
-                                        </a>
+                                        <div style="position: relative; display: inline-block;">
+                                            <a href="{{ route('documents.download', ['slug' => $doc->slug]) }}" style="text-decoration: none; display: inline-block;">
+                                                <div style="background-color: #FF6B00; color: white; font-weight: bold; padding: 8px 16px; border-radius: 4px; display: inline-block; cursor: pointer; font-size: 14px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                                    Télécharger
+                                                </div>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

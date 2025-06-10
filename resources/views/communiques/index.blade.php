@@ -4,6 +4,11 @@
 
 @push('styles')
 <style>
+    /* Définition explicite de la variable primary-color */
+    :root {
+        --primary-color: #FF6B00;
+    }
+    
     /* Styles spécifiques pour la page des communiqués */
     .page-header {
         background-color: #f8f9fa;
@@ -152,15 +157,16 @@
     }
     
     .btn-download {
-        background-color: var(--primary-color);
-        color: white;
-        border: 1px solid var(--primary-color);
+        background-color: var(--primary-color) !important;
+        color: white !important;
+        border: 1px solid var(--primary-color) !important;
+        opacity: 1 !important;
     }
     
     .btn-download:hover {
-        background-color: darken(#f28c03, 10%);
-        border-color: darken(#f28c03, 10%);
-        color: white;
+        background-color: #d85a00 !important; /* Version plus foncée de #FF6B00 */
+        border-color: #d85a00 !important;
+        color: white !important;
     }
     
     .no-communiques {

@@ -4,6 +4,11 @@
 
 @push('styles')
 <style>
+    /* Définition explicite de la variable primary-color */
+    :root {
+        --primary-color: #FF6B00;
+    }
+    
     /* Styles spécifiques pour la page d'un communiqué */
     .communique-header {
         background-color: #f8f9fa;
@@ -70,19 +75,23 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.75rem 1.5rem;
-        background-color: var(--primary-color);
-        color: white;
+        background-color: var(--primary-color) !important;
+        color: white !important;
         border-radius: 0.375rem;
         text-decoration: none;
         font-weight: 500;
         transition: all 0.2s ease;
         margin-top: 1rem;
+        opacity: 1 !important;
+        border: 1px solid var(--primary-color) !important;
     }
     
     .document-download-btn:hover {
-        background-color: #e67e00;
+        background-color: #d85a00 !important;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(242, 140, 3, 0.2);
+        color: white !important;
+        border-color: #d85a00 !important;
     }
     
     .document-info {
@@ -210,7 +219,7 @@
                 Retour à la liste
             </a>
             
-            @if(!$communique->attachments->isEmpty() && $communique->attachments->count() > 1)
+            @if(!$communique->attachments->isEmpty() && $communique->attachments->count() >= 1)
                 <div class="flex space-x-3">
                     <a href="{{ route('communiques.show', ['slug' => $communique->slug, 'download' => 1]) }}" 
                        class="document-download-btn">
