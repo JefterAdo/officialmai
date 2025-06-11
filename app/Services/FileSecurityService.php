@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
 class FileSecurityService
@@ -401,6 +403,42 @@ class FileSecurityService
         try {
             // Stocker le fichier dans le répertoire spécifié
             $path = $file->storeAs($directory, $filename, 'public');
+
+            // Optimisation de l'image si c'en est une
+            $imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $realMimeType = Storage::disk('public')->mimeType($path);
+
+            if (in_array($realMimeType, $imageMimeTypes)) {
+                try {
+                    $manager = new ImageManager(new Driver());
+                    $fullPath = Storage::disk('public')->path($path);
+                    $image = $manager->read($fullPath);
+                    $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+                    switch ($extension) {
+                        case 'jpeg':
+                        case 'jpg':
+                            $image->toJpeg(75)->save($fullPath);
+                            break;
+                        case 'png':
+                            $image->toPng()->save($fullPath);
+                            break;
+                        case 'gif':
+                            $image->toGif()->save($fullPath);
+                            break;
+                        case 'webp':
+                            $image->toWebp(75)->save($fullPath);
+                            break;
+                    }
+                    Log::info('Image optimisée avec succès', ['path' => $path]);
+                } catch (\Exception $e) {
+                    Log::error('Erreur lors de l\'optimisation de l\'image', [
+                        'error' => $e->getMessage(),
+                        'path' => $path
+                    ]);
+                    // On ne bloque pas le processus si l'optimisation échoue
+                }
+            }
             
             // Journaliser le stockage réussi
             Log::info('Fichier stocké avec succès', [

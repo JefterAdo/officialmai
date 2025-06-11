@@ -143,13 +143,15 @@ class DocumentValidationService
         try {
             // Traiter le fichier si présent
             if ($file) {
-                $secureFilename = FileSecurityService::generateSecureFilename(
-                    $file->getClientOriginalName(),
-                    $file->getClientOriginalExtension()
-                );
-                
-                $path = $file->storeAs('documents', $secureFilename, 'public');
-                $data['file_path'] = $path;
+                $result = FileSecurityService::storeSecurely($file, 'documents');
+                if (!$result['success']) {
+                    return [
+                        'success' => false,
+                        'errors' => $result['errors'],
+                        'document' => null
+                    ];
+                }
+                $data['file_path'] = $result['path'];
             }
 
             // Créer ou mettre à jour le document
@@ -206,14 +208,15 @@ class DocumentValidationService
         }
 
         try {
-            // Générer un nom de fichier sécurisé
-            $secureFilename = FileSecurityService::generateSecureFilename(
-                $file->getClientOriginalName(),
-                $file->getClientOriginalExtension()
-            );
-            
-            // Stocker le fichier
-            $path = $file->storeAs('communiques/documents', $secureFilename, 'public');
+            $result = FileSecurityService::storeSecurely($file, 'communiques/documents');
+            if (!$result['success']) {
+                return [
+                    'success' => false,
+                    'errors' => $result['errors'],
+                    'attachment' => null
+                ];
+            }
+            $path = $result['path'];
             
             // Créer l'enregistrement de pièce jointe
             $attachment = new CommuniqueAttachment([
