@@ -21,7 +21,7 @@
                 </header>
 
                 <figure class="figure float-md-end ms-md-4 mb-3" style="max-width: 400px;">
-                    <img src="{{ asset('images/Felix_Houphouet/Felix_Houphouet.jpg') }}" class="figure-img img-fluid rounded shadow" alt="Portrait de Félix Houphouët-Boigny">
+                    <img src="{{ asset('images/Felix_Houphouet/Felix_Houphouet.png') }}" class="figure-img img-fluid rounded shadow" alt="Portrait de Félix Houphouët-Boigny">
                     <figcaption class="figure-caption text-center">Félix Houphouët-Boigny, le "Sage de l'Afrique".</figcaption>
                 </figure>
 
@@ -39,22 +39,16 @@
                     </p>
                 </section>
 
-                <div class="d-flex align-items-center mb-3">
-                    <figure class="figure me-4 mb-0" style="max-width: 200px;">
-                        <img src="{{ asset('images/Felix_Houphouet/Félix HOUPHOUËT-BOIGNY le 03 Mai 1976 à Paris ( France ).jpg') }}" class="figure-img img-fluid rounded shadow" alt="Houphouët-Boigny lors d'un discours à Paris">
-                        <figcaption class="figure-caption text-center">Félix Houphouët-Boigny lors d'une visite officielle à Paris, le 3 mai 1976.</figcaption>
-                    </figure>
-                    <h2 class="h3 fw-semibold mb-0" style="border-bottom: 2px solid #FF6B00; padding-bottom: 0.5rem; display: inline-block;">Vers l'Indépendance</h2>
-                </div>
-                <div class="clearfix">
-                    <p class="mb-5">
+                <section class="mb-5">
+                    <h2 class="h3 fw-semibold mb-3">Vers l'Indépendance</h2>
+                    <p>
                         En 1946, Houphouët-Boigny cofonde le Rassemblement Démocratique Africain (RDA), premier grand mouvement panafricain francophone. Après une alliance initiale avec le Parti Communiste Français, il opte en 1950 pour une stratégie de coopération avec la France. Ministre dans plusieurs gouvernements français (1956-1959), il négocie habilement l'autonomie progressive des colonies. Architecte de la Communauté Franco-Africaine (1958), il conduit finalement la Côte d'Ivoire à l'indépendance le 7 août 1960, tout en maintenant des relations privilégiées avec l'ancienne métropole.
                     </p>
-                </div>
+                </section>
 
                 <figure class="figure text-center d-block my-5" style="max-width: 100%;">
-                    <img src="{{ asset('images/Felix_Houphouet/Presi.jpg') }}" class="figure-img img-fluid rounded shadow" alt="Félix Houphouët-Boigny, Président de la République">
-                    <figcaption class="figure-caption text-center">Félix Houphouët-Boigny, Premier Président de la République de Côte d'Ivoire (1960-1993).</figcaption>
+                    <img src="{{ asset('images/Felix_Houphouet/Presi.png') }}" class="figure-img img-fluid rounded shadow" alt="Félix Houphouët-Boigny, Président de la République">
+                    <figcaption class="figure-caption text-center">Le Président Félix Houphouët-Boigny et le Premier Ministre Alassane Ouattara.</figcaption>
                 </figure>
 
                 <section class="mb-5">
@@ -96,7 +90,7 @@
                         <li><strong>1946:</strong> Co-fondateur du RDA</li>
                         <li><strong>1960:</strong> Indépendance de la Côte d'Ivoire</li>
                         <li><strong>1960-1993:</strong> Président de la République</li>
-                        <li><strong>1983:</strong> Yamoussoukro devient capitale</li>
+                        <li><strong>1983:</strong> Yamoussoukro devient capitale politique</li>
                         <li><strong>1993:</strong> Décès à Yamoussoukro</li>
                     </ul>
                 </div>
