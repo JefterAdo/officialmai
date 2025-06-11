@@ -270,7 +270,7 @@
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/beugre.webp') }}" class="img-fluid rounded-circle" alt="Vice-Président">
                         </div>
-                        <h5 class="team-member-name">M. Robert Beugré Mambé</h5>
+                        <h5 class="team-member-name">M. Robert Beugré MAMBÉ</h5>
                         <p class="team-member-title" style="color: #f28c03;">Vice-Président</p>
                     </div>
                 </div>
@@ -279,7 +279,7 @@
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/kandia-camara.jpg') }}" class="img-fluid rounded-circle" alt="Vice-Présidente">
                         </div>
-                        <h5 class="team-member-name">Mme Kandia Camara</h5>
+                        <h5 class="team-member-name">Mme Kandia CAMARA</h5>
                         <p class="team-member-title" style="color: #f28c03;">Vice-Présidente</p>
                     </div>
                 </div>
@@ -289,7 +289,7 @@
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/Tene-Brahima-Ouattara.jpeg') }}" class="img-fluid rounded-circle" alt="Trésorier Général">
                         </div>
-                        <h5 class="team-member-name">M. Tene Birahima Ouattara</h5>
+                        <h5 class="team-member-name">M. Tene Birahima OUATTARA</h5>
                         <p class="team-member-title" style="color: #f28c03;">Trésorier Général</p>
                     </div>
                 </div>
@@ -309,7 +309,7 @@
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/M. ABDALLAH TOIKEUSSE MABRI.jpg') }}" class="img-fluid rounded-circle" alt="Vice-Président">
                         </div>
-                        <h5 class="team-member-name">M. Abdallah Toikeusse Mabri</h5>
+                        <h5 class="team-member-name">M. Abdallah Toikeusse MABRI</h5>
                         <p class="team-member-title" style="color: #f28c03;">Vice-Président</p>
                     </div>
                 </div>
@@ -319,7 +319,7 @@
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('images/membres/directoire/cisse-bacongo.webp') }}" class="img-fluid rounded-circle" alt="Secrétaire Exécutif">
                         </div>
-                        <h5 class="team-member-name">M. Bacongo CISSE</h5>
+                        <h5 class="team-member-name">M. Bacongo CISSÉ</h5>
                         <p class="team-member-title" style="color: #f28c03;">Secrétaire Exécutif</p>
                     </div>
                 </div>
@@ -329,7 +329,7 @@
                         <div class="team-member-img mb-3">
                             <img src="{{ asset('storage/membres/directoire/fidele-sirrasorro.jpeg') }}" class="img-fluid rounded-circle" alt="Membre">
                         </div>
-                        <h5 class="team-member-name">M. Fidele Sarassoro</h5>
+                        <h5 class="team-member-name">M. Fidèle SARASSORO</h5>
                         <p class="team-member-title" style="color: #f28c03;">Membre</p>
                     </div>
                 </div>

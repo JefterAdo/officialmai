@@ -10,18 +10,18 @@
                 <div class="col-lg-6">
                     <h1 class="display-4 fw-bold mb-4">Alassane Ouattara</h1>
                     <p class="lead mb-4">Un leader visionnaire, bâtisseur de la Côte d'Ivoire moderne</p>
-                    <div class="d-flex align-items-center">
-                        <div class="me-4">
-                            <div class="h2 fw-bold mb-0">12+</div>
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="flex-fill text-center">
+                            <div class="h2 fw-bold mb-0">14+</div>
                             <small>Années de leadership</small>
                         </div>
-                        <div class="me-4">
-                            <div class="h2 fw-bold mb-0">8%</div>
-                            <small>Croissance moyenne</small>
+                        <div class="flex-fill text-center">
+                            <div class="h2 fw-bold mb-0">400 km</div>
+                            <small>Autoroutes</small>
                         </div>
-                        <div>
-                            <div class="h2 fw-bold mb-0">37%</div>
-                            <small>Réduction pauvreté</small>
+                        <div class="flex-fill text-center">
+                            <div class="h2 fw-bold mb-0">7,1%</div>
+                            <small>Taux de croissance Économique</small>
                         </div>
                     </div>
                 </div>

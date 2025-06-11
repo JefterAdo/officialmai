@@ -406,7 +406,7 @@
                 <div class="contact-details">
                     <div class="contact-item">
                         <i class="fas fa-phone contact-icon"></i>
-                        <span>+225 27 22 44 XX XX</span>
+                        <span>+225 2722464741</span>
                     </div>
                     
                     <div class="contact-item">

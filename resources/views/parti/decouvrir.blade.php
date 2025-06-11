@@ -48,21 +48,42 @@
             border-radius: 2px;
         }
         .hero-section {
-            position: relative;
-            padding: 3rem 0;
             background-color: #f8f9fa;
             border-radius: 1rem;
             overflow: hidden;
             margin-bottom: 3rem;
         }
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+        @media (min-width: 992px) {
+            .hero-container {
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+            }
+        }
+        .hero-content {
+            padding: 0 1.5rem;
+        }
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
         .hero-image {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 40%;
+            width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 0 1rem 1rem 0;
+            border-radius: 0.5rem;
+        }
+        @media (max-width: 991.98px) {
+            .hero-image {
+                border-radius: 0 0 1rem 1rem;
+            }
         }
     </style>
     @endpush
@@ -71,16 +92,18 @@
     <main class="container mx-auto px-4 py-8">
         <div class="hero-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-7 pe-lg-5">
+                <div class="hero-container">
+                    <div class="hero-content">
                         <h1 class="text-3xl font-bold mb-4" style="color: #FF6B00;">Découvrir le RHDP</h1>
                         <p class="lead text-gray-700 mb-6">
                             Le Rassemblement des Houphouëtistes pour la Démocratie et la Paix (RHDP) est la force politique majeure engagée pour la stabilité, l'unité et le développement durable de la Côte d'Ivoire, fidèle à l'héritage du Président Félix Houphouët-Boigny.
                         </p>
                     </div>
+                    <div class="hero-image-container">
+                        <img src="{{ asset('images/RHDP/photo_2025-04-05_19-08-05.jpg') }}" alt="RHDP Rassemblement" class="hero-image">
+                    </div>
                 </div>
             </div>
-            <img src="{{ asset('images/RHDP/photo_2025-04-05_19-08-05.jpg') }}" alt="RHDP Rassemblement" class="hero-image">
         </div>
 
         <div class="section-divider"></div>
