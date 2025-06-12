@@ -244,6 +244,13 @@
                             </ul>
                         </li>
                         {{-- Moved button to the end using ms-auto on the li --}}
+                                                <!-- Search Icon -->
+                        <li class="nav-item me-3">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Rechercher">
+                                <i class="fas fa-search fa-lg"></i>
+                            </a>
+                        </li>
+
                         <li class="nav-item ms-auto">
                              {{-- Added btn-nav-adhere class and removed default btn classes --}}
                              <a class="btn btn-nav-adhere" href="{{ route('militer.adhesion') }}">J'adhère</a>
@@ -339,6 +346,59 @@
             });
         });
     </script>
+        <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content bg-dark bg-opacity-75">
+          <div class="modal-header border-0">
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex justify-content-center align-items-center">
+            <form action="/recherche" method="GET" class="w-75">
+              <div class="input-group input-group-lg">
+                <input type="search" name="query" class="form-control bg-transparent text-white border-light" placeholder="Que recherchez-vous ?" aria-label="Recherche" id="searchInputModal">
+                <button class="btn btn-outline-light" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+    /* Search Modal Customizations */
+    #searchModal .modal-content {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    #searchModal .form-control::placeholder {
+        color: #ccc;
+    }
+    #searchModal .form-control:focus {
+        background-color: transparent;
+        color: white;
+        box-shadow: none;
+        border-color: #FF6B00;
+    }
+    </style>
+
     @stack('scripts')
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Focus search input when modal is shown
+        const searchModal = document.getElementById('searchModal');
+        if (searchModal) {
+            searchModal.addEventListener('shown.bs.modal', () => {
+                const searchInput = document.getElementById('searchInputModal');
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            });
+        }
+    });
+    </script>
 </body>
 </html>

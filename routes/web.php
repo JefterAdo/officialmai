@@ -160,6 +160,9 @@ Route::middleware(['web', 'throttle:60,1'])->group(function () {
         ]);
     });
 
+    // Route pour la recherche
+    Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
     // Routes pour les pages (à placer en dernier car elles sont génériques)
     Route::get('/', [PageController::class, 'home'])->name('home');
     

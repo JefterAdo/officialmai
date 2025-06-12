@@ -47,7 +47,7 @@ class PerformanceMonitor
         Cache::put($key, $data, now()->addDays(7));
     }
 
-    public function getSlowRequests(string $date = null): array
+    public function getSlowRequests(?string $date = null): array
     {
         $date = $date ?? date('Y-m-d');
         return Cache::get('slow_requests:' . $date, []);
